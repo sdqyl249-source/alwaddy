@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="icona99.png">
+    <link rel="apple-touch-icon" href="icona99.png">
+    <link rel="manifest" href="manifest.json">
+    <title>الرئيسية - منصة الوادي التعليمية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background-color: #020617; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* القائمة الجانبية الملكية */
+        .sidebar { height: 100vh; width: 0; position: fixed; top: 0; right: 0; background: linear-gradient(180deg, #0f172a, #020617); box-shadow: 0 4px 30px rgba(0,0,0,0.8); transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow-x: hidden; z-index: 1000; display: flex; flex-direction: column; padding: 20px 0; border-left: 1px solid rgba(246, 173, 85, 0.3); }
+        .sidebar-title { color: #f6ad55; font-size: 21px; font-weight: bold; padding-bottom: 20px; border-bottom: 2px solid rgba(246, 173, 85, 0.3); margin-bottom: 15px; text-align: center; white-space: nowrap; text-shadow: 0 2px 10px rgba(246, 173, 85, 0.2); }
+        .menu-item { color: #e2e8f0; background: rgba(246, 173, 85, 0.03); border: 1px solid rgba(246, 173, 85, 0.1); border-radius: 12px; margin: 8px 15px; padding: 12px 18px; text-align: center; transition: 0.3s; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; white-space: nowrap; font-weight: 500; text-decoration: none; }
+        .menu-item i { color: #f6ad55; }
+        .menu-item:hover { background: rgba(246, 173, 85, 0.15); color: #f6ad55; border-color: rgba(246, 173, 85, 0.5); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(246, 173, 85, 0.15); }
+        
+        /* زر التثبيت الديناميكي داخل القائمة */
+        #installAppBtn { background: rgba(52, 211, 153, 0.1); border-color: rgba(52, 211, 153, 0.3); color: #34d399; }
+        #installAppBtn i { color: #34d399; }
+        #installAppBtn:hover { background: #10b981; color: white; border-color: #10b981; }
+
+        .logout-btn { margin-top: auto; padding: 12px; background: rgba(229, 62, 62, 0.1); color: #fca5a5; border: 1px solid rgba(229, 62, 62, 0.3); border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: bold; width: 80%; margin: 20px auto; }
+        .logout-btn:hover { background: #e53e3e; color: white; }
+        
+        .toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 1002; padding: 12px 20px; cursor: pointer; background: #0f172a; color: #f6ad55; border: 1px solid rgba(246, 173, 85, 0.3); border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-weight: bold; transition: 0.3s; }
+        
+        /* المحتوى الرئيسي للوحة التحكم */
+        .main-content { margin-right: 0; padding: 20px; max-width: 1300px; margin: 0 auto; width: 100%; flex: 1; transition: 0.4s; }
+        @media (min-width: 768px) { .main-content { padding: 40px; } }
+
+        .dashboard-container { display: flex; flex-direction: column; gap: 25px; }
+
+        /* الترويسة والشعار */
+        .top-dash-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .dash-card-header { background: linear-gradient(135deg, #1e1b4b, #312e81); border: 1px solid #6366f1; border-radius: 20px; padding: 25px; text-align: center; box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        
+        .platform-logo-img { width: 75px; height: 75px; object-fit: cover; border-radius: 50%; border: 2px solid #a5b4fc; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); margin-bottom: 12px; background: #020617; transition: 0.3s; }
+        .platform-logo-img:hover { transform: scale(1.05); border-color: #ffffff; }
+
+        .dash-card-header h1 { color: #a5b4fc; font-size: 22px; margin: 0 0 6px 0; }
+        .dash-card-header p { color: #e0e7ff; font-size: 14px; margin: 0; }
+
+        .dash-card-time { background: linear-gradient(135deg, #064e3b, #022c22); border: 1px solid #10b981; border-radius: 20px; padding: 25px; text-align: center; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+        .dash-card-time .time-box { font-size: 26px; font-weight: bold; color: #34d399; font-family: monospace; }
+        .dash-card-time .date-box { font-size: 14px; color: #a7f3d0; }
+
+        /* رؤية المنصة وأهدافها */
+        .vision-goals-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .vg-box-1 { background: linear-gradient(135deg, #78350f, #451a03); border: 1px solid #f59e0b; border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2); }
+        .vg-box-1 h3 { color: #fcd34d; margin-top: 0; font-size: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(252, 211, 77, 0.3); padding-bottom: 10px; }
+        .vg-box-1 p { color: #fef3c7; font-size: 14px; line-height: 1.8; margin: 0; }
+
+        .vg-box-2 { background: linear-gradient(135deg, #1e3a8a, #172554); border: 1px solid #3b82f6; border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2); }
+        .vg-box-2 h3 { color: #93c5fd; margin-top: 0; font-size: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(147, 197, 253, 0.3); padding-bottom: 10px; }
+        .vg-box-2 ul { color: #dbeafe; font-size: 14px; line-height: 1.7; margin: 0; padding-right: 15px; }
+        .vg-box-2 li { margin-bottom: 6px; }
+
+        /* التبليغات والتنبيهات */
+        .alerts-dashboard-card { background: linear-gradient(135deg, #831843, #500724); border: 1px solid #ec4899; border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(236, 72, 153, 0.2); }
+        .alerts-dashboard-card h3 { color: #f472b6; margin-top: 0; font-size: 19px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .alert-row { background: rgba(0, 0, 0, 0.3); border-right: 4px solid #f472b6; padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; font-size: 14px; color: #fbcfe8; line-height: 1.6; }
+        .alert-row:last-child { margin-bottom: 0; }
+
+        /* الخدمات */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        .service-card { background: #0f172a; border-radius: 20px; padding: 25px; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.4); transition: 0.3s; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; border: 1px solid rgba(246, 173, 85, 0.2); }
+        .service-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(246, 173, 85, 0.3); }
+        .service-card.c1 { border-top: 4px solid #f59e0b; }
+        .service-card.c2 { border-top: 4px solid #3b82f6; }
+        .service-card.c3 { border-top: 4px solid #10b981; }
+        .service-card.c4 { border-top: 4px solid #ec4899; }
+        
+        .service-card i { font-size: 45px; margin-bottom: 15px; }
+        .service-card.c1 i { color: #f59e0b; }
+        .service-card.c2 i { color: #3b82f6; }
+        .service-card.c3 i { color: #10b981; }
+        .service-card.c4 i { color: #ec4899; }
+        
+        .service-card h3 { color: #ffffff; margin: 0 0 10px 0; font-size: 18px; }
+        .service-card p { color: #94a3b8; font-size: 13px; margin: 0; line-height: 1.5; }
+
+        /* الأخبار */
+        .news-dashboard-card { background: linear-gradient(135deg, #134e4a, #042f2e); border: 1px solid #14b8a6; border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(20, 184, 166, 0.2); }
+        .news-dashboard-card h3 { color: #5eead4; margin-top: 0; font-size: 19px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .news-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; }
+        .news-sub-card { background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(20, 184, 166, 0.3); border-radius: 12px; padding: 15px; }
+        .news-sub-card .date { font-size: 12px; color: #2dd4bf; font-weight: bold; margin-bottom: 5px; }
+        .news-sub-card .title { font-size: 15px; font-weight: bold; color: #ffffff; margin-bottom: 6px; }
+        .news-sub-card .desc { font-size: 13px; color: #99f6e4; margin: 0; line-height: 1.5; }
+
+        footer { text-align: center; padding: 20px; background: #0f172a; border-top: 1px solid rgba(246, 173, 85, 0.2); color: #a0aec0; font-size: 14px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+    <script>
+        const activeUser = localStorage.getItem("currentUser");
+        if (!activeUser) {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <button class="toggle-btn" onclick="document.getElementById('mySidebar').style.width = '260px'; document.getElementById('sidebarOverlay').style.display = 'block';"><i class="fa-solid fa-bars"></i> القائمة</button>
+
+    <!-- القائمة الجانبية -->
+    <div class="sidebar" id="mySidebar">
+        <div class="sidebar-title">🏞️ منصة الوادي</div>
+        <a href="index.html" class="menu-item"><i class="fa-solid fa-house"></i> الرئيسية</a>
+        <a href="classes.html" class="menu-item"><i class="fa-solid fa-school"></i> إدارة الصفوف والدردشة</a>
+        <a href="schedule.html" class="menu-item"><i class="fa-solid fa-clock"></i> الحصص والجداول</a>
+        <a href="games.html" class="menu-item"><i class="fa-solid fa-gamepad"></i> الألعاب والترفيه</a>
+        <a href="library.html" class="menu-item"><i class="fa-solid fa-book"></i> المكتبة الرقمية</a>
+        
+        <!-- زر تثبيت التطبيق يظهر تفاعلياً -->
+        <button id="installAppBtn" style="display: none;" class="menu-item">
+            <i class="fa-solid fa-download"></i> تثبيت التطبيق
+        </button>
+
+        <button onclick="localStorage.removeItem('currentUser'); window.location.href='login.html';" class="logout-btn">تسجيل الخروج</button>
+    </div>
+    
+    <div onclick="document.getElementById('mySidebar').style.width = '0'; document.getElementById('sidebarOverlay').style.display = 'none';" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:999; display:none;" id="sidebarOverlay"></div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <div class="dashboard-container">
+            
+            <div class="top-dash-bar">
+                <div class="dash-card-header">
+                    <img src="icona99.png" alt="شعار منصة الوادي" class="platform-logo-img">
+                    <h1 id="welcomeUserTitle">مرحباً بك في منصة الوادي التعليمية 🌟</h1>
+                    <p>بوابة إدارة وتطوير العملية التعليمية والأنشطة المدرسية بأسلوب ذكي ومبتكر</p>
+                </div>
+                <div class="dash-card-time">
+                    <div class="time-box" id="currentTimeDisplay">--:--:--</div>
+                    <div class="date-box" id="currentDateDisplay">جاري التحميل...</div>
+                </div>
+            </div>
+
+            <div class="vision-goals-wrapper">
+                <div class="vg-box-1">
+                    <h3><i class="fa-solid fa-eye"></i> رؤية المنصة الاستراتيجية</h3>
+                    <p>الريادة والتميز في إرساء بيئة تعليمية رقمية متكاملة ومحفزة، تجمع بين جودة التعليم الحديث والتفاعل الذكي بين الكادر التدريسي والطلبة وأولياء الأمور لبناء جيل واعٍ ومبتكر.</p>
+                </div>
+                <div class="vg-box-2">
+                    <h3><i class="fa-solid fa-bullseye"></i> أهداف المنصة الأساسية</h3>
+                    <ul>
+                        <li>تسهيل إدارة الصفوف والجداول الدراسية بدقة عالية.</li>
+                        <li>توفير مكتبة رقمية مرنة ومتاحة لجميع المراحل.</li>
+                        <li>دمج الترفيه التعليمي والألعاب الذكية لتحسين الاستيعاب.</li>
+                        <li>تعزيز التواصل الفعال والآمن عبر غرف الدردشة.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="alerts-dashboard-card">
+                <h3><i class="fa-solid fa-bullhorn"></i> التبليغات والتنبيهات المدرسية الهامة</h3>
+                <div class="alert-row">📌 <strong>تنبيه إداري:</strong> تم تحديث الجداول الدراسية الأسبوعية لجميع الصفوف ويمكنكم مراجعتها عبر قسم "الحصص والجداول".</div>
+                <div class="alert-row">🌟 <strong>نشاط تفاعلي:</strong> تم تفعيل الألعاب التعليمية الجديدة لقسم المرحلة الابتدائية في واجهة الألعاب والترفيه.</div>
+            </div>
+
+            <div class="services-grid">
+                <a href="classes.html" class="service-card c1">
+                    <i class="fa-solid fa-school"></i>
+                    <h3>إدارة الصفوف والدردشة</h3>
+                    <p>تصفح الصفوف الدراسية والتفاعل الحي وغرف الدردشة المدرسية.</p>
+                </a>
+                <a href="schedule.html" class="service-card c2">
+                    <i class="fa-solid fa-clock"></i>
+                    <h3>الحصص والجداول</h3>
+                    <p>متابعة الجداول الدراسية الأسبوعية الحصصية وتنظيم المواعيد.</p>
+                </a>
+                <a href="games.html" class="service-card c3">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <h3>الألعاب والترفيه</h3>
+                    <p>مجموعة واسعة من الألعاب والبطاقات التعليمية لتنشيط الذاكرة.</p>
+                </a>
+                <a href="library.html" class="service-card c4">
+                    <i class="fa-solid fa-book"></i>
+                    <h3>المكتبة الرقمية</h3>
+                    <p>استعراض الكتب، المناهج التعليمية، والملفات الرقمية المرفقة.</p>
+                </a>
+            </div>
+
+            <div class="news-dashboard-card">
+                <h3><i class="fa-solid fa-newspaper"></i> آخر الأخبار والنشاطات المدرسية</h3>
+                <div class="news-cards-grid">
+                    <div class="news-sub-card">
+                        <div class="date">يوليو 2026</div>
+                        <div class="title">إطلاق النسخة المحدثة للمنصة</div>
+                        <p class="desc">تم تحديث واجهات المنصة بالستايل الملكي الفاخر لضمان أداء أسرع وتجربة مستخدم متميزة.</p>
+                    </div>
+                    <div class="news-sub-card">
+                        <div class="date">يوليو 2026</div>
+                        <div class="title">تفعيل المكتبة الرقمية</div>
+                        <p class="desc">إتاحة رفع وتحميل الملازم والمناهج الدراسية بشكل مباشر ومرن للطلبة والأساتذة.</p>
+                    </div>
+                    <div class="news-sub-card">
+                        <div class="date">يوليو 2026</div>
+                        <div class="title">تطوير مسابقات الألعاب الذكية</div>
+                        <p class="desc">إضافة ألعاب الذاكرة والتهجي والكلمات المبعثرة لتحفيز التركيز لدى الأطفال.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        جميع الحقوق محفوظة © منصة الوادي التعليمية 2026
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const userObj = JSON.parse(localStorage.getItem("currentUser"));
+                if (userObj && userObj.name) {
+                    document.getElementById('welcomeUserTitle').innerText = `أهلاً بك يا ${userObj.name} (${userObj.role || 'مستخدم'}) في منصة الوادي 🌟`;
+                }
+            } catch(e) {}
+
+            function updateDateTime() {
+                const now = new Date();
+                const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Baghdad' };
+                document.getElementById('currentDateDisplay').innerText = now.toLocaleDateString('ar-IQ', optionsDate);
+                document.getElementById('currentTimeDisplay').innerText = now.toLocaleTimeString('ar-IQ', { timeZone: 'Asia/Baghdad' });
+            }
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        });
+
+        // تسجيل Service Worker وتفعيل زر التثبيت
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log('Service Worker Registered Successfully'))
+            .catch((err) => console.log('Service Worker Registration Failed', err));
+        }
+
+        let deferredPrompt;
+        const installBtn = document.getElementById('installAppBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (installBtn) {
+                installBtn.style.display = 'flex';
+            }
+        });
+
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                    installBtn.style.display = 'none';
+                }
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            if (installBtn) {
+                installBtn.style.display = 'none';
+            }
+            console.log('PWA was installed successfully');
+        });
+    </script>
+</body>
+</html>

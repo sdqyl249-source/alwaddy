@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="icona99.png">
+    <link rel="apple-touch-icon" href="icona99.png">
+    <title>المكتبة الرقمية - كتب المرحلة الابتدائية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f8fafc; color: #1e293b; min-height: 100vh; display: flex; flex-direction: column; }
+        .sidebar { height: 100vh; width: 0; position: fixed; top: 0; right: 0; background: #ffffff; box-shadow: -4px 0 25px rgba(0,0,0,0.08); transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow-x: hidden; z-index: 1000; display: flex; flex-direction: column; padding: 20px 0; border-left: 1px solid #e2e8f0; }
+        .sidebar-title { color: #0284c7; font-size: 21px; font-weight: bold; padding-bottom: 20px; border-bottom: 2px solid #f1f5f9; margin-bottom: 15px; text-align: center; white-space: nowrap; }
+        .menu-item { color: #334155; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin: 8px 15px; padding: 12px 18px; text-align: center; transition: 0.3s; cursor: pointer; display: flex; align-items: center; justify-content: flex-start; gap: 12px; white-space: nowrap; font-weight: 600; text-decoration: none; }
+        .menu-item i { color: #0284c7; font-size: 18px; }
+        .menu-item:hover { background: #e0f2fe; color: #0369a1; border-color: #38bdf8; }
+        .logout-btn { margin-top: auto; padding: 12px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: bold; width: 85%; margin: 20px auto; }
+        .logout-btn:hover { background: #dc2626; color: white; }
+        .toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 1002; padding: 12px 22px; cursor: pointer; background: #ffffff; color: #0284c7; border: 1px solid #cbd5e1; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); font-weight: bold; display: flex; align-items: center; gap: 8px; }
+        .main-content { margin-right: 0; padding: 20px; transition: 0.4s; max-width: 1250px; margin: 0 auto; width: 100%; flex: 1; }
+        @media (min-width: 768px) { .main-content { padding: 40px; } }
+        .page-header { background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff; padding: 30px 20px; border-radius: 20px; margin-bottom: 30px; text-align: center; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.15); }
+        .page-header h1 { margin: 0 0 10px 0; font-size: 28px; font-weight: 800; }
+        .page-header p { margin: 0; opacity: 0.9; font-size: 15px; }
+        
+        /* لوحة التحكم مخفية افتراضياً بـ display: none للعموم */
+        .admin-controls { background: #ffffff; border: 2px dashed #0284c7; border-radius: 18px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.08); display: none; }
+        .admin-title { font-size: 18px; font-weight: 700; color: #0369a1; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; }
+        .admin-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+        .admin-form input, .admin-form select { padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px; outline: none; background: #f8fafc; }
+        .admin-form input:focus, .admin-form select:focus { border-color: #0284c7; background: #fff; }
+        .admin-form button { background: #16a34a; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; grid-column: 1 / -1; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .admin-form button:hover { background: #15803d; }
+
+        .filter-section { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px; margin-bottom: 35px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .search-box { position: relative; margin-bottom: 20px; }
+        .search-box input { width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; padding: 14px 45px 14px 15px; border-radius: 12px; color: #1e293b; font-size: 15px; outline: none; transition: 0.3s; }
+        .search-box input:focus { border-color: #0284c7; background: #ffffff; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1); }
+        .search-box i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 18px; }
+        .class-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
+        .tab-btn { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 700; white-space: nowrap; transition: 0.2s; font-size: 14px; }
+        .tab-btn:hover, .tab-btn.active { background: #0284c7; color: #ffffff; border-color: #0284c7; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2); }
+        .grade-section { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 25px; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .grade-title { font-size: 20px; font-weight: 800; color: #0369a1; margin: 0 0 20px 0; padding-bottom: 12px; border-bottom: 2px dashed #bae6fd; display: flex; align-items: center; gap: 10px; }
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+        .book-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s ease; position: relative; }
+        .book-card:hover { transform: translateY(-5px); border-color: #38bdf8; background: #ffffff; box-shadow: 0 10px 20px rgba(2, 132, 199, 0.1); }
+        .book-cover-area { height: 140px; background: linear-gradient(135deg, #e0f2fe, #f0f9ff); display: flex; align-items: center; justify-content: center; position: relative; border-bottom: 1px solid #e2e8f0; }
+        .book-cover-icon { font-size: 55px; color: #0284c7; filter: drop-shadow(0 4px 6px rgba(2, 132, 199, 0.15)); }
+        .book-badge { position: absolute; top: 10px; right: 10px; background: #ffffff; border: 1px solid #bae6fd; color: #0369a1; padding: 3px 10px; border-radius: 15px; font-size: 11px; font-weight: bold; }
+        .book-details { padding: 18px; flex: 1; display: flex; flex-direction: column; }
+        .book-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 8px 0; line-height: 1.4; }
+        .book-author { color: #64748b; font-size: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        .book-info-tags { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+        .tag-item { background: #ffffff; border: 1px solid #e2e8f0; padding: 4px 8px; border-radius: 6px; font-size: 11px; color: #475569; display: flex; align-items: center; gap: 5px; }
+        .book-actions { margin-top: auto; display: flex; gap: 8px; }
+        .btn-download { flex: 1; background: #0284c7; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; transition: 0.2s; }
+        .btn-download:hover { background: #0369a1; }
+        .btn-preview { background: #ffffff; border: 1px solid #cbd5e1; color: #334155; padding: 10px; border-radius: 8px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .btn-preview:hover { background: #e2e8f0; color: #0f172a; }
+        .btn-delete { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 10px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .btn-delete:hover { background: #dc2626; color: white; }
+        footer { text-align: center; padding: 20px; background: #ffffff; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 14px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+    <button class="toggle-btn" onclick="document.getElementById('mySidebar').style.width = '260px'; document.getElementById('sidebarOverlay').style.display = 'block';">
+        <i class="fa-solid fa-bars"></i> القائمة
+    </button>
+
+    <div class="sidebar" id="mySidebar">
+        <div class="sidebar-title">🏞️ منصة الوادي</div>
+        <a href="index.html" class="menu-item"><i class="fa-solid fa-house"></i> الرئيسية</a>
+        <a href="classes.html" class="menu-item"><i class="fa-solid fa-school"></i> إدارة الصفوف</a>
+        <a href="schedule.html" class="menu-item"><i class="fa-solid fa-clock"></i> الجداول</a>
+        <a href="games.html" class="menu-item"><i class="fa-solid fa-gamepad"></i> الألعاب والترفيه</a>
+        <a href="library.html" class="menu-item"><i class="fa-solid fa-book"></i> المكتبة الرقمية</a>
+        <button onclick="localStorage.removeItem('currentUser'); localStorage.removeItem('userRole'); window.location.href='login.html';" class="logout-btn">تسجيل الخروج</button>
+    </div>
+    
+    <div onclick="document.getElementById('mySidebar').style.width = '0'; document.getElementById('sidebarOverlay').style.display = 'none';" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:999; display:none;" id="sidebarOverlay"></div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1>📚 كتب المرحلة الابتدائية الشاملة</h1>
+            <p>جميع المناهج والكتب المعتمدة مقسمة بحسب الصفوف الدراسية من الأول وحتى السادس الابتدائي</p>
+        </div>
+
+        <!-- لوحة التحكم خاصة بالمعلم والإدارة فقط -->
+        <div class="admin-controls" id="adminControls">
+            <div class="admin-title">
+                <span><i class="fa-solid fa-user-shield"></i> لوحة التحكم: إضافة كتاب جديد (خاص بالمعلم والإدارة)</span>
+            </div>
+            <form class="admin-form" onsubmit="addNewBook(event)">
+                <input type="text" id="newBookTitle" placeholder="اسم الكتاب" required>
+                <input type="text" id="newBookAuthor" placeholder="الجهة الناشرة / المؤلف" value="وزارة التربية" required>
+                <select id="newBookGrade" required>
+                    <option value="الصف الأول الابتدائي">الصف الأول الابتدائي</option>
+                    <option value="الصف الثاني الابتدائي">الصف الثاني الابتدائي</option>
+                    <option value="الصف الثالث الابتدائي">الصف الثالث الابتدائي</option>
+                    <option value="الصف الرابع الابتدائي">الصف الرابع الابتدائي</option>
+                    <option value="الصف الخامس الابتدائي">الصف الخامس الابتدائي</option>
+                    <option value="الصف السادس الابتدائي">الصف السادس الابتدائي</option>
+                </select>
+                <input type="text" id="newBookSize" placeholder="الحجم (مثال: 8.5 MB)" value="10.0 MB" required>
+                <input type="text" id="newBookUrl" placeholder="رابط الملف / PDF" value="books/sample.pdf" required>
+                <button type="submit"><i class="fa-solid fa-plus"></i> إضافة الكتاب الآن</button>
+            </form>
+        </div>
+
+        <div class="filter-section">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" onkeyup="filterBooks()" placeholder="ابحث باسم الكتاب أو المادة الدراسية...">
+            </div>
+            
+            <div class="class-tabs">
+                <button class="tab-btn active" onclick="selectGrade('all', this)">عرض كل الصفوف</button>
+                <button class="tab-btn" onclick="selectGrade('الصف الأول الابتدائي', this)">الصف الأول</button>
+                <button class="tab-btn" onclick="selectGrade('الصف الثاني الابتدائي', this)">الصف الثاني</button>
+                <button class="tab-btn" onclick="selectGrade('الصف الثالث الابتدائي', this)">الصف الثالث</button>
+                <button class="tab-btn" onclick="selectGrade('الصف الرابع الابتدائي', this)">الصف الرابع</button>
+                <button class="tab-btn" onclick="selectGrade('الصف الخامس الابتدائي', this)">الصف الخامس</button>
+                <button class="tab-btn" onclick="selectGrade('الصف السادس الابتدائي', this)">الصف السادس</button>
+            </div>
+        </div>
+
+        <div id="sectionsContainer"></div>
+    </div>
+
+    <footer>جميع الحقوق محفوظة © منصة الوادي التعليمية 2026</footer>
+
+    <script src="scriot.js"></script>
+    <script>
+        const initialPrimaryData = [
+          { gradeName: "الصف الأول الابتدائي", books: [
+            { id: 101, title: "قراءتي - الصف الأول", author: "وزارة التربية", size: "6.5 MB", type: "PDF", coverIcon: "fa-child-reaching", fileUrl: "books/primary1_arabic.pdf" },
+            { id: 102, title: "الرياضيات - الصف الأول", author: "وزارة التربية", size: "7.2 MB", type: "PDF", coverIcon: "fa-shapes", fileUrl: "books/primary1_math.pdf" },
+            { id: 103, title: "العلوم - الصف الأول", author: "وزارة التربية", size: "8.0 MB", type: "PDF", coverIcon: "fa-seedling", fileUrl: "books/primary1_science.pdf" },
+            { id: 104, title: "التربية الإسلامية - الأول", author: "وزارة التربية", size: "5.5 MB", type: "PDF", coverIcon: "fa-kaaba", fileUrl: "books/primary1_islamic.pdf" }
+          ]},
+          { gradeName: "الصف الثاني الابتدائي", books: [
+            { id: 201, title: "قراءتي - الصف الثاني", author: "وزارة التربية", size: "7.8 MB", type: "PDF", coverIcon: "fa-book-open-reader", fileUrl: "books/primary2_arabic.pdf" },
+            { id: 202, title: "الرياضيات - الصف الثاني", author: "وزارة التربية", size: "8.5 MB", type: "PDF", coverIcon: "fa-calculator", fileUrl: "books/primary2_math.pdf" },
+            { id: 203, title: "العلوم - الصف الثاني", author: "وزارة التربية", size: "8.9 MB", type: "PDF", coverIcon: "fa-flask", fileUrl: "books/primary2_science.pdf" }
+          ]},
+          { gradeName: "الصف الثالث الابتدائي", books: [
+            { id: 301, title: "القراءة العربية - الثالث", author: "وزارة التربية", size: "9.1 MB", type: "PDF", coverIcon: "fa-book", fileUrl: "books/primary3_arabic.pdf" },
+            { id: 302, title: "الرياضيات - الصف الثالث", author: "وزارة التربية", size: "9.8 MB", type: "PDF", coverIcon: "fa-arrow-up-right-dots", fileUrl: "books/primary3_math.pdf" },
+            { id: 303, title: "العلوم - الصف الثالث", author: "وزارة التربية", size: "10.4 MB", type: "PDF", coverIcon: "fa-atom", fileUrl: "books/primary3_science.pdf" },
+            { id: 304, title: "اللغة الإنجليزية - الثالث", author: "وزارة التربية", size: "11.0 MB", type: "PDF", coverIcon: "fa-language", fileUrl: "books/primary3_english.pdf" }
+          ]},
+          { gradeName: "الصف الرابع الابتدائي", books: [
+            { id: 401, title: "قواعد اللغة العربية - الرابع", author: "وزارة التربية", size: "11.2 MB", type: "PDF", coverIcon: "fa-pen-nib", fileUrl: "books/primary4_arabic.pdf" },
+            { id: 402, title: "الرياضيات - الصف الرابع", author: "وزارة التربية", size: "12.0 MB", type: "PDF", coverIcon: "fa-square-root-variable", fileUrl: "books/primary4_math.pdf" },
+            { id: 403, title: "العلوم - الصف الرابع", author: "وزارة التربية", size: "11.5 MB", type: "PDF", coverIcon: "fa-microscope", fileUrl: "books/primary4_science.pdf" },
+            { id: 404, title: "الاجتماعيات - الصف الرابع", author: "وزارة التربية", size: "10.0 MB", type: "PDF", coverIcon: "fa-earth-americas", fileUrl: "books/primary4_social.pdf" }
+          ]},
+          { gradeName: "الصف الخامس الابتدائي", books: [
+            { id: 501, title: "اللغة العربية - الصف الخامس", author: "وزارة التربية", size: "12.5 MB", type: "PDF", coverIcon: "fa-feather", fileUrl: "books/primary5_arabic.pdf" },
+            { id: 502, title: "الرياضيات - الصف الخامس", author: "وزارة التربية", size: "13.8 MB", type: "PDF", coverIcon: "fa-chart-pie", fileUrl: "books/primary5_math.pdf" },
+            { id: 503, title: "العلوم - الصف الخامس", author: "وزارة التربية", size: "14.2 MB", type: "PDF", coverIcon: "fa-vial", fileUrl: "books/primary5_science.pdf" },
+            { id: 504, title: "الاجتماعيات - الصف الخامس", author: "وزارة التربية", size: "11.8 MB", type: "PDF", coverIcon: "fa-map", fileUrl: "books/primary5_social.pdf" }
+          ]},
+          { gradeName: "الصف السادس الابتدائي", books: [
+            { id: 601, title: "قواعد اللغة العربية - السادس", author: "وزارة التربية", size: "13.0 MB", type: "PDF", coverIcon: "fa-graduation-cap", fileUrl: "books/primary6_arabic.pdf" },
+            { id: 602, title: "الرياضيات المطور - السادس", author: "وزارة التربية", size: "15.5 MB", type: "PDF", coverIcon: "fa-square-plus", fileUrl: "books/primary6_math.pdf" },
+            { id: 603, title: "العلوم - الصف السادس", author: "وزارة التربية", size: "14.8 MB", type: "PDF", coverIcon: "fa-dna", fileUrl: "books/primary6_science.pdf" },
+            { id: 604, title: "الاجتماعيات - الصف السادس", author: "وزارة التربية", size: "12.2 MB", type: "PDF", coverIcon: "fa-map-location-dot", fileUrl: "books/primary6_social.pdf" },
+            { id: 605, title: "اللغة الإنجليزية - السادس", author: "وزارة التربية", size: "14.0 MB", type: "PDF", coverIcon: "fa-spell-check", fileUrl: "books/primary6_english.pdf" }
+          ]}
+        ];
+
+        let primaryData = JSON.parse(localStorage.getItem("libraryData")) || initialPrimaryData;
+        let activeGrade = "all";
+        let isAuthorizedUser = false;
+
+        // التحقق الشامل والدقيق من رتبة المستخدم المخزنة
+        function checkPermissions() {
+            const storedUser = JSON.parse(localStorage.getItem("currentUser")) || {};
+            const storedRole = (storedUser.role || localStorage.getItem("userRole") || "").toLowerCase();
+
+            // المقارنة مع كافة الرتب المسموح لها بالإدارة والتعديل
+            if (["admin", "teacher", "مدير", "معلم", "أدمن"].includes(storedRole)) {
+                isAuthorizedUser = true;
+                const adminBox = document.getElementById("adminControls");
+                if (adminBox) adminBox.style.display = "block";
+            } else {
+                isAuthorizedUser = false;
+                const adminBox = document.getElementById("adminControls");
+                if (adminBox) adminBox.style.display = "none";
+            }
+        }
+
+        function renderLibrary() {
+            const container = document.getElementById("sectionsContainer");
+            const searchVal = document.getElementById("searchInput").value.toLowerCase();
+            container.innerHTML = "";
+
+            let totalMatches = 0;
+
+            primaryData.forEach(gradeGroup => {
+                if (activeGrade !== "all" && gradeGroup.gradeName !== activeGrade) {
+                    return;
+                }
+
+                const filteredBooks = gradeGroup.books.filter(book => 
+                    book.title.toLowerCase().includes(searchVal) || book.author.toLowerCase().includes(searchVal)
+                );
+
+                if (filteredBooks.length > 0) {
+                    totalMatches += filteredBooks.length;
+
+                    const section = document.createElement("div");
+                    section.className = "grade-section";
+
+                    let booksHtml = "";
+                    filteredBooks.forEach(book => {
+                        // إظهار زر الحذف فقط إذا كان المستخدم معلماً أو مديراً
+                        let deleteBtn = isAuthorizedUser ? 
+                            `<button onclick="deleteBook(${book.id})" class="btn-delete" title="حذف الكتاب"><i class="fa-solid fa-trash"></i></button>` : '';
+
+                        booksHtml += `
+                            <div class="book-card">
+                                <div class="book-cover-area">
+                                    <span class="book-badge">${gradeGroup.gradeName}</span>
+                                    <i class="fa-solid ${book.coverIcon || 'fa-book'} book-cover-icon"></i>
+                                </div>
+                                <div class="book-details">
+                                    <h3 class="book-title">${book.title}</h3>
+                                    <div class="book-author"><i class="fa-solid fa-building-columns"></i> ${book.author}</div>
+                                    <div class="book-info-tags">
+                                        <span class="tag-item"><i class="fa-solid fa-file-pdf" style="color:#ef4444;"></i> ${book.type}</span>
+                                        <span class="tag-item"><i class="fa-solid fa-hard-drive" style="color:#0284c7;"></i> ${book.size}</span>
+                                    </div>
+                                    <div class="book-actions">
+                                        <a href="${book.fileUrl}" download="${book.title}.pdf" class="btn-download">
+                                            <i class="fa-solid fa-download"></i> تحميل
+                                        </a>
+                                        <a href="${book.fileUrl}" target="_blank" class="btn-preview" title="معاينة وقراءة">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
+                                        ${deleteBtn}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    section.innerHTML = `
+                        <h2 class="grade-title"><i class="fa-solid fa-layer-group"></i> ${gradeGroup.gradeName}</h2>
+                        <div class="books-grid">
+                            ${booksHtml}
+                        </div>
+                    `;
+
+                    container.appendChild(section);
+                }
+            });
+
+            if (totalMatches === 0) {
+                container.innerHTML = `<div style="text-align: center; color: #64748b; background: #ffffff; border-radius: 16px; padding: 50px; border: 1px solid #e2e8f0; font-size: 16px;">لا توجد كتب تطابق خيارات البحث الحالية.</div>`;
+            }
+        }
+
+        function addNewBook(e) {
+            e.preventDefault();
+            if (!isAuthorizedUser) {
+                alert("عذراً، هذه الصلاحية للمعلّمين والإدارة فقط!");
+                return;
+            }
+
+            const title = document.getElementById("newBookTitle").value;
+            const author = document.getElementById("newBookAuthor").value;
+            const gradeName = document.getElementById("newBookGrade").value;
+            const size = document.getElementById("newBookSize").value;
+            const fileUrl = document.getElementById("newBookUrl").value;
+
+            const targetGrade = primaryData.find(g => g.gradeName === gradeName);
+            if (targetGrade) {
+                const newBook = {
+                    id: Date.now(),
+                    title: title,
+                    author: author,
+                    size: size,
+                    type: "PDF",
+                    coverIcon: "fa-book-bookmark",
+                    fileUrl: fileUrl
+                };
+                targetGrade.books.push(newBook);
+                localStorage.setItem("libraryData", JSON.stringify(primaryData));
+                renderLibrary();
+                e.target.reset();
+                alert("تم إضافة الكتاب بنجاح إلى المكتبة!");
+            }
+        }
+
+        function deleteBook(bookId) {
+            if (!isAuthorizedUser) return;
+            if (confirm("هل أنت متأكد من حذف هذا الكتاب؟")) {
+                primaryData.forEach(gradeGroup => {
+                    gradeGroup.books = gradeGroup.books.filter(b => b.id !== bookId);
+                });
+                localStorage.setItem("libraryData", JSON.stringify(primaryData));
+                renderLibrary();
+            }
+        }
+
+        function selectGrade(grade, btn) {
+            activeGrade = grade;
+            const buttons = document.querySelectorAll(".tab-btn");
+            buttons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderLibrary();
+        }
+
+        function filterBooks() {
+            renderLibrary();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            checkPermissions();
+            renderLibrary();
+        });
+    </script>
+</body>
+</html>

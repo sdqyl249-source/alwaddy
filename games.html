@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="icona99.png">
+    <link rel="apple-touch-icon" href="icona99.png">
+    <title>الألعاب التفاعلية وإدارة لوحة المتصدرين - منصة الوادي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background-color: #020617; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* القائمة الجانبية */
+        .sidebar { height: 100vh; width: 0; position: fixed; top: 0; right: 0; background: linear-gradient(180deg, #0f172a, #020617); box-shadow: 0 4px 30px rgba(0,0,0,0.8); transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow-x: hidden; z-index: 1000; display: flex; flex-direction: column; padding: 20px 0; border-left: 1px solid rgba(246, 173, 85, 0.3); }
+        .sidebar-title { color: #f6ad55; font-size: 21px; font-weight: bold; padding-bottom: 20px; border-bottom: 2px solid rgba(246, 173, 85, 0.3); margin-bottom: 15px; text-align: center; white-space: nowrap; }
+        .menu-item { color: #e2e8f0; background: rgba(246, 173, 85, 0.03); border: 1px solid rgba(246, 173, 85, 0.1); border-radius: 12px; margin: 8px 15px; padding: 12px 18px; text-align: center; transition: 0.3s; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; white-space: nowrap; font-weight: 500; text-decoration: none; }
+        .menu-item i { color: #f6ad55; }
+        .menu-item:hover { background: rgba(246, 173, 85, 0.15); color: #f6ad55; border-color: rgba(246, 173, 85, 0.5); }
+        .logout-btn { margin-top: auto; padding: 12px; background: rgba(229, 62, 62, 0.1); color: #fca5a5; border: 1px solid rgba(229, 62, 62, 0.3); border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: bold; width: 80%; margin: 20px auto; }
+        .logout-btn:hover { background: #e53e3e; color: white; }
+        
+        .toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 1002; padding: 12px 20px; cursor: pointer; background: #0f172a; color: #f6ad55; border: 1px solid rgba(246, 173, 85, 0.3); border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-weight: bold; }
+        
+        .main-content { margin-right: 0; padding: 20px; transition: 0.4s; max-width: 1250px; margin: 0 auto; width: 100%; flex: 1; }
+        @media (min-width: 768px) { .main-content { padding: 40px; } }
+        
+        .page-header { background: linear-gradient(135deg, #0f172a, #1e293b); color: #f6ad55; border: 1px solid rgba(246, 173, 85, 0.2); padding: 25px; border-radius: 15px; margin-bottom: 20px; text-align: center; }
+        .page-header h1 { margin: 0 0 10px 0; font-size: 26px; }
+
+        .user-score-bar { background: linear-gradient(135deg, #1e1b4b, #312e81); border: 1px solid #6366f1; border-radius: 16px; padding: 15px 25px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        .user-info { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: bold; color: #fbbf24; }
+        .points-badge { background: #10b981; color: white; padding: 6px 16px; border-radius: 20px; font-size: 16px; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+
+        .dashboard-layout { display: grid; grid-template-columns: 2.2fr 1.3fr; gap: 25px; }
+        @media (max-width: 980px) { .dashboard-layout { grid-template-columns: 1fr; } }
+
+        /* شبكة الألعاب */
+        .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px; }
+        .game-card-box { background: #0f172a; border: 1px solid rgba(246, 173, 85, 0.2); border-radius: 16px; padding: 20px; text-align: center; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+        .game-card-box:hover { transform: translateY(-5px); border-color: #f6ad55; box-shadow: 0 5px 20px rgba(246,173,85,0.2); }
+        .game-card-icon { font-size: 38px; color: #f6ad55; margin-bottom: 10px; }
+        .game-card-box h3 { color: #f6ad55; margin: 0 0 8px 0; font-size: 17px; }
+        .game-card-box p { color: #a0aec0; font-size: 12px; margin-bottom: 15px; line-height: 1.4; }
+        .play-card-btn { background: #d97706; color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.2s; }
+        .play-card-btn:hover { background: #f59e0b; }
+
+        /* لوحة المتصدرين وأدوات الإدارة */
+        .leaderboard-card { background: #0f172a; border: 1px solid rgba(246, 173, 85, 0.3); border-radius: 20px; padding: 20px; }
+        .leaderboard-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(246, 173, 85, 0.2); padding-bottom: 12px; margin-bottom: 15px; }
+        .leaderboard-header h3 { color: #fbbf24; margin: 0; font-size: 18px; }
+        .students-list { display: flex; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto; padding-left: 5px; }
+        .student-item { display: flex; align-items: center; justify-content: space-between; background: rgba(30, 41, 59, 0.6); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .rank-badge { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; }
+        .rank-1 { background: #fbbf24; color: #020617; }
+        .rank-other { background: #334155; color: #cbd5e1; }
+        .student-name { font-size: 14px; font-weight: bold; word-break: break-all; }
+        .student-pts { color: #34d399; font-size: 14px; font-weight: bold; }
+
+        /* أزرار الإدارة الخاصة بالمدير */
+        .admin-controls-panel { background: rgba(15, 23, 42, 0.9); border: 1px dashed #f6ad55; border-radius: 12px; padding: 15px; margin-top: 15px; text-align: center; }
+        .admin-action-btn { background: #3b82f6; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; margin: 4px; transition: 0.2s; }
+        .admin-action-btn:hover { opacity: 0.9; }
+        .btn-danger { background: #ef4444; }
+        .btn-warning { background: #f59e0b; }
+        .btn-success { background: #10b981; }
+
+        .student-admin-btns { display: flex; gap: 4px; margin-top: 5px; }
+        .mini-btn { border: none; padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; cursor: pointer; color: white; }
+
+        /* منطقة الألعاب التفاعلية */
+        .interactive-game-box { background: #0f172a; padding: 25px; border-radius: 20px; border: 1px solid rgba(246, 173, 85, 0.3); display: none; text-align: center; }
+        .interactive-game-box.active { display: block; }
+        .back-menu-btn { background: #334155; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px; }
+        .back-menu-btn:hover { background: #475569; }
+
+        /* الألعاب */
+        .slide-puzzle-board { display: grid; grid-template-columns: repeat(3, 80px); grid-gap: 10px; justify-content: center; margin: 20px auto; }
+        .puzzle-tile { width: 80px; height: 80px; background: #1e293b; color: #f6ad55; border: 2px solid #f6ad55; font-size: 24px; font-weight: bold; display: flex; align-items: center; justify-content: center; border-radius: 10px; cursor: pointer; user-select: none; }
+        .puzzle-tile.empty { background: transparent; border: 2px dashed #334155; cursor: default; }
+
+        .memory-board { display: grid; grid-template-columns: repeat(4, 70px); grid-gap: 12px; justify-content: center; margin: 20px auto; }
+        .memory-card { width: 70px; height: 70px; background: #1e293b; border: 2px solid #6366f1; border-radius: 10px; font-size: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; }
+        .memory-card.flipped { background: #312e81; border-color: #fbbf24; }
+
+        .clicker-box { width: 280px; height: 280px; border: 2px dashed #f6ad55; border-radius: 20px; margin: 20px auto; position: relative; overflow: hidden; background: #020617; }
+        .target-ball { width: 50px; height: 50px; background: #ef4444; border-radius: 50%; position: absolute; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: transform 0.1s; }
+
+        footer { text-align: center; padding: 20px; background: #0f172a; border-top: 1px solid rgba(246, 173, 85, 0.2); color: #a0aec0; font-size: 14px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+    <button class="toggle-btn" onclick="document.getElementById('mySidebar').style.width = '260px'; document.getElementById('sidebarOverlay').style.display = 'block';"><i class="fa-solid fa-bars"></i> القائمة</button>
+
+    <div class="sidebar" id="mySidebar">
+        <div class="sidebar-title">🏞️ منصة الوادي</div>
+        <a href="index.html" class="menu-item"><i class="fa-solid fa-house"></i> الرئيسية</a>
+        <a href="classes.html" class="menu-item"><i class="fa-solid fa-school"></i> إدارة الصفوف</a>
+        <a href="schedule.html" class="menu-item"><i class="fa-solid fa-clock"></i> الجداول</a>
+        <a href="games.html" class="menu-item"><i class="fa-solid fa-gamepad"></i> الألعاب والترفيه</a>
+        <a href="library.html" class="menu-item"><i class="fa-solid fa-book"></i> المكتبة الرقمية</a>
+        <button onclick="localStorage.removeItem('currentUser'); window.location.href='login.html';" class="logout-btn">تسجيل الخروج</button>
+    </div>
+    
+    <div onclick="document.getElementById('mySidebar').style.width = '0'; document.getElementById('sidebarOverlay').style.display = 'none';" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:999; display:none;" id="sidebarOverlay"></div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1>🧩 مركز الألعاب التفاعلية والتحكم بالمتصدرين</h1>
+            <p>مجموعة متنوعة من الألعاب الذهنية مع صلاحيات كاملة لإدارة نقاط الطلاب</p>
+        </div>
+
+        <div class="user-score-bar">
+            <div class="user-info">
+                <i class="fa-solid fa-user-graduate"></i>
+                <span id="currentUserName">جاري التحميل...</span>
+                <button id="toggleAdminBtn" onclick="toggleAdminMode()" style="background:#3b82f6; color:white; border:none; padding:4px 10px; border-radius:12px; font-size:12px; cursor:pointer; margin-right:10px;">تفعيل صلاحيات المدير ⚙️</button>
+            </div>
+            <div class="points-badge">
+                <i class="fa-solid fa-star"></i>
+                <span id="currentUserPoints">0</span> نقطة
+            </div>
+        </div>
+
+        <div class="dashboard-layout">
+            <!-- قائمة الألعاب التفاعلية (6 ألعاب) -->
+            <div id="gamesMenuSection">
+                <div class="games-grid">
+                    
+                    <div class="game-card-box" onclick="startSlidePuzzle()">
+                        <div class="game-card-icon"><i class="fa-solid fa-puzzle-piece"></i></div>
+                        <h3>لغز انزلاق الأرقام</h3>
+                        <p>رتب الأرقام بالتسلسل المباشر لبناء مهارات التنظيم منطقياً.</p>
+                        <button class="play-card-btn">العب الآن 🎮</button>
+                    </div>
+
+                    <div class="game-card-box" onclick="startMemoryGame()">
+                        <div class="game-card-icon"><i class="fa-solid fa-brain"></i></div>
+                        <h3>تحدي الذاكرة بالأشكال</h3>
+                        <p>مطابقة الأزواج المتشابهة لتقوية الذاكرة البصرية التفاعلية.</p>
+                        <button class="play-card-btn">العب الآن 🧠</button>
+                    </div>
+
+                    <div class="game-card-box" onclick="startMathGame()">
+                        <div class="game-card-icon"><i class="fa-solid fa-calculator"></i></div>
+                        <h3>تحدي الرياضيات السريع</h3>
+                        <p>حل المسائل الحسابية بسرعة فائقة لجمع النقاط لمجموعتك.</p>
+                        <button class="play-card-btn">العب الآن ⚡</button>
+                    </div>
+
+                    <div class="game-card-box" onclick="startClickerGame()">
+                        <div class="game-card-icon"><i class="fa-solid fa-bullseye"></i></div>
+                        <h3>تحدي سرعة البديهة</h3>
+                        <p>اضغط على الهدف المتحرك بسرعة قبل اختفائه لجمع 10 نقاط.</p>
+                        <button class="play-card-btn">العب الآن 🎯</button>
+                    </div>
+
+                    <div class="game-card-box" onclick="startWordGuessGame()">
+                        <div class="game-card-icon"><i class="fa-solid fa-font"></i></div>
+                        <h3>خمن الكلمة التعليمية</h3>
+                        <p>لعبة ذكاء واستكشاف المفاهيم والكلمات الأكاديمية.</p>
+                        <button class="play-card-btn">العب الآن 🔤</button>
+                    </div>
+
+                    <div class="game-card-box" onclick="startMazeGame()">
+                        <div class="game-card-icon"><i class="fa-solid fa-route"></i></div>
+                        <h3>متاهة التفكير والهروب</h3>
+                        <p>وجه المربع للوصول لنهاية المتاهة وتجاوز العقبات.</p>
+                        <button class="play-card-btn">العب الآن 🌀</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- لوحة المتصدرين وإدارة المشرف -->
+            <div>
+                <div class="leaderboard-card">
+                    <div class="leaderboard-header">
+                        <h3><i class="fa-solid fa-trophy"></i> لوحة المتصدرين</h3>
+                        <span id="adminBadgeText" style="font-size:11px; color:#a0aec0;">وضع الطالب</span>
+                    </div>
+                    
+                    <div class="students-list" id="leaderboardContent"></div>
+
+                    <!-- لوحة أزرار التحكم الكاملة الخاصة بالمدير -->
+                    <div class="admin-controls-panel" id="adminControlPanel" style="display:none;">
+                        <h4 style="color:#f6ad55; margin:0 0 10px 0; font-size:14px;"><i class="fa-solid fa-sliders"></i> لوحة تحكم مدير المنصة</h4>
+                        <button class="admin-action-btn btn-success" onclick="addNewStudentPrompt()"><i class="fa-solid fa-user-plus"></i> إضافة طالب/نقاط</button>
+                        <button class="admin-action-btn btn-warning" onclick="giveAllPointsPrompt()"><i class="fa-solid fa-gift"></i> منح نقاط للجميع</button>
+                        <button class="admin-action-btn btn-danger" onclick="resetAllLeaderboard()"><i class="fa-solid fa-rotate-left"></i> تصفير النقاط</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- منطقة استضافة اللعبة التفاعلية -->
+        <div class="interactive-game-box" id="gamePlayArea">
+            <button class="back-menu-btn" onclick="closeGameArea()"><i class="fa-solid fa-arrow-right"></i> العودة لقائمة الألعاب</button>
+            <h2 id="gameTitle" style="color:#f6ad55; margin-top:0;">عنوان اللعبة</h2>
+            <div id="gameContainer"></div>
+        </div>
+    </div>
+
+    <footer>جميع الحقوق محفوظة © منصة الوادي التعليمية 2026</footer>
+
+    <script src="scriot.js"></script>
+    <script>
+        let isAdmin = false;
+
+        function getUserObject() {
+            try {
+                let raw = localStorage.getItem("currentUser");
+                if (!raw) return { name: "طالب منصة الوادي", role: "student" };
+                if (raw.startsWith("{")) return JSON.parse(raw);
+                return { name: raw, role: "student" };
+            } catch(e) {
+                return { name: "طالب منصة الوادي", role: "student" };
+            }
+        }
+
+        function initUserInfo() {
+            const userObj = getUserObject();
+            const userName = userObj.name || userObj.identifier || "طالب منصة الوادي";
+            document.getElementById("currentUserName").innerText = userName;
+
+            let users = JSON.parse(localStorage.getItem("platformUsers")) || [];
+            let current = users.find(u => u.name === userName);
+            if (!current) {
+                current = { name: userName, points: 10 };
+                users.push(current);
+                localStorage.setItem("platformUsers", JSON.stringify(users));
+            }
+            document.getElementById("currentUserPoints").innerText = current.points || 0;
+            renderLeaderboard();
+        }
+
+        function toggleAdminMode() {
+            isAdmin = !isAdmin;
+            const btn = document.getElementById("toggleAdminBtn");
+            const badge = document.getElementById("adminBadgeText");
+            const panel = document.getElementById("adminControlPanel");
+
+            if (isAdmin) {
+                btn.innerText = "إلغاء وضع المدير ❌";
+                btn.style.background = "#ef4444";
+                badge.innerText = "وضع المدير مفعل ⚙️";
+                badge.style.color = "#34d399";
+                panel.style.display = "block";
+            } else {
+                btn.innerText = "تفعيل صلاحيات المدير ⚙️";
+                btn.style.background = "#3b82f6";
+                badge.innerText = "وضع الطالب";
+                badge.style.color = "#a0aec0";
+                panel.style.display = "none";
+            }
+            renderLeaderboard();
+        }
+
+        function addPoints(pts) {
+            const userObj = getUserObject();
+            const userName = userObj.name || userObj.identifier || "طالب منصة الوادي";
+            let users = JSON.parse(localStorage.getItem("platformUsers")) || [];
+            let student = users.find(u => u.name === userName);
+            if (student) {
+                student.points = (student.points || 0) + pts;
+            } else {
+                student = { name: userName, points: pts };
+                users.push(student);
+            }
+            localStorage.setItem("platformUsers", JSON.stringify(users));
+            document.getElementById("currentUserPoints").innerText = student.points;
+            renderLeaderboard();
+        }
+
+        function renderLeaderboard() {
+            let users = JSON.parse(localStorage.getItem("platformUsers")) || [];
+            users.sort((a, b) => (b.points || 0) - (a.points || 0));
+            
+            const container = document.getElementById("leaderboardContent");
+            container.innerHTML = "";
+
+            if(users.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:#a0aec0;">لا يوجد طلاب مسجلون</p>`;
+                return;
+            }
+
+            users.forEach((u, idx) => {
+                const item = document.createElement("div");
+                item.className = "student-item";
+                
+                let adminBtns = "";
+                if (isAdmin) {
+                    adminBtns = `
+                        <div class="student-admin-btns">
+                            <button class="mini-btn" style="background:#3b82f6;" onclick="editStudentPoints('${u.name}')">تعديل</button>
+                            <button class="mini-btn" style="background:#f59e0b;" onclick="resetSingleStudent('${u.name}')">تصفير</button>
+                            <button class="mini-btn" style="background:#ef4444;" onclick="deleteStudent('${u.name}')">حذف</button>
+                        </div>
+                    `;
+                }
+
+                item.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="rank-badge ${idx === 0 ? 'rank-1' : 'rank-other'}">${idx + 1}</div>
+                        <div>
+                            <div class="student-name">${u.name}</div>
+                            ${adminBtns}
+                        </div>
+                    </div>
+                    <span class="student-pts">${u.points || 0} ن</span>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        /* ----- دوال التحكم الخاصة بالمدير ----- */
+        function editStudentPoints(name) {
+            let users = JSON.parse(localStorage.getItem("platformUsers")) || [];
+            let student = users.find(u => u.name === name);
+            if (student) {
+                let pts = prompt(`تعديل نقاط الطالب (${name}):`, student.points || 0);
+                if (pts !== null && !isNaN(parseInt(pts))) {
+                    student.points = parseInt(pts);
+                    localStorage.setItem("platformUsers", JSON.stringify(users));
+                    renderLeaderboard();
+                    initUserInfo();
+                }
+            }
+        }
+
+        function resetSingleStudent(name) {
+            if (confirm(`هل أنت تأكد من تصفير نقاط الطالب (${name})؟`)) {
+                let users = JSON.parse(localStorage.getItem("platformUsers")) || [];
+                let student = users.find(u => u.name === name);
+                if (student) {
+                    student.points = 0;
+                    localStorage.setItem("platformUsers", JSON.stringify(users));
+                    renderLeaderboard();
+                    initUserInfo();
+                }
+            }
+        }
+
+        function deleteStudent(name) {
+            if (confirm(`هل أنت تأكد من حذف الطالب (${name}) من اللوحة؟`)) {
+                let users = JSON.parse(localStorage.getItem("platformUsers")) || [];
+                users = users.filter(u => u.name !== name);
+                localStorage.setItem("platformUsers", JSON.stringify(users));
+                renderLeaderboard();
+            }
+        }
+
+        function addNewStudentPrompt() {
+            let name = prompt("أدخل اسم الطالب:");
+            if (name && name.trim() !== "") {
+                let pts = prompt("النقاط الأولية:", "10");
+                let points = parseInt(pts) || 0;
+                let users = JSON.parse(localStorage.getItem("platformUsers")) || [];
+                users.push({ name: name.trim(), points: points });
+                localStorage.setItem("platformUsers", JSON.stringify(users));
+                renderLeaderboard();
+            }
+        }
+
+        function giveAllPointsPrompt() {
+            let pts = prompt("أدخل عدد النقاط الممنوحة لكافة الطلاب:", "10");
+            let add = parseInt(pts);
+            if (add) {
+                let users = JSON.parse(localStorage.getItem("platformUsers")) || [];
+                users.forEach(u => u.points = (u.points || 0) + add);
+                localStorage.setItem("platformUsers", JSON.stringify(users));
+                renderLeaderboard();
+                initUserInfo();
+            }
+        }
+
+        function resetAllLeaderboard() {
+            if (confirm("⚠️ هل أنت متأكد من تصفير جميع النقاط لكافة الطلاب؟")) {
+                let users = JSON.parse(localStorage.getItem("platformUsers")) || [];
+                users.forEach(u => u.points = 0);
+                localStorage.setItem("platformUsers", JSON.stringify(users));
+                renderLeaderboard();
+                initUserInfo();
+            }
+        }
+
+        /* ----- إدارة منطقة الألعاب ----- */
+        function openGameArea(title) {
+            document.getElementById('gamesMenuSection').style.display = 'none';
+            document.getElementById('gameTitle').innerText = title;
+            document.getElementById('gamePlayArea').classList.add('active');
+        }
+
+        function closeGameArea() {
+            document.getElementById('gamePlayArea').classList.remove('active');
+            document.getElementById('gamesMenuSection').style.display = 'block';
+            document.getElementById('gameContainer').innerHTML = '';
+        }
+
+        /* 1. لعبة انزلاق الأرقام */
+        let puzzleState = [1, 2, 3, 4, 5, 6, 7, 8, ""];
+        function startSlidePuzzle() {
+            openGameArea("🧩 لعبة انزلاق الأرقام والتنظيم");
+            puzzleState = [1, 2, 3, 4, 5, 6, 7, "", 8].sort(() => Math.random() - 0.5);
+            renderSlidePuzzle();
+        }
+        function renderSlidePuzzle() {
+            const container = document.getElementById("gameContainer");
+            container.innerHTML = `<p style="color:#a0aec0;">رتب الأرقام بالتسلسل من 1 إلى 8 للفوز بـ 20 نقطة!</p><div class="slide-puzzle-board" id="board"></div>`;
+            const board = document.getElementById("board");
+            puzzleState.forEach((val, idx) => {
+                const tile = document.createElement("div");
+                tile.className = `puzzle-tile ${val === "" ? "empty" : ""}`;
+                tile.innerText = val;
+                tile.onclick = () => moveTile(idx);
+                board.appendChild(tile);
+            });
+        }
+        function moveTile(idx) {
+            const emptyIdx = puzzleState.indexOf("");
+            const validMoves = [idx - 1, idx + 1, idx - 3, idx + 3];
+            if (validMoves.includes(emptyIdx)) {
+                puzzleState[emptyIdx] = puzzleState[idx];
+                puzzleState[idx] = "";
+                renderSlidePuzzle();
+                if (JSON.stringify(puzzleState) === JSON.stringify([1, 2, 3, 4, 5, 6, 7, 8, ""])) {
+                    alert("🎉 رائع جداً! أعدت ترتيب الأرقام بنجاح وحصلت على 20 نقطة!");
+                    addPoints(20);
+                    closeGameArea();
+                }
+            }
+        }
+
+        /* 2. لعبة الذاكرة */
+        const icons = ['⭐', '🚀', '🎓', '📚', '⭐', '🚀', '🎓', '📚'];
+        let flippedCards = [];
+        let matchedCount = 0;
+        function startMemoryGame() {
+            openGameArea("🧠 لعبة الذاكرة ومطابقة الأشكال");
+            matchedCount = 0;
+            const shuffled = [...icons].sort(() => Math.random() - 0.5);
+            const container = document.getElementById("gameContainer");
+            container.innerHTML = `<p style="color:#a0aec0;">طابق كافة الأشكال المتشابهة لجمع 15 نقطة!</p><div class="memory-board" id="memBoard"></div>`;
+            const board = document.getElementById("memBoard");
+            shuffled.forEach((icon) => {
+                const card = document.createElement("div");
+                card.className = "memory-card";
+                card.dataset.icon = icon;
+                card.innerText = "❓";
+                card.onclick = () => flipCard(card);
+                board.appendChild(card);
+            });
+        }
+        function flipCard(card) {
+            if (flippedCards.length < 2 && !card.classList.contains("flipped")) {
+                card.classList.add("flipped");
+                card.innerText = card.dataset.icon;
+                flippedCards.push(card);
+                if (flippedCards.length === 2) {
+                    if (flippedCards[0].dataset.icon === flippedCards[1].dataset.icon) {
+                        matchedCount += 2;
+                        flippedCards = [];
+                        if (matchedCount === icons.length) {
+                            setTimeout(() => { alert("🌟 ممتاز! أكملت المطابقة بنجاح وحصلت على 15 نقطة!"); addPoints(15); closeGameArea(); }, 300);
+                        }
+                    } else {
+                        setTimeout(() => {
+                            flippedCards.forEach(c => { c.classList.remove("flipped"); c.innerText = "❓"; });
+                            flippedCards = [];
+                        }, 700);
+                    }
+                }
+            }
+        }
+
+        /* 3. لعبة الرياضيات */
+        let mathCount = 0, currentAns = 0;
+        function startMathGame() {
+            openGameArea("⚡ تحدي الحساب السريع");
+            mathCount = 0;
+            nextMathQuestion();
+        }
+        function nextMathQuestion() {
+            if (mathCount >= 5) {
+                alert("🏆 أحسنت! الإجابة عن 5 مسائل بنجاح منحك 25 نقطة!");
+                addPoints(25);
+                closeGameArea();
+                return;
+            }
+            const n1 = Math.floor(Math.random() * 20) + 1;
+            const n2 = Math.floor(Math.random() * 20) + 1;
+            currentAns = n1 + n2;
+            const container = document.getElementById("gameContainer");
+            container.innerHTML = `
+                <div style="background:#1e293b; padding:20px; border-radius:12px; max-width:320px; margin:0 auto;">
+                    <p style="color:#a0aec0;">المسألة (${mathCount + 1} / 5)</p>
+                    <div style="font-size:32px; font-weight:bold; color:#fbbf24; margin-bottom:15px;">${n1} + ${n2} = ?</div>
+                    <input type="number" id="mAns" style="width:100%; padding:10px; text-align:center; font-size:20px; border-radius:8px; border:1px solid #f6ad55; background:#020617; color:#fff; margin-bottom:15px;">
+                    <button style="background:#10b981; color:white; border:none; padding:10px; border-radius:8px; width:100%; font-weight:bold; cursor:pointer;" onclick="checkMathAns()">تحقق ✅</button>
+                </div>
+            `;
+        }
+        function checkMathAns() {
+            if (parseInt(document.getElementById("mAns").value) === currentAns) {
+                mathCount++;
+                nextMathQuestion();
+            } else { alert("❌ إجابة خاطئة! حاول مجدداً."); }
+        }
+
+        /* 4. لعبة سرعة البديهة والهدف */
+        let clickScore = 0;
+        function startClickerGame() {
+            openGameArea("🎯 تحدي سرعة البديهة واسقاط الأهداف");
+            clickScore = 0;
+            const container = document.getElementById("gameContainer");
+            container.innerHTML = `
+                <p style="color:#a0aec0;">اضغط على الهدف الأحمر 8 مرات قبل انتهاء التحدي لجمع 15 نقطة!</p>
+                <div style="font-size:20px; font-weight:bold; color:#fbbf24;" id="cScore">النقاط: 0 / 8</div>
+                <div class="clicker-box" id="cBox">
+                    <div class="target-ball" id="tBall" onclick="hitTarget()">🎯</div>
+                </div>
+            `;
+            moveTargetBall();
+        }
+        function moveTargetBall() {
+            const ball = document.getElementById("tBall");
+            if (!ball) return;
+            const x = Math.floor(Math.random() * 210);
+            const y = Math.floor(Math.random() * 210);
+            ball.style.left = x + "px";
+            ball.style.top = y + "px";
+        }
+        function hitTarget() {
+            clickScore++;
+            document.getElementById("cScore").innerText = `النقاط: ${clickScore} / 8`;
+            if (clickScore >= 8) {
+                alert("🎯 دقة وسرعة فائقة! حصلت على 15 نقطة!");
+                addPoints(15);
+                closeGameArea();
+            } else {
+                moveTargetBall();
+            }
+        }
+
+        /* 5. لعبة تخمين الكلمة التعليمية */
+        const wordsList = [
+            { w: "منصة", hint: "مكان الدراسة الرقمي التفاعلي" },
+            { w: "الوادي", hint: "اسم المنصة التعليمية المباركة" },
+            { w: "حاسوب", hint: "جهاز برمجة وتقنية المعلومات" }
+        ];
+        let currentWordObj;
+        function startWordGuessGame() {
+            openGameArea("🔤 لعبة تخمين الكلمة التعليمية");
+            currentWordObj = wordsList[Math.floor(Math.random() * wordsList.length)];
+            const container = document.getElementById("gameContainer");
+            container.innerHTML = `
+                <div style="background:#1e293b; padding:20px; border-radius:12px; max-width:350px; margin:0 auto;">
+                    <p style="color:#fbbf24; font-weight:bold;">التلميح: ${currentWordObj.hint}</p>
+                    <input type="text" id="wInput" placeholder="خمن الكلمة..." style="width:100%; padding:10px; font-size:18px; text-align:center; border-radius:8px; border:1px solid #f6ad55; background:#020617; color:#fff; margin-bottom:15px;">
+                    <button style="background:#10b981; color:white; border:none; padding:10px; border-radius:8px; width:100%; font-weight:bold; cursor:pointer;" onclick="checkWordGuess()">تأكيد الكلمة 💡</button>
+                </div>
+            `;
+        }
+        function checkWordGuess() {
+            const val = document.getElementById("wInput").value.trim();
+            if (val === currentWordObj.w) {
+                alert("💡 إجابة ذكية وصحيحة! حصلت على 15 نقطة!");
+                addPoints(15);
+                closeGameArea();
+            } else {
+                alert("❌ حاول مرة أخرى!");
+            }
+        }
+
+        /* 6. لعبة المتاهة التفاعلية */
+        function startMazeGame() {
+            openGameArea("🌀 متاهة التفكير والهروب");
+            const container = document.getElementById("gameContainer");
+            container.innerHTML = `
+                <p style="color:#a0aec0;">وجه الكرة 🔴 نحو الهدف 🏁 باستخدام الأزرار للهروب كلياً!</p>
+                <div style="display:grid; grid-template-columns:repeat(3, 60px); grid-gap:5px; justify-content:center; margin:15px auto;">
+                    <div style="border:1px solid #334155; height:60px; display:flex; align-items:center; justify-content:center;" id="m1">🔴</div>
+                    <div style="border:1px solid #334155; height:60px; background:#1e293b;" id="m2"></div>
+                    <div style="border:1px solid #334155; height:60px; background:#1e293b;" id="m3"></div>
+                    <div style="border:1px solid #334155; height:60px; background:#1e293b;" id="m4"></div>
+                    <div style="border:1px solid #334155; height:60px; background:#1e293b;" id="m5"></div>
+                    <div style="border:1px solid #334155; height:60px; display:flex; align-items:center; justify-content:center;" id="m6">🏁</div>
+                </div>
+                <button style="background:#d97706; color:white; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="stepMaze()">تحريك خطوة للأمام 🏃</button>
+            `;
+        }
+        let mazeStep = 1;
+        function stepMaze() {
+            document.getElementById(`m${mazeStep}`).innerText = "";
+            mazeStep++;
+            if (mazeStep <= 6) {
+                document.getElementById(`m${mazeStep}`).innerText = "🔴";
+            }
+            if (mazeStep === 6) {
+                setTimeout(() => {
+                    alert("🏆 وصلت إلى نهاية المتاهة بنجاح وحصلت على 20 نقطة!");
+                    addPoints(20);
+                    closeGameArea();
+                }, 200);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initUserInfo();
+        });
+    </script>
+</body>
+</html>
