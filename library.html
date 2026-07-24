@@ -23,10 +23,15 @@
         .main-content { margin-right: 0; padding: 20px; transition: 0.4s; max-width: 1250px; margin: 0 auto; width: 100%; flex: 1; }
         @media (min-width: 768px) { .main-content { padding: 40px; } }
         
-        .page-header { background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff; padding: 30px 20px; border-radius: 20px; margin-bottom: 30px; text-align: center; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.15); }
+        .page-header { background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff; padding: 30px 20px; border-radius: 20px; margin-bottom: 20px; text-align: center; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.15); }
         .page-header h1 { margin: 0 0 10px 0; font-size: 28px; font-weight: 800; }
         .page-header p { margin: 0; opacity: 0.9; font-size: 15px; }
         
+        /* شريط التبديل السريع */
+        .role-switcher-bar { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        .role-btn { background: #0284c7; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 13px; }
+        .role-btn:hover { background: #0369a1; }
+
         /* لوحة تحكم المعلم والإدارة */
         .admin-controls { background: #ffffff; border: 2px dashed #0284c7; border-radius: 18px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.08); display: none; }
         .admin-title { font-size: 18px; font-weight: 700; color: #0369a1; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; }
@@ -57,7 +62,6 @@
         .book-cover-icon { font-size: 55px; color: #0284c7; filter: drop-shadow(0 4px 6px rgba(2, 132, 199, 0.15)); }
         .book-badge { position: absolute; top: 10px; right: 10px; background: #ffffff; border: 1px solid #bae6fd; color: #0369a1; padding: 3px 10px; border-radius: 15px; font-size: 11px; font-weight: bold; }
         
-        /* زر المفضلة */
         .fav-btn { position: absolute; top: 10px; left: 10px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; color: #cbd5e1; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
         .fav-btn.active, .fav-btn:hover { color: #f59e0b; border-color: #fbf0b2; background: #fffdf0; }
         
@@ -77,7 +81,6 @@
         .btn-delete { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 10px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
         .btn-delete:hover { background: #dc2626; color: white; }
 
-        /* Modal النافذة المنبثقة للمعاينة */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; }
         .modal-box { background: #ffffff; border-radius: 20px; width: 90%; max-width: 900px; height: 85vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
         .modal-header { padding: 15px 20px; background: #0284c7; color: white; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
@@ -110,6 +113,14 @@
         <div class="page-header">
             <h1>📚 كتب المرحلة الابتدائية الشاملة</h1>
             <p>جميع المناهج والكتب المعتمدة مقسمة بحسب الصفوف الدراسية من الأول وحتى السادس الابتدائي</p>
+        </div>
+
+        <!-- شريط التحكم الفوري بالصلاحية للتجربة والتحكم -->
+        <div class="role-switcher-bar">
+            <div>
+                <strong id="roleStatusText">حالة الحساب الحالية: جاري التحقق...</strong>
+            </div>
+            <button onclick="forceEnableAdmin()" class="role-btn"><i class="fa-solid fa-user-gear"></i> تفعيل وضع المدير/المعلم فوراً</button>
         </div>
 
         <!-- لوحة التحكم خاصة بالمعلم والإدارة فقط -->
@@ -219,7 +230,17 @@
         let activeGrade = "all";
         let isAuthorizedUser = false;
 
-        // التحقق الذكي والموسع من صلاحيات الإدارة والمعلم
+        // دالة التفعيل الفوري لصلاحية المدير
+        function forceEnableAdmin() {
+            const userObj = { name: "المدير", role: "admin" };
+            localStorage.setItem("currentUser", JSON.stringify(userObj));
+            localStorage.setItem("userRole", "admin");
+            checkPermissions();
+            renderLibrary();
+            alert("تم إعطاؤك صلاحيات المدير بنجاح، وستظهر أزرار التعديل والحذف الآن!");
+        }
+
+        // فحص الصلاحية الشامل
         function checkPermissions() {
             let role = "";
             try {
@@ -237,21 +258,23 @@
 
             role = role.toString().trim().toLowerCase();
 
-            // القائمة الشاملة لجميع التسميات المحتملة لدور المدير أو المعلم
             const allowedRoles = ["admin", "teacher", "مدير", "معلم", "أدمن", "مدير النظام", "المعلم"];
 
+            const statusEl = document.getElementById("roleStatusText");
             if (allowedRoles.includes(role)) {
                 isAuthorizedUser = true;
+                if (statusEl) statusEl.innerHTML = `حالة الحساب: <span style="color: #16a34a;">مدير / معلم (الصلاحيات مفعّلة)</span>`;
                 const adminBox = document.getElementById("adminControls");
                 if (adminBox) adminBox.style.display = "block";
             } else {
                 isAuthorizedUser = false;
+                if (statusEl) statusEl.innerHTML = `حالة الحساب: <span style="color: #dc2626;">طالب / زائر (الصلاحيات معطلة)</span>`;
                 const adminBox = document.getElementById("adminControls");
                 if (adminBox) adminBox.style.display = "none";
             }
         }
 
-        // بناء وعرض الكتب
+        // عرض الكتب
         function renderLibrary() {
             const container = document.getElementById("sectionsContainer");
             const searchVal = document.getElementById("searchInput").value.toLowerCase();
@@ -283,10 +306,14 @@
                         const isFav = favoriteIds.includes(book.id) ? "active" : "";
                         const downloadsCount = book.downloads || 0;
 
-                        // توليد أزرار التعديل والحذف فقط في حال ثبوت صلاحية المستخدم
-                        let adminActionsHtml = isAuthorizedUser ? 
-                            `<button onclick="editBook(${book.id})" class="btn-edit" title="تعديل"><i class="fa-solid fa-pen"></i></button>
-                             <button onclick="deleteBook(${book.id})" class="btn-delete" title="حذف"><i class="fa-solid fa-trash"></i></button>` : '';
+                        // توليد الأزرار بناءً على الصلاحية
+                        let adminActionsHtml = '';
+                        if (isAuthorizedUser) {
+                            adminActionsHtml = `
+                                <button onclick="editBook(${book.id})" class="btn-edit" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                                <button onclick="deleteBook(${book.id})" class="btn-delete" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                            `;
+                        }
 
                         booksHtml += `
                             <div class="book-card" data-id="${book.id}">
@@ -331,7 +358,6 @@
             }
         }
 
-        // إدارة المفضلة
         function toggleFav(bookId, btn) {
             if (favoriteIds.includes(bookId)) {
                 favoriteIds = favoriteIds.filter(id => id !== bookId);
@@ -344,7 +370,6 @@
             if (activeGrade === "fav") renderLibrary();
         }
 
-        // اختيار ملف محلي من جهاز الكمبيوتر أو الهاتف
         function handleFileSelect(input) {
             if (input.files && input.files[0]) {
                 const file = input.files[0];
@@ -354,7 +379,6 @@
             }
         }
 
-        // إضافة كتاب جديد
         function addNewBook(e) {
             e.preventDefault();
             if (!isAuthorizedUser) return alert("عذراً، هذه الصلاحية للمعلّمين والإدارة فقط!");
@@ -385,7 +409,6 @@
             }
         }
 
-        // تعديل عنوان كتاب
         function editBook(bookId) {
             if (!isAuthorizedUser) return;
             primaryData.forEach(gradeGroup => {
@@ -401,7 +424,6 @@
             });
         }
 
-        // حذف كتاب
         function deleteBook(bookId) {
             if (!isAuthorizedUser) return;
             if (confirm("هل أنت متأكد من حذف هذا الكتاب؟")) {
@@ -413,7 +435,6 @@
             }
         }
 
-        // تتبع عدد التحميلات
         function trackDownload(bookId) {
             primaryData.forEach(gradeGroup => {
                 const book = gradeGroup.books.find(b => b.id === bookId);
@@ -426,7 +447,6 @@
             localStorage.setItem("libraryData", JSON.stringify(primaryData));
         }
 
-        // فتح وإغلاق معاينة الـ PDF
         function openPreviewModal(url, title) {
             document.getElementById("modalBookTitle").innerText = title;
             document.getElementById("pdfPreviewFrame").src = url;
