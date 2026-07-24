@@ -172,7 +172,7 @@
 
     <footer>جميع الحقوق محفوظة © منصة الوادي التعليمية 2026</footer>
 
-    <!-- ربط الملف الخارجي الرئيسي scriot.js وتضمين أحدث الميزات -->
+    <!-- ربط الملف الخارجي الرئيسي scriot.js -->
     <script src="scriot.js"></script>
     <script>
         const initialPrimaryData = [
@@ -219,12 +219,28 @@
         let activeGrade = "all";
         let isAuthorizedUser = false;
 
-        // التحقق من صلاحيات المدير والمعلم
+        // التحقق الذكي والموسع من صلاحيات الإدارة والمعلم
         function checkPermissions() {
-            const storedUser = JSON.parse(localStorage.getItem("currentUser")) || {};
-            const storedRole = (storedUser.role || localStorage.getItem("userRole") || "").toLowerCase();
+            let role = "";
+            try {
+                const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+                if (storedUser && storedUser.role) {
+                    role = storedUser.role;
+                }
+            } catch(e) {
+                role = localStorage.getItem("currentUser") || "";
+            }
 
-            if (["admin", "teacher", "مدير", "معلم", "أدمن"].includes(storedRole)) {
+            if (!role) {
+                role = localStorage.getItem("userRole") || "";
+            }
+
+            role = role.toString().trim().toLowerCase();
+
+            // القائمة الشاملة لجميع التسميات المحتملة لدور المدير أو المعلم
+            const allowedRoles = ["admin", "teacher", "مدير", "معلم", "أدمن", "مدير النظام", "المعلم"];
+
+            if (allowedRoles.includes(role)) {
                 isAuthorizedUser = true;
                 const adminBox = document.getElementById("adminControls");
                 if (adminBox) adminBox.style.display = "block";
@@ -267,6 +283,7 @@
                         const isFav = favoriteIds.includes(book.id) ? "active" : "";
                         const downloadsCount = book.downloads || 0;
 
+                        // توليد أزرار التعديل والحذف فقط في حال ثبوت صلاحية المستخدم
                         let adminActionsHtml = isAuthorizedUser ? 
                             `<button onclick="editBook(${book.id})" class="btn-edit" title="تعديل"><i class="fa-solid fa-pen"></i></button>
                              <button onclick="deleteBook(${book.id})" class="btn-delete" title="حذف"><i class="fa-solid fa-trash"></i></button>` : '';
@@ -327,7 +344,7 @@
             if (activeGrade === "fav") renderLibrary();
         }
 
-        // معالجة اختيار ملف محلي
+        // اختيار ملف محلي من جهاز الكمبيوتر أو الهاتف
         function handleFileSelect(input) {
             if (input.files && input.files[0]) {
                 const file = input.files[0];
