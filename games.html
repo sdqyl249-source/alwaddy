@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Al-Waddy Platform - Easy Games Arcade</title>
+    <title>Easy Games Arcade - Al-Waddy Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -14,6 +14,8 @@
             --accent-purple: #c084fc;
             --accent-amber: #fbbf24;
             --accent-rose: #fb7185;
+            --accent-indigo: #818cf8;
+            --accent-teal: #2dd4bf;
             --text-main: #f8fafc;
             --text-sub: #94a3b8;
         }
@@ -105,23 +107,23 @@
     <div class="header-nav">
         <div class="header-title">
             <i class="fa-solid fa-gamepad"></i>
-            <span>Kids Easy Games / ألعاب سهلة للأطفال</span>
+            <span>Easy Kids Games Arcade (7 Games)</span>
         </div>
-        <a href="index.html" class="btn-home"><i class="fa-solid fa-house"></i> Home / الرئيسية</a>
+        <a href="index.html" class="btn-home"><i class="fa-solid fa-house"></i> Home</a>
     </div>
 
     <div class="main-container">
         <div class="games-grid">
             
-            <!-- Game 1: Easy Math -->
+            <!-- Game 1: Easy Addition -->
             <div class="game-card">
                 <span class="game-badge badge-easy">Level: Easy</span>
                 <div>
                     <div class="game-icon" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-blue);"><i class="fa-solid fa-calculator"></i></div>
-                    <div class="game-title">Easy Math (1+1) / رياضيات سهلة</div>
-                    <div class="game-desc">Simple counting and numbers for grade 1. / أرقام وعد بسيط جداً.</div>
+                    <div class="game-title">Simple Math Addition</div>
+                    <div class="game-desc">Fun and simple counting and addition games for beginners.</div>
                 </div>
-                <button class="btn-play" onclick="openGame('https://wordwall.net/embed/31034407')"><i class="fa-solid fa-play"></i> Play Now / العب</button>
+                <button class="btn-play" onclick="openGame('https://wordwall.net/embed/418f4a1fa3914a1a9e7019e1b20ed20c')"><i class="fa-solid fa-play"></i> Play Now</button>
             </div>
 
             <!-- Game 2: Animal Matching -->
@@ -129,21 +131,65 @@
                 <span class="game-badge badge-easy">Level: Easy</span>
                 <div>
                     <div class="game-icon" style="background: rgba(52, 211, 153, 0.15); color: var(--accent-green);"><i class="fa-solid fa-paw"></i></div>
-                    <div class="game-title">Animal Matching / مطابقة الحيوانات</div>
-                    <div class="game-desc">Match pictures and names easily. / طابق الصور بسهولة.</div>
+                    <div class="game-title">Animal Quiz & Match</div>
+                    <div class="game-desc">Easy animal recognition and picture matching.</div>
                 </div>
-                <button class="btn-play" onclick="openGame('https://wordwall.net/embed/2813583')"><i class="fa-solid fa-play"></i> Play Now / العب</button>
+                <button class="btn-play" onclick="openGame('https://wordwall.net/embed/3e20e93e2b204e389e78280fbebc71c3')"><i class="fa-solid fa-play"></i> Play Now</button>
             </div>
 
-            <!-- Game 3: Easy Memory Game -->
+            <!-- Game 3: Memory Shapes -->
             <div class="game-card">
                 <span class="game-badge badge-easy">Level: Easy</span>
                 <div>
                     <div class="game-icon" style="background: rgba(251, 113, 133, 0.15); color: var(--accent-rose);"><i class="fa-solid fa-puzzle-piece"></i></div>
-                    <div class="game-title">Memory Cards / ذاكرة الأشكال</div>
-                    <div class="game-desc">Fun memory card matching for kids. / مطابقة الكروت والصور.</div>
+                    <div class="game-title">Memory Card Match</div>
+                    <div class="game-desc">Visual picture card matching game for memory training.</div>
                 </div>
-                <button class="btn-play" onclick="openGame('https://wordwall.net/embed/4ef7956417754b5f90a9b40f28e2118f')"><i class="fa-solid fa-play"></i> Play Now / العب</button>
+                <button class="btn-play" onclick="openGame('https://wordwall.net/embed/4ef7956417754b5f90a9b40f28e2118f')"><i class="fa-solid fa-play"></i> Play Now</button>
+            </div>
+
+            <!-- Game 4: Science - Solar System -->
+            <div class="game-card">
+                <span class="game-badge badge-easy">Level: Easy</span>
+                <div>
+                    <div class="game-icon" style="background: rgba(192, 132, 252, 0.15); color: var(--accent-purple);"><i class="fa-solid fa-planet-ring"></i></div>
+                    <div class="game-title">Solar System & Planets</div>
+                    <div class="game-desc">Simple visual science game about space and planets.</div>
+                </div>
+                <button class="btn-play" onclick="openGame('https://wordwall.net/embed/11882833')"><i class="fa-solid fa-play"></i> Play Now</button>
+            </div>
+
+            <!-- Game 5: Colors & Shapes -->
+            <div class="game-card">
+                <span class="game-badge badge-easy">Level: Easy</span>
+                <div>
+                    <div class="game-icon" style="background: rgba(251, 191, 36, 0.15); color: var(--accent-amber);"><i class="fa-solid fa-shapes"></i></div>
+                    <div class="game-title">Colors & Shapes Sorting</div>
+                    <div class="game-desc">Identify and match colorful shapes and patterns easily.</div>
+                </div>
+                <button class="btn-play" onclick="openGame('https://wordwall.net/embed/2070081')"><i class="fa-solid fa-play"></i> Play Now</button>
+            </div>
+
+            <!-- Game 6: Body Parts Science -->
+            <div class="game-card">
+                <span class="game-badge badge-easy">Level: Easy</span>
+                <div>
+                    <div class="game-icon" style="background: rgba(45, 212, 191, 0.15); color: var(--accent-teal);"><i class="fa-solid fa-child"></i></div>
+                    <div class="game-title">Human Body Parts</div>
+                    <div class="game-desc">Visual biology game for discovering human body parts.</div>
+                </div>
+                <button class="btn-play" onclick="openGame('https://wordwall.net/embed/3120155')"><i class="fa-solid fa-play"></i> Play Now</button>
+            </div>
+
+            <!-- Game 7: Brain Maze & Logic -->
+            <div class="game-card">
+                <span class="game-badge badge-easy">Level: Easy</span>
+                <div>
+                    <div class="game-icon" style="background: rgba(129, 140, 248, 0.15); color: var(--accent-indigo);"><i class="fa-solid fa-brain"></i></div>
+                    <div class="game-title">Logic & Maze Challenge</div>
+                    <div class="game-desc">Fun brain teasing logic game and maze puzzles.</div>
+                </div>
+                <button class="btn-play" onclick="openGame('https://wordwall.net/embed/8470356')"><i class="fa-solid fa-play"></i> Play Now</button>
             </div>
 
         </div>
@@ -152,7 +198,7 @@
     <div class="player-modal" id="playerModal">
         <div class="player-header">
             <span style="font-weight: bold; color: var(--accent-amber);"><i class="fa-solid fa-gamepad"></i> Playing Game...</span>
-            <button class="btn-close-player" onclick="closeGame()"><i class="fa-solid fa-xmark"></i> Close / إغلاق</button>
+            <button class="btn-close-player" onclick="closeGame()"><i class="fa-solid fa-xmark"></i> Close</button>
         </div>
         <div class="iframe-container">
             <iframe id="gameIframe" src="" allowfullscreen></iframe>
