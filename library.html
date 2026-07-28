@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة الوادي التعليمية - مكتبة المرحلة الابتدائية</title>
     
-    <!-- ⬇️ كود إعلانات Adsterra الخاص بك ⬇️ -->
+    <!-- ⬇️ كود إعلانات Adsterra -->
     <script src="https://pl30567680.effectivecpmnetwork.com/0c/63/61/0c63614dfd4b8d6396d805d790b93258.js"></script>
 
     <!-- مكتبة الأيقونات Font Awesome -->
@@ -73,7 +73,7 @@
         .filter-btn { background-color: var(--bg-surface); border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 18px; font-size: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
         .filter-btn.active, .filter-btn:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
 
-        /* 🎨 شبكة الكتب والبطاقات الصغيرة التفاعلية والملونة */
+        /* شبكة الكتب */
         .books-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
@@ -93,13 +93,11 @@
             position: relative;
         }
 
-        /* تفاعل البطاقة عند التمرير عليها */
         .book-card:hover { 
             transform: translateY(-6px) scale(1.02); 
             box-shadow: var(--shadow-hover);
         }
 
-        /* ترويسة ملونة لكل صف دراسي */
         .book-thumbnail { 
             height: 90px; 
             display: flex; 
@@ -111,7 +109,6 @@
             transition: all 0.3s ease;
         }
 
-        /* ألوان متدرجة تفاعلية حسب الصف */
         .book-card[data-category="first"] .book-thumbnail { background: linear-gradient(135deg, #ff7e5f, #feb47b); }
         .book-card[data-category="second"] .book-thumbnail { background: linear-gradient(135deg, #11998e, #38ef7d); }
         .book-card[data-category="third"] .book-thumbnail { background: linear-gradient(135deg, #fc4a1a, #f7b733); }
@@ -149,7 +146,6 @@
             text-align: center;
         }
         
-        /* زر التحميل الملون المصغر */
         .btn-download-direct { 
             display: flex; 
             align-items: center; 
@@ -193,7 +189,6 @@
 </head>
 <body>
 
-    <!-- الهيدر والعودة للمنصة -->
     <header>
         <div class="container header-wrapper">
             <a href="#" class="brand-logo">
@@ -208,7 +203,6 @@
 
     <main class="container">
 
-        <!-- 🛡️ لوحة إضافة كتب جديدة مع التخزين الثابت -->
         <section class="admin-panel">
             <div class="admin-title">
                 <i class="fa-solid fa-user-shield"></i> إضافة كتاب جديد من الجهاز (حفظ دائم)
@@ -239,31 +233,29 @@
             </form>
         </section>
 
-        <!-- البحث والمرحلة الابتدائية -->
         <section class="hero-section">
             <h2>مناهج المرحلة الابتدائية</h2>
             <p>بطاقات تفاعلية وسريعة لتحميل الكتب فوراً</p>
-            <input type="text" id="searchInput" onkeyup="filterBooks()" class="search-input" placeholder="ابحث عن اسم الكتاب...">
+            <input type="text" id="searchInput" oninput="applyFilters()" class="search-input" placeholder="ابحث عن اسم الكتاب...">
         </section>
 
-        <!-- فلترة الصفوف -->
         <div class="categories-filter">
-            <button class="filter-btn active" onclick="filterCategory('all', event)">الكل</button>
-            <button class="filter-btn" onclick="filterCategory('first', event)">الأول</button>
-            <button class="filter-btn" onclick="filterCategory('second', event)">الثاني</button>
-            <button class="filter-btn" onclick="filterCategory('third', event)">الثالث</button>
-            <button class="filter-btn" onclick="filterCategory('fourth', event)">الرابع</button>
-            <button class="filter-btn" onclick="filterCategory('fifth', event)">الخامس</button>
-            <button class="filter-btn" onclick="filterCategory('sixth', event)">السادس</button>
+            <button class="filter-btn active" onclick="setCategory('all', event)">الكل</button>
+            <button class="filter-btn" onclick="setCategory('first', event)">الأول</button>
+            <button class="filter-btn" onclick="setCategory('second', event)">الثاني</button>
+            <button class="filter-btn" onclick="setCategory('third', event)">الثالث</button>
+            <button class="filter-btn" onclick="setCategory('fourth', event)">الرابع</button>
+            <button class="filter-btn" onclick="setCategory('fifth', event)">الخامس</button>
+            <button class="filter-btn" onclick="setCategory('sixth', event)">السادس</button>
         </div>
 
-        <!-- شبكة عرض الكتب الصغيرة الملونة والتفاعلية -->
         <div class="books-grid" id="booksContainer"></div>
 
     </main>
 
     <script>
         const STORAGE_KEY = 'alwaddy_primary_books';
+        let currentCategory = 'all';
 
         const classNames = {
             'first': 'الأول الابتدائي',
@@ -291,11 +283,28 @@
         }
 
         function loadSavedBooks() {
+            renderBooks();
+        }
+
+        function renderBooks() {
             const books = getStoredBooks();
             const container = document.getElementById('booksContainer');
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+            
             container.innerHTML = '';
 
-            books.forEach(book => {
+            const filteredBooks = books.filter(book => {
+                const matchesCategory = (currentCategory === 'all' || book.category === currentCategory);
+                const matchesSearch = book.title.toLowerCase().includes(searchQuery);
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filteredBooks.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">لا توجد كتب مطابقة للبحث.</p>`;
+                return;
+            }
+
+            filteredBooks.forEach(book => {
                 const bookCard = document.createElement('div');
                 bookCard.className = 'book-card';
                 bookCard.setAttribute('data-category', book.category);
@@ -307,7 +316,7 @@
                     </div>
                     <div class="book-content">
                         <h3 class="book-title">${book.title}</h3>
-                        <a href="${book.fileData}" download="${book.title}.pdf" class="btn-download-direct">
+                        <a href="${book.fileData}" ${book.fileData !== '#' ? `download="${book.title}.pdf"` : ''} class="btn-download-direct">
                             <i class="fa-solid fa-download"></i> تحميل
                         </a>
                         ${book.isUserAdded ? `<button onclick="deleteBook(${book.id})" class="btn-delete"><i class="fa-solid fa-trash"></i> حذف</button>` : ''}
@@ -320,7 +329,7 @@
         function uploadBookFromDevice(event) {
             event.preventDefault();
 
-            const title = document.getElementById('bookTitleInput').value;
+            const title = document.getElementById('bookTitleInput').value.trim();
             const category = document.getElementById('bookClassSelect').value;
             const fileInput = document.getElementById('pdfFileInput');
 
@@ -330,6 +339,13 @@
             }
 
             const file = fileInput.files[0];
+            
+            // تنبيه الحجم لتجنب امتلاء LocalStorage
+            if (file.size > 3 * 1024 * 1024) { 
+                alert("حجم الملف كبير جداً للتخزين المحلي. يرجى اختيار ملف بحجم أقل من 3 ميغابايت.");
+                return;
+            }
+
             const reader = new FileReader();
 
             reader.onload = function(e) {
@@ -347,11 +363,11 @@
 
                 try {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(currentBooks));
-                    loadSavedBooks();
+                    renderBooks();
                     document.getElementById('addBookForm').reset();
-                    alert("تم حفظ الكتاب بنجاح وبشكل دائم!");
+                    alert("تم حفظ الكتاب بنجاح!");
                 } catch (err) {
-                    alert("حجم الملف كبير جداً. يرجى رفع ملف بحجم أقل من 5 ميغابايت.");
+                    alert("تعذر الحفظ: مساحة التخزين المحلية ممتلئة. حاول حذف بعض الكتب القديمة.");
                 }
             };
 
@@ -359,38 +375,24 @@
         }
 
         function deleteBook(bookId) {
-            if (confirm("هل أنت تأكد من رغبتك في حذف هذا الكتاب؟")) {
+            if (confirm("هل أنت متأكد من رغبتك في حذف هذا الكتاب؟")) {
                 let currentBooks = getStoredBooks();
                 currentBooks = currentBooks.filter(b => b.id !== bookId);
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(currentBooks));
-                loadSavedBooks();
+                renderBooks();
             }
         }
 
-        function filterBooks() {
-            const input = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.getElementsByClassName('book-card');
-
-            for (let card of cards) {
-                const title = card.querySelector('.book-title').innerText.toLowerCase();
-                card.style.display = title.includes(input) ? "flex" : "none";
-            }
-        }
-
-        function filterCategory(category, event) {
-            const cards = document.getElementsByClassName('book-card');
+        function setCategory(category, event) {
+            currentCategory = category;
             const buttons = document.getElementsByClassName('filter-btn');
-
             for (let btn of buttons) btn.classList.remove('active');
             if (event) event.target.classList.add('active');
+            renderBooks();
+        }
 
-            for (let card of cards) {
-                if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.style.display = "flex";
-                } else {
-                    card.style.display = "none";
-                }
-            }
+        function applyFilters() {
+            renderBooks();
         }
     </script>
 </body>
