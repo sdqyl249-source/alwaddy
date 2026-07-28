@@ -3,463 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة المكتبة الرقمية التعليمية - جميع المناهج والكتب الدراسية</title>
+    <title>منصة المكتبة الرقمية - المرحلة الابتدائية</title>
     
-    <!-- ========================================================= -->
-    <!-- ⬇️ كود إعلانات Adsterra المباشر الخاص بحسابك (تمت إضافته بالكامل) ⬇️ -->
-    <!-- ========================================================= -->
+    <!-- ⬇️ كود إعلانات Adsterra المباشر الخاص بك ⬇️ -->
     <script src="https://pl30567680.effectivecpmnetwork.com/0c/63/61/0c63614dfd4b8d6396d805d790b93258.js"></script>
-    <!-- ========================================================= -->
 
-    <!-- مكتبة الأيقونات العالمية Font Awesome -->
+    <!-- مكتبة الأيقونات Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- تنسيقات الصفحة الشاملة (CSS) -->
     <style>
-        /* المتغيرات الأساسية للألوان والتصميم */
         :root {
             --primary-color: #0284c7;
             --primary-hover: #0369a1;
-            --secondary-color: #0f172a;
-            --accent-color: #16a34a;
+            --admin-color: #16a34a;
+            --admin-hover: #15803d;
+            --danger-color: #dc2626;
             --bg-body: #f8fafc;
             --bg-surface: #ffffff;
             --text-main: #1e293b;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
+            --radius-md: 12px;
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --transition: all 0.3s ease;
         }
 
-        /* إعادة ضبط جميع العناصر */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); direction: rtl; padding-bottom: 60px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            line-height: 1.6;
-            direction: rtl;
-            padding-bottom: 60px;
-        }
+        /* الهيدر */
+        header { background-color: var(--bg-surface); border-bottom: 1px solid var(--border-color); padding: 16px 0; box-shadow: var(--shadow-sm); }
+        .header-wrapper { display: flex; justify-content: space-between; align-items: center; }
+        .brand-logo { display: flex; align-items: center; gap: 10px; color: var(--primary-color); font-size: 22px; font-weight: 800; text-decoration: none; }
 
-        /* الحاوية الرئيسية لتحديد العرض */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        /* قسم لوحة صلاحيات الإدارة */
+        .admin-panel { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-md); padding: 20px; margin: 25px 0; }
+        .admin-title { font-size: 18px; font-weight: 700; color: #166534; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .admin-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 13px; font-weight: 600; color: #14532d; }
+        .form-control { padding: 10px; border: 1px solid #86efac; border-radius: 8px; font-size: 14px; background: white; outline: none; }
+        .btn-admin { background-color: var(--admin-color); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; grid-column: 1 / -1; }
+        .btn-admin:hover { background-color: var(--admin-hover); }
 
-        /* 1. رأس الصفحة (Header) */
-        header {
-            background-color: var(--bg-surface);
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: var(--shadow-sm);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+        /* البحث والفلترة */
+        .hero-section { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: white; padding: 30px 20px; border-radius: var(--radius-md); margin-bottom: 25px; text-align: center; }
+        .search-input { width: 100%; max-width: 500px; padding: 12px 20px; border-radius: 25px; border: none; outline: none; font-size: 14px; margin-top: 15px; }
 
-        .header-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-        }
+        .categories-filter { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; }
+        .filter-btn { background-color: var(--bg-surface); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; }
+        .filter-btn.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
 
-        .brand-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--primary-color);
-            font-size: 22px;
-            font-weight: 800;
-        }
-
-        .brand-logo i {
-            font-size: 28px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 15px;
-            transition: var(--transition);
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-        }
-
-        /* 2. قسم الترحيب والبحث */
-        .hero-section {
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-            color: white;
-            padding: 40px 20px;
-            border-radius: var(--radius-lg);
-            margin: 30px auto;
-            text-align: center;
-            box-shadow: var(--shadow-md);
-        }
-
-        .hero-title {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
-
-        .hero-subtitle {
-            font-size: 16px;
-            opacity: 0.9;
-            margin-bottom: 25px;
-        }
-
-        .search-box {
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 14px 45px 14px 20px;
-            border-radius: 30px;
-            border: none;
-            font-size: 15px;
-            box-shadow: var(--shadow-md);
-            outline: none;
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 18px;
-        }
-
-        /* 3. أزرار الفئات والفلترة */
-        .categories-filter {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-
-        .filter-btn {
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .filter-btn:hover, .filter-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        /* 4. شبكة عرض الكتب */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-right: 4px solid var(--primary-color);
-            padding-right: 12px;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--secondary-color);
-        }
-
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 25px;
-        }
-
-        .book-card {
-            background-color: var(--bg-surface);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: var(--transition);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .book-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .book-thumbnail {
-            height: 180px;
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-            font-size: 60px;
-            position: relative;
-        }
-
-        .book-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background-color: rgba(2, 132, 199, 0.15);
-            color: var(--primary-color);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .book-content {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .book-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-
-        .book-info {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .book-info span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* زر التحميل المباشر */
-        .btn-download-direct {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            background-color: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            font-weight: 700;
-            font-size: 14px;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-download-direct:hover {
-            background-color: var(--primary-hover);
-        }
-
-        /* 5. الفوتر (Footer) */
-        footer {
-            margin-top: 60px;
-            background-color: var(--bg-surface);
-            border-top: 1px solid var(--border-color);
-            padding: 30px 0;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        /* التجاوب مع الشاشات الصغيرة والهواتف */
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero-title { font-size: 22px; }
-            .books-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
-        }
+        /* شبكة الكتب */
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .book-card { background-color: var(--bg-surface); border-radius: var(--radius-md); border: 1px solid var(--border-color); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-sm); }
+        .book-thumbnail { height: 160px; background: #e0f2fe; display: flex; align-items: center; justify-content: center; color: var(--primary-color); font-size: 50px; position: relative; }
+        .book-badge { position: absolute; top: 10px; right: 10px; background: rgba(2, 132, 199, 0.15); color: var(--primary-color); padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+        .book-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .book-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+        
+        .btn-download-direct { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background-color: var(--primary-color); color: white; text-decoration: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 14px; border: none; cursor: pointer; }
+        .btn-download-direct:hover { background-color: var(--primary-hover); }
+        .btn-delete { background: var(--danger-color); color: white; border: none; padding: 6px; border-radius: 6px; margin-top: 8px; cursor: pointer; font-size: 12px; width: 100%; }
     </style>
 </head>
 <body>
 
-    <!-- الهيدر العلوي -->
     <header>
         <div class="container header-wrapper">
             <a href="#" class="brand-logo">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <span>منصة الوادي التعليمية</span>
+                <i class="fa-solid fa-child-reaching"></i>
+                <span>مكتبة المرحلة الابتدائية</span>
             </a>
-            <ul class="nav-links">
-                <li><a href="#"><i class="fa-solid fa-house"></i> الرئيسية</a></li>
-                <li><a href="#"><i class="fa-solid fa-book"></i> المناهج</a></li>
-                <li><a href="#"><i class="fa-solid fa-circle-info"></i> عن المنصة</a></li>
-            </ul>
         </div>
     </header>
 
-    <!-- المحتوى الرئيسي للمكتبة -->
     <main class="container">
 
-        <!-- القسم الترحيبي مع محرك البحث -->
-        <section class="hero-section">
-            <h1 class="hero-title">المكتبة الرقمية المباشرة</h1>
-            <p class="hero-subtitle">حمّل كافة الكتب والمناهج الدراسية الرسمية بصيغة PDF مجاناً وبأعلى جودة</p>
-            
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="searchInput" onkeyup="filterBooks()" class="search-input" placeholder="ابحث عن اسم الكتاب أو المادة...">
+        <!-- 🛡️ قسم لوحة صلاحيات الإدارة لإضافة كتب من الجهاز -->
+        <section class="admin-panel">
+            <div class="admin-title">
+                <i class="fa-solid fa-user-shield"></i> لوحة الإدارة: إضافة كتاب جديد من الجهاز
             </div>
+            <form id="addBookForm" class="admin-form" onsubmit="uploadBookFromDevice(event)">
+                <div class="form-group">
+                    <label>اسم الكتاب / المادة</label>
+                    <input type="text" id="bookTitleInput" class="form-control" placeholder="مثال: قراءتي للصف الأول" required>
+                </div>
+                <div class="form-group">
+                    <label>الصف الدراسي</label>
+                    <select id="bookClassSelect" class="form-control">
+                        <option value="first">الأول الابتدائي</option>
+                        <option value="second">الثاني الابتدائي</option>
+                        <option value="third">الثالث الابتدائي</option>
+                        <option value="fourth">الرابع الابتدائي</option>
+                        <option value="fifth">الخامس الابتدائي</option>
+                        <option value="sixth">السادس الابتدائي</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>اختر ملف الـ PDF من هاتفك أو حاسوبك</label>
+                    <input type="file" id="pdfFileInput" class="form-control" accept="application/pdf" required>
+                </div>
+                <button type="submit" class="btn-admin">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> رفع الكتاب وإضافته للمكتبة
+                </button>
+            </form>
         </section>
 
-        <!-- أزرار التصنيفات -->
+        <!-- الهيرو والبحث -->
+        <section class="hero-section">
+            <h2>مناهج المرحلة الابتدائية كاملة</h2>
+            <p>اختر صفك الدراسي أو ابحث عن الكتاب لتحميله فوراً</p>
+            <input type="text" id="searchInput" onkeyup="filterBooks()" class="search-input" placeholder="ابحث عن اسم الكتاب...">
+        </section>
+
+        <!-- فلترة الصفوف الابتدائية -->
         <div class="categories-filter">
-            <button class="filter-btn active" onclick="filterCategory('all')">جميع الكتب</button>
-            <button class="filter-btn" onclick="filterCategory('sixth')">السادس إعدادي</button>
-            <button class="filter-btn" onclick="filterCategory('fifth')">الخامس إعدادي</button>
-            <button class="filter-btn" onclick="filterCategory('third')">الثالث متوسط</button>
+            <button class="filter-btn active" onclick="filterCategory('all')">الكل</button>
+            <button class="filter-btn" onclick="filterCategory('first')">الأول الابتدائي</button>
+            <button class="filter-btn" onclick="filterCategory('second')">الثاني الابتدائي</button>
+            <button class="filter-btn" onclick="filterCategory('third')">الثالث الابتدائي</button>
+            <button class="filter-btn" onclick="filterCategory('fourth')">الرابع الابتدائي</button>
+            <button class="filter-btn" onclick="filterCategory('fifth')">الخامس الابتدائي</button>
+            <button class="filter-btn" onclick="filterCategory('sixth')">السادس الابتدائي</button>
         </div>
 
-        <!-- عنوان شبكة عرض الكتب -->
-        <div class="section-header">
-            <h2 class="section-title">الكتب والمناهج المتوفرة للتحميل</h2>
-        </div>
-
-        <!-- شبكة عرض الكتب (Books Grid) -->
+        <!-- شبكة الكتب -->
         <div class="books-grid" id="booksContainer">
+            
+            <!-- كتاب افتراضي 1 -->
+            <div class="book-card" data-category="first">
+                <div class="book-thumbnail">
+                    <span class="book-badge">الأول الابتدائي</span>
+                    <i class="fa-solid fa-book-open-reader"></i>
+                </div>
+                <div class="book-content">
+                    <h3 class="book-title">قراءتي - للصف الأول الابتدائي</h3>
+                    <a href="#" download="قراءتي_الأول_الابتدائي.pdf" class="btn-download-direct">
+                        <i class="fa-solid fa-download"></i> تحميل مباشر
+                    </a>
+                </div>
+            </div>
 
-            <!-- الكتاب الأول -->
+            <!-- كتاب افتراضي 2 -->
             <div class="book-card" data-category="sixth">
                 <div class="book-thumbnail">
-                    <span class="book-badge">السادس إعدادي</span>
-                    <i class="fa-solid fa-file-pdf"></i>
+                    <span class="book-badge">السادس الابتدائي</span>
+                    <i class="fa-solid fa-calculator"></i>
                 </div>
                 <div class="book-content">
-                    <div>
-                        <h3 class="book-title">كتاب الرياضيات - السادس العلمي</h3>
-                        <div class="book-info">
-                            <span><i class="fa-solid fa-file-code"></i> PDF</span>
-                            <span><i class="fa-solid fa-hard-drive"></i> 24 ميغابايت</span>
-                        </div>
-                    </div>
-                    <!-- رابط التحميل المباشر المخصص للطلاب -->
-                    <a href="books/math.pdf" download class="btn-download-direct">
-                        <i class="fa-solid fa-download"></i> تحميل مباشر
-                    </a>
-                </div>
-            </div>
-
-            <!-- الكتاب الثاني -->
-            <div class="book-card" data-category="sixth">
-                <div class="book-thumbnail">
-                    <span class="book-badge">السادس إعدادي</span>
-                    <i class="fa-solid fa-file-pdf"></i>
-                </div>
-                <div class="book-content">
-                    <div>
-                        <h3 class="book-title">كتاب الفيزياء - السادس العلمي</h3>
-                        <div class="book-info">
-                            <span><i class="fa-solid fa-file-code"></i> PDF</span>
-                            <span><i class="fa-solid fa-hard-drive"></i> 18 ميغابايت</span>
-                        </div>
-                    </div>
-                    <a href="books/physics.pdf" download class="btn-download-direct">
-                        <i class="fa-solid fa-download"></i> تحميل مباشر
-                    </a>
-                </div>
-            </div>
-
-            <!-- الكتاب الثالث -->
-            <div class="book-card" data-category="sixth">
-                <div class="book-thumbnail">
-                    <span class="book-badge">السادس إعدادي</span>
-                    <i class="fa-solid fa-file-pdf"></i>
-                </div>
-                <div class="book-content">
-                    <div>
-                        <h3 class="book-title">كتاب الكيمياء - السادس العلمي</h3>
-                        <div class="book-info">
-                            <span><i class="fa-solid fa-file-code"></i> PDF</span>
-                            <span><i class="fa-solid fa-hard-drive"></i> 21 ميغابايت</span>
-                        </div>
-                    </div>
-                    <a href="books/chemistry.pdf" download class="btn-download-direct">
-                        <i class="fa-solid fa-download"></i> تحميل مباشر
-                    </a>
-                </div>
-            </div>
-
-            <!-- الكتاب الرابع -->
-            <div class="book-card" data-category="fifth">
-                <div class="book-thumbnail">
-                    <span class="book-badge">الخامس العلمي</span>
-                    <i class="fa-solid fa-file-pdf"></i>
-                </div>
-                <div class="book-content">
-                    <div>
-                        <h3 class="book-title">كتاب الأحياء - الخامس العلمي</h3>
-                        <div class="book-info">
-                            <span><i class="fa-solid fa-file-code"></i> PDF</span>
-                            <span><i class="fa-solid fa-hard-drive"></i> 15 ميغابايت</span>
-                        </div>
-                    </div>
-                    <a href="books/biology.pdf" download class="btn-download-direct">
-                        <i class="fa-solid fa-download"></i> تحميل مباشر
-                    </a>
-                </div>
-            </div>
-
-            <!-- الكتاب الخامس -->
-            <div class="book-card" data-category="third">
-                <div class="book-thumbnail">
-                    <span class="book-badge">الثالث متوسط</span>
-                    <i class="fa-solid fa-file-pdf"></i>
-                </div>
-                <div class="book-content">
-                    <div>
-                        <h3 class="book-title">كتاب اللغة الإنجليزية - الثالث متوسط</h3>
-                        <div class="book-info">
-                            <span><i class="fa-solid fa-file-code"></i> PDF</span>
-                            <span><i class="fa-solid fa-hard-drive"></i> 30 ميغابايت</span>
-                        </div>
-                    </div>
-                    <a href="books/english.pdf" download class="btn-download-direct">
+                    <h3 class="book-title">الرياضيات - للصف السادس الابتدائي</h3>
+                    <a href="#" download="الرياضيات_السادس_الابتدائي.pdf" class="btn-download-direct">
                         <i class="fa-solid fa-download"></i> تحميل مباشر
                     </a>
                 </div>
@@ -469,42 +165,69 @@
 
     </main>
 
-    <!-- الفوتر والتذييل السفلي -->
-    <footer>
-        <div class="container">
-            <p>جميع الحقوق محفوظة © منصة الوادي التعليمية - تحميل المناهج والكتب مجاناً</p>
-        </div>
-    </footer>
-
-    <!-- سكربتات التحكم والبحث السريع البرمجية (JavaScript) -->
     <script>
-        // وظيفة التصفية بالبحث بالاسم
+        // وظيفة رفع الملف من جهاز الهاتف أو الحاسوب
+        function uploadBookFromDevice(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('bookTitleInput').value;
+            const category = document.getElementById('bookClassSelect').value;
+            const categoryText = document.getElementById('bookClassSelect').options[document.getElementById('bookClassSelect').selectedIndex].text;
+            const fileInput = document.getElementById('pdfFileInput');
+
+            if (fileInput.files.length === 0) {
+                alert("يرجى اختيار ملف PDF من جهازك أولاً!");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const fileUrl = URL.createObjectURL(file); // تحويل الملف المرفوع من الهاتف إلى رابط يعمل مباشرة
+
+            // إنشاء كارت الكتاب الجديد
+            const bookCard = document.createElement('div');
+            bookCard.className = 'book-card';
+            bookCard.setAttribute('data-category', category);
+
+            bookCard.innerHTML = `
+                <div class="book-thumbnail">
+                    <span class="book-badge">${categoryText}</span>
+                    <i class="fa-solid fa-file-pdf"></i>
+                </div>
+                <div class="book-content">
+                    <h3 class="book-title">${title}</h3>
+                    <a href="${fileUrl}" download="${file.name}" class="btn-download-direct">
+                        <i class="fa-solid fa-download"></i> تحميل مباشر
+                    </a>
+                    <button onclick="this.parentElement.parentElement.remove()" class="btn-delete">
+                        <i class="fa-solid fa-trash"></i> حذف الكتاب
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('booksContainer').prepend(bookCard);
+            document.getElementById('addBookForm').reset();
+            alert("تم إضافة الكتاب بنجاح من جهازك!");
+        }
+
+        // البحث
         function filterBooks() {
             const input = document.getElementById('searchInput').value.toLowerCase();
             const cards = document.getElementsByClassName('book-card');
 
-            for (let i = 0; i < cards.length; i++) {
-                const title = cards[i].querySelector('.book-title').innerText.toLowerCase();
-                if (title.includes(input)) {
-                    cards[i].style.display = "flex";
-                } else {
-                    cards[i].style.display = "none";
-                }
+            for (let card of cards) {
+                const title = card.querySelector('.book-title').innerText.toLowerCase();
+                card.style.display = title.includes(input) ? "flex" : "none";
             }
         }
 
-        // وظيفة التصفية حسب الأزرار
+        // الفلترة حسب الصف
         function filterCategory(category) {
             const cards = document.getElementsByClassName('book-card');
             const buttons = document.getElementsByClassName('filter-btn');
 
-            // تحديث حالة الزر النشط
-            for (let btn of buttons) {
-                btn.classList.remove('active');
-            }
+            for (let btn of buttons) btn.classList.remove('active');
             event.target.classList.add('active');
 
-            // إظهار أو إخفاء الكتب بناءً على الفئة
             for (let card of cards) {
                 if (category === 'all' || card.getAttribute('data-category') === category) {
                     card.style.display = "flex";
