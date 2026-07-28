@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منطقة الألعاب التعليمية</title>
+    <title>منصة الوادي - الألعاب التعليمية التفاعلية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -11,108 +11,344 @@
             --card: #1e293b;
             --accent: #38bdf8;
             --green: #34d399;
+            --amber: #fbbf24;
+            --rose: #fb7185;
+            --purple: #c084fc;
             --text: #f8fafc;
+            --sub: #94a3b8;
         }
-        body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
-        .card { background: var(--card); border-radius: 16px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
-        .btn { background: var(--green); color: #000; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
-        .game-box { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-        .close-btn { position: absolute; top: 20px; right: 20px; background: #ef4444; color: #fff; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; }
-        .game-content { background: var(--card); padding: 30px; border-radius: 20px; text-align: center; max-width: 500px; width: 100%; }
-        input { padding: 10px; border-radius: 8px; border: none; font-size: 1.2rem; text-align: center; width: 100px; margin: 10px; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 20px; min-height: 100vh; }
+
+        .header { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 30px auto; background: var(--card); padding: 15px 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
+        .header h1 { font-size: 1.4rem; color: var(--amber); display: flex; align-items: center; gap: 10px; }
+        .btn-home { background: #4f46e5; color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+        .card { background: var(--card); border-radius: 18px; padding: 20px; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+
+        .badge { position: absolute; top: 15px; left: 15px; padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; }
+        .easy { background: rgba(52, 211, 153, 0.2); color: var(--green); }
+        .medium { background: rgba(251, 191, 36, 0.2); color: var(--amber); }
+        .hard { background: rgba(251, 113, 133, 0.2); color: var(--rose); }
+
+        .icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 15px; background: rgba(255,255,255,0.05); }
+        .title { font-size: 1.2rem; margin-bottom: 8px; font-weight: bold; }
+        .desc { font-size: 0.88rem; color: var(--sub); margin-bottom: 20px; line-height: 1.4; }
+
+        .btn-play { background: var(--green); color: #0f172a; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; }
+
+        /* Modal Game Container */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999; align-items: center; justify-content: center; padding: 15px; }
+        .modal-box { background: var(--card); border-radius: 20px; padding: 25px; max-width: 500px; width: 100%; text-align: center; border: 1px solid rgba(255,255,255,0.1); position: relative; }
+        .btn-close { position: absolute; top: 15px; left: 15px; background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        .opt-btn { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 12px; border-radius: 10px; font-size: 1.1rem; cursor: pointer; width: 100%; margin: 6px 0; transition: 0.2s; font-weight: bold; }
+        .opt-btn:hover { background: var(--accent); color: #000; }
+        
+        .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 15px 0; }
+        .mem-card { background: var(--accent); height: 70px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer; color: #000; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h1 style="text-align: center; margin-bottom: 30px;">🎮 الألعاب التعليمية والذكاء</h1>
+    <div class="header">
+        <h1><i class="fa-solid fa-graduation-cap"></i> الألعاب التعليمية التفاعلية للأطفال</h1>
+        <a href="index.html" class="btn-home"><i class="fa-solid fa-house"></i> الرئيسية</a>
+    </div>
 
     <div class="grid">
         <!-- لعبة 1 -->
         <div class="card">
-            <h3>🧮 تحدي الجمع السريع</h3>
-            <p>اختبر سرعة حسابك في الرياضيات!</p>
-            <button class="btn" onclick="startMathGame()">العب الآن</button>
+            <span class="badge easy">مبتدئ - عربي</span>
+            <div>
+                <div class="icon" style="color:var(--green);"><i class="fa-solid fa-font"></i></div>
+                <div class="title">التعرف على الحروف والأشكال</div>
+                <div class="desc">لعبة ممتعة للأطفال لاكتشاف الحرف الأول من الكلمات المصورة.</div>
+            </div>
+            <button class="btn-play" onclick="openGame('letters')">العب الآن</button>
         </div>
 
         <!-- لعبة 2 -->
         <div class="card">
-            <h3>🧠 اختبار الذاكرة بالأرقام</h3>
-            <p>تذكر الرقم واكتبه بسرعة!</p>
-            <button class="btn" onclick="startMemoryGame()">العب الآن</button>
+            <span class="badge easy">مبتدئ - إنجليزي</span>
+            <div>
+                <div class="icon" style="color:var(--accent);"><i class="fa-solid fa-language"></i></div>
+                <div class="title">مفردات الإنجليزية (Vocab)</div>
+                <div class="desc">تعلم أسماء الفواكه والحيوانات باللغة الإنجليزية بطريقة تفاعلية.</div>
+            </div>
+            <button class="btn-play" onclick="openGame('english')">العب الآن</button>
+        </div>
+
+        <!-- لعبة 3 -->
+        <div class="card">
+            <span class="badge medium">متوسط - رياضيات</span>
+            <div>
+                <div class="icon" style="color:var(--amber);"><i class="fa-solid fa-scale-balanced"></i></div>
+                <div class="title">مقارنة الأعداد ( > , < , = )</div>
+                <div class="desc">قارن بين الأرقام واختر رمز المقارنة الصحيح لتقوية التفكير الرياضي.</div>
+            </div>
+            <button class="btn-play" onclick="openGame('compare')">العب الآن</button>
+        </div>
+
+        <!-- لعبة 4 -->
+        <div class="card">
+            <span class="badge medium">متوسط - علوم</span>
+            <div>
+                <div class="icon" style="color:var(--purple);"><i class="fa-solid fa-flask"></i></div>
+                <div class="title">تصنيف الكائنات والعلوم</div>
+                <div class="desc">صنف العناصر المكتشفة هل هي (حيوانات، نباتات، أم جماد).</div>
+            </div>
+            <button class="btn-play" onclick="openGame('science')">العب الآن</button>
+        </div>
+
+        <!-- لعبة 5 -->
+        <div class="card">
+            <span class="badge medium">متوسط - ذاكرة</span>
+            <div>
+                <div class="icon" style="color:var(--rose);"><i class="fa-solid fa-brain"></i></div>
+                <div class="title">مطابقة البطاقات والتركيز</div>
+                <div class="desc">تقوية الذاكرة البصرية عبر البحث عن الصور والبطاقات المتطابقة.</div>
+            </div>
+            <button class="btn-play" onclick="openGame('memory')">العب الآن</button>
+        </div>
+
+        <!-- لعبة 6 -->
+        <div class="card">
+            <span class="badge hard">متقدم - رياضيات</span>
+            <div>
+                <div class="icon" style="color:var(--accent);"><i class="fa-solid fa-calculator"></i></div>
+                <div class="title">تحدي جدول الضرب السريع</div>
+                <div class="desc">اختبر حفظك لجدول الضرب وسرعة إجابتك في مسابقة التحدي.</div>
+            </div>
+            <button class="btn-play" onclick="openGame('multiply')">العب الآن</button>
+        </div>
+
+        <!-- لعبة 7 -->
+        <div class="card">
+            <span class="badge hard">متقدم - لغويات</span>
+            <div>
+                <div class="icon" style="color:var(--amber);"><i class="fa-solid fa-puzzle-piece"></i></div>
+                <div class="title">تفكيك وتجميع الكلمات</div>
+                <div class="desc">إعادة ترتيب الحروف المبعثرة لتكوين الكلمة الصحيحة والمفيدة.</div>
+            </div>
+            <button class="btn-play" onclick="openGame('spelling')">العب الآن</button>
         </div>
     </div>
 
     <!-- نافذة اللعبة -->
-    <div class="game-box" id="gameModal">
-        <button class="close-btn" onclick="closeGame()">إغلاق ✖</button>
-        <div class="game-content" id="gameContainer"></div>
+    <div class="modal" id="gameModal">
+        <div class="modal-box">
+            <button class="btn-close" onclick="closeGame()">إغلاق ✖</button>
+            <div id="gameContainer"></div>
+        </div>
     </div>
 
     <script>
+        const modal = document.getElementById('gameModal');
+        const container = document.getElementById('gameContainer');
+
+        function openGame(type) {
+            modal.style.display = 'flex';
+            if (type === 'letters') initLetters();
+            else if (type === 'english') initEnglish();
+            else if (type === 'compare') initCompare();
+            else if (type === 'science') initScience();
+            else if (type === 'memory') initMemory();
+            else if (type === 'multiply') initMultiply();
+            else if (type === 'spelling') initSpelling();
+        }
+
         function closeGame() {
-            document.getElementById('gameModal').style.style.display = 'none';
-            document.getElementById('gameModal').style.display = 'none';
+            modal.style.display = 'none';
+            container.innerHTML = '';
         }
 
-        // لعبة الرياضيات
-        function startMathGame() {
-            let n1 = Math.floor(Math.random() * 20) + 1;
-            let n2 = Math.floor(Math.random() * 20) + 1;
-            let ans = n1 + n2;
-
-            document.getElementById('gameContainer').innerHTML = `
-                <h2>ما هو حاصل جمع:</h2>
-                <h1 style="color:var(--accent); font-size:3rem;">${n1} + ${n2}</h1>
-                <input type="number" id="userAns" autofocus>
-                <br>
-                <button class="btn" onclick="checkMath(${ans})">إرسال الإجابة</button>
-                <p id="res"></p>
+        /* 1. لعبة الحروف العربية */
+        const letterData = [
+            { char: 'أ', word: 'أسد 🦁', options: ['أسد 🦁', 'بطة 🦆', 'تفاحة 🍎'] },
+            { char: 'ب', word: 'بطة 🦆', options: ['جمل 🐪', 'بطة 🦆', 'أسد 🦁'] },
+            { char: 'ت', word: 'تفاحة 🍎', options: ['تفاحة 🍎', 'ثعلب 🦊', 'باب 🚪'] }
+        ];
+        function initLetters() {
+            let item = letterData[Math.floor(Math.random() * letterData.length)];
+            container.innerHTML = `
+                <h2 style="color:var(--amber);">🔤 ما هي الكلمة التي تبدأ بحرف (${item.char})؟</h2>
+                <div style="font-size:4rem; margin:20px 0; color:var(--accent);">${item.char}</div>
+                ${item.options.map(o => `<button class="opt-btn" onclick="checkLetter('${o}', '${item.word}')">${o}</button>`).join('')}
+                <div id="lRes" style="margin-top:15px; font-size:1.2rem; font-weight:bold;"></div>
             `;
-            document.getElementById('gameModal').style.display = 'flex';
         }
-
-        function checkMath(correctAns) {
-            let val = parseInt(document.getElementById('userAns').value);
-            let res = document.getElementById('res');
-            if(val === correctAns) {
-                res.innerHTML = "<b style='color:#34d399;'>إجابة صحيحة! أحسنت 🥳</b>";
-                setTimeout(startMathGame, 1500);
+        function checkLetter(selected, correct) {
+            let res = document.getElementById('lRes');
+            if(selected === correct) {
+                res.innerHTML = '<span style="color:var(--green);">ممتاز! إجابة صحيحة 🥳</span>';
+                setTimeout(initLetters, 1200);
             } else {
-                res.innerHTML = "<b style='color:#ef4444;'>إجابة خاطئة، حاول مرة أخرى ❌</b>";
+                res.innerHTML = '<span style="color:var(--rose);">حاول مرة أخرى ❌</span>';
             }
         }
 
-        // لعبة الذاكرة
-        function startMemoryGame() {
-            let num = Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('gameContainer').innerHTML = `
-                <h2>احفظ الرقم التالي بسرعة:</h2>
-                <h1 style="color:var(--accent); font-size:3.5rem;" id="memNum">${num}</h1>
+        /* 2. لعبة الإنجليزي */
+        const engData = [
+            { img: '🍎', name: 'Apple', options: ['Apple', 'Banana', 'Orange'] },
+            { img: '🐶', name: 'Dog', options: ['Cat', 'Dog', 'Lion'] },
+            { img: '🚗', name: 'Car', options: ['Bus', 'Car', 'Plane'] }
+        ];
+        function initEnglish() {
+            let item = engData[Math.floor(Math.random() * engData.length)];
+            container.innerHTML = `
+                <h2 style="color:var(--accent);">🍎 اختر الاسم الصحيح بالإنجليزية:</h2>
+                <div style="font-size:4.5rem; margin:15px 0;">${item.img}</div>
+                ${item.options.map(o => `<button class="opt-btn" onclick="checkEng('${o}', '${item.name}')">${o}</button>`).join('')}
+                <div id="eRes" style="margin-top:15px; font-size:1.2rem; font-weight:bold;"></div>
             `;
-            document.getElementById('gameModal').style.display = 'flex';
-
-            setTimeout(() => {
-                document.getElementById('gameContainer').innerHTML = `
-                    <h2>اكتب الرقم الذي ظهر لك:</h2>
-                    <input type="number" id="userMem">
-                    <br>
-                    <button class="btn" onclick="checkMem(${num})">تحقق</button>
-                    <p id="resMem"></p>
-                `;
-            }, 2000);
+        }
+        function checkEng(selected, correct) {
+            let res = document.getElementById('eRes');
+            if(selected === correct) {
+                res.innerHTML = '<span style="color:var(--green);">Great Job! 🌟</span>';
+                setTimeout(initEnglish, 1200);
+            } else {
+                res.innerHTML = '<span style="color:var(--rose);">Try Again! ❌</span>';
+            }
         }
 
-        function checkMem(correctNum) {
-            let val = parseInt(document.getElementById('userMem').value);
-            let res = document.getElementById('resMem');
-            if(val === correctNum) {
-                res.innerHTML = "<b style='color:#34d399;'>ذاكرة ممتازة! إجابة صحيحة 🎉</b>";
-                setTimeout(startMemoryGame, 1500);
+        /* 3. لعبة مقارنة الأعداد */
+        function initCompare() {
+            let n1 = Math.floor(Math.random() * 50) + 1;
+            let n2 = Math.floor(Math.random() * 50) + 1;
+            let correct = n1 > n2 ? '>' : (n1 < n2 ? '<' : '=');
+            container.innerHTML = `
+                <h2 style="color:var(--amber);">🔢 اختر رمز المقارنة الصحيح:</h2>
+                <div style="font-size:2.5rem; margin:20px 0; font-weight:bold;">${n1}  [ ؟ ]  ${n2}</div>
+                <div style="display:flex; gap:10px;">
+                    <button class="opt-btn" onclick="checkComp('>', '${correct}')">أكبر من ( > )</button>
+                    <button class="opt-btn" onclick="checkComp('=', '${correct}')">يساوي ( = )</button>
+                    <button class="opt-btn" onclick="checkComp('<', '${correct}')">أصغر من ( < )</button>
+                </div>
+                <div id="cRes" style="margin-top:15px; font-size:1.2rem; font-weight:bold;"></div>
+            `;
+        }
+        function checkComp(selected, correct) {
+            let res = document.getElementById('cRes');
+            if(selected === correct) {
+                res.innerHTML = '<span style="color:var(--green);">أحسنت! إجابة دقيقة 👏</span>';
+                setTimeout(initCompare, 1200);
             } else {
-                res.innerHTML = `<b style='color:#ef4444;'>خاطئ! الرقم كان ${correctNum} ❌</b>`;
+                res.innerHTML = '<span style="color:var(--rose);">خطأ، ركز ورتب الأرقام ❌</span>';
+            }
+        }
+
+        /* 4. لعبة العلوم والتصنيف */
+        const sciData = [
+            { item: '🦁 أسد', type: 'حيوان' },
+            { item: '🌴 نخلة', type: 'نبات' },
+            { item: '🚗 سيارة', type: 'جماد' },
+            { item: '🦅 صقر', type: 'حيوان' },
+            { item: '🌸 زهرة', type: 'نبات' }
+        ];
+        function initScience() {
+            let cur = sciData[Math.floor(Math.random() * sciData.length)];
+            container.innerHTML = `
+                <h2 style="color:var(--purple);">🔬 ماذا يمثل هذا العنصر؟</h2>
+                <div style="font-size:3rem; margin:20px 0; font-weight:bold;">${cur.item}</div>
+                <button class="opt-btn" onclick="checkSci('حيوان', '${cur.type}')">حيوان 🐾</button>
+                <button class="opt-btn" onclick="checkSci('نبات', '${cur.type}')">نبات 🌿</button>
+                <button class="opt-btn" onclick="checkSci('جماد', '${cur.type}')">جماد 🧱</button>
+                <div id="sRes" style="margin-top:15px; font-size:1.2rem; font-weight:bold;"></div>
+            `;
+        }
+        function checkSci(selected, correct) {
+            let res = document.getElementById('sRes');
+            if(selected === correct) {
+                res.innerHTML = '<span style="color:var(--green);">إجابة علمية صحيحة! 🎉</span>';
+                setTimeout(initScience, 1200);
+            } else {
+                res.innerHTML = '<span style="color:var(--rose);">إجابة خاطئة، حاول مجدداً ❌</span>';
+            }
+        }
+
+        /* 5. لعبة الذاكرة التعليمية */
+        function initMemory() {
+            const items = ['🍎','🍎','🐶','🐶','🚗','🚗','⭐','⭐'].sort(()=>Math.random()-0.5);
+            container.innerHTML = `
+                <h2 style="color:var(--rose);">🧠 طابق البطاقات المماثلة:</h2>
+                <div class="memory-grid">
+                    ${items.map((e) => `<div class="mem-card" data-e="${e}" onclick="flipMem(this)">❓</div>`).join('')}
+                </div>
+            `;
+        }
+        let firstMem = null;
+        function flipMem(card) {
+            if(card.innerText !== '❓') return;
+            card.innerText = card.dataset.e;
+            if(!firstMem) { firstMem = card; }
+            else {
+                if(firstMem.dataset.e !== card.dataset.e) {
+                    let temp = firstMem;
+                    setTimeout(() => { temp.innerText = '❓'; card.innerText = '❓'; }, 600);
+                }
+                firstMem = null;
+            }
+        }
+
+        /* 6. جدول الضرب السريع */
+        function initMultiply() {
+            let a = Math.floor(Math.random() * 9) + 1;
+            let b = Math.floor(Math.random() * 9) + 1;
+            let ans = a * b;
+            let opts = [ans, ans + 2, ans - 3].sort(()=>Math.random()-0.5);
+            container.innerHTML = `
+                <h2 style="color:var(--amber);">✖️ ما هو حاصل ضرب:</h2>
+                <div style="font-size:3.5rem; margin:15px 0; font-weight:bold; color:var(--accent);">${a} × ${b}</div>
+                ${opts.map(o => `<button class="opt-btn" onclick="checkMul(${o}, ${ans})">${o}</button>`).join('')}
+                <div id="mRes" style="margin-top:15px; font-size:1.2rem; font-weight:bold;"></div>
+            `;
+        }
+        function checkMul(selected, correct) {
+            let res = document.getElementById('mRes');
+            if(selected === correct) {
+                res.innerHTML = '<span style="color:var(--green);">بطل! إجابة صحيحة ⚡</span>';
+                setTimeout(initMultiply, 1200);
+            } else {
+                res.innerHTML = '<span style="color:var(--rose);">خاطئ! ركز في جدول الضرب ❌</span>';
+            }
+        }
+
+        /* 7. تكوين وتجميع الكلمات */
+        const spellData = [
+            { mixed: 'م - ل - ق', correct: 'قلم', hint: 'نكتب به في الدفتر ✏️' },
+            { mixed: 'س - م - ش', correct: 'شمس', hint: 'تضيء لنا في النهار ☀️' },
+            { mixed: 'ب - ك - ت - ا', correct: 'كتاب', hint: 'نقرأ منه الدروس 📖' }
+        ];
+        function initSpelling() {
+            let cur = spellData[Math.floor(Math.random() * spellData.length)];
+            container.innerHTML = `
+                <h2 style="color:var(--accent);">🧩 رتب الحروف لتكون الكلمة:</h2>
+                <p style="color:var(--sub); margin:10px 0;">تلميح: ${cur.hint}</p>
+                <div style="font-size:2.5rem; letter-spacing:5px; margin:15px 0; font-weight:bold; color:var(--amber);">${cur.mixed}</div>
+                <input type="text" id="spInput" style="padding:10px; border-radius:8px; border:none; font-size:1.2rem; text-align:center; width:180px;" placeholder="اكتب الكلمة هنا">
+                <br><br>
+                <button class="btn-play" onclick="checkSpell('${cur.correct}')">تحقق من الكلمة</button>
+                <div id="spRes" style="margin-top:15px; font-size:1.2rem; font-weight:bold;"></div>
+            `;
+        }
+        function checkSpell(correct) {
+            let val = document.getElementById('spInput').value.trim();
+            let res = document.getElementById('spRes');
+            if(val === correct) {
+                res.innerHTML = '<span style="color:var(--green);">عبقري! كلمة صحيحة 🌟</span>';
+                setTimeout(initSpelling, 1200);
+            } else {
+                res.innerHTML = '<span style="color:var(--rose);">حاول إعادة ترتيب الحروف ❌</span>';
             }
         }
     </script>
+
+    <!-- Adsterra Popunder Ads Script -->
+    <script src="https://pl30567936.effectivecpmnetwork.com/75/71/e0/7571e0e12a8e91b91d02f47ecb8b87ea.js"></script>
 </body>
 </html>
