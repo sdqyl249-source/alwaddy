@@ -9,11 +9,16 @@
     <title>الرئيسية - منصة الوادي التعليمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta name="google-site-verification" content="dOQcl3mf7YtxWfKcDoNplQM5D-R5io6UfiY07y7sujA" />
+    
+    <!-- كود إعلان Adsterra المرفق -->
+    <script type="text/javascript" src="https://pl30567680.effectivecpmnetwork.com/0c/63/61/0c63614dfd4b8d6396d805d790b93258.js"></script>
+    <script type="text/javascript" src="https://pl30567936.effectivecpmnetwork.com/75/71/e0/7571e0e12a8e91b91d02f47ecb8b87ea.js"></script>
+
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background-color: #020617; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
         
-        /* القائمة الجانبية الملكية */
+        /* القائمة الجانبية */
         .sidebar { height: 100vh; width: 0; position: fixed; top: 0; right: 0; background: linear-gradient(180deg, #0f172a, #020617); box-shadow: 0 4px 30px rgba(0,0,0,0.8); transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow-x: hidden; z-index: 1000; display: flex; flex-direction: column; padding: 20px 0; border-left: 1px solid rgba(246, 173, 85, 0.3); }
         .sidebar-title { color: #f6ad55; font-size: 21px; font-weight: bold; padding-bottom: 20px; border-bottom: 2px solid rgba(246, 173, 85, 0.3); margin-bottom: 15px; text-align: center; white-space: nowrap; text-shadow: 0 2px 10px rgba(246, 173, 85, 0.2); }
         .menu-item { color: #e2e8f0; background: rgba(246, 173, 85, 0.03); border: 1px solid rgba(246, 173, 85, 0.1); border-radius: 12px; margin: 8px 15px; padding: 12px 18px; text-align: center; transition: 0.3s; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; white-space: nowrap; font-weight: 500; text-decoration: none; }
@@ -98,13 +103,6 @@
     </style>
 </head>
 <body>
-
-    <script>
-        const activeUser = localStorage.getItem("currentUser");
-        if (!activeUser) {
-            window.location.href = "login.html";
-        }
-    </script>
 
     <button class="toggle-btn" onclick="document.getElementById('mySidebar').style.width = '260px'; document.getElementById('sidebarOverlay').style.display = 'block';"><i class="fa-solid fa-bars"></i> القائمة</button>
 
@@ -218,8 +216,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // التحقق من الجلسة بدون إغلاق السكربتات
             try {
-                const userObj = JSON.parse(localStorage.getItem("currentUser"));
+                const activeUser = localStorage.getItem("currentUser");
+                if (!activeUser) {
+                    window.location.href = "login.html";
+                    return;
+                }
+                const userObj = JSON.parse(activeUser);
                 if (userObj && userObj.name) {
                     document.getElementById('welcomeUserTitle').innerText = `أهلاً بك يا ${userObj.name} (${userObj.role || 'مستخدم'}) في منصة الوادي 🌟`;
                 }
@@ -274,10 +278,6 @@
             console.log('PWA was installed successfully');
         });
     </script>
-
-    <!-- أكواد إعلانات Adsterra -->
-    <script src="https://pl30567680.effectivecpmnetwork.com/0c/63/61/0c63614dfd4b8d6396d805d790b93258.js"></script>
-    <script src="https://pl30567936.effectivecpmnetwork.com/75/71/e0/7571e0e12a8e91b91d02f47ecb8b87ea.js"></script>
 
 </body>
 </html>
