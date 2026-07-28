@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sdqyl249-source.github.io/alwaddy/sitemap.xml
