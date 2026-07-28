@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الوادي - الألعاب التعليمية التفاعلية</title>
+    <title>منصة الوادي - الألعاب التعليمية المتجددة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -66,7 +66,7 @@
             <div>
                 <div class="icon" style="color:var(--green);"><i class="fa-solid fa-font"></i></div>
                 <div class="title">التعرف على الحروف والأشكال</div>
-                <div class="desc">لعبة ممتعة للأطفال لاكتشاف الحرف الأول من الكلمات المصورة.</div>
+                <div class="desc">اختبر معرفتك بالحروف الأولى لمئات الكلمات المصورة.</div>
             </div>
             <button class="btn-play" onclick="openGame('letters')">العب الآن</button>
         </div>
@@ -76,8 +76,8 @@
             <span class="badge easy">مبتدئ - إنجليزي</span>
             <div>
                 <div class="icon" style="color:var(--accent);"><i class="fa-solid fa-language"></i></div>
-                <div class="title">مفردات الإنجليزية (Vocab)</div>
-                <div class="desc">تعلم أسماء الفواكه والحيوانات باللغة الإنجليزية بطريقة تفاعلية.</div>
+                <div class="title">مفردات الإنجليزية (English Vocab)</div>
+                <div class="desc">تعلم أسماء الحيوانات والأشكال والفواكه بالإنجليزية.</div>
             </div>
             <button class="btn-play" onclick="openGame('english')">العب الآن</button>
         </div>
@@ -87,8 +87,8 @@
             <span class="badge medium">متوسط - رياضيات</span>
             <div>
                 <div class="icon" style="color:var(--amber);"><i class="fa-solid fa-scale-balanced"></i></div>
-                <div class="title">مقارنة الأعداد ( > , < , = )</div>
-                <div class="desc">قارن بين الأرقام واختر رمز المقارنة الصحيح لتقوية التفكير الرياضي.</div>
+                <div class="title">مقارنة الأعداد المتجددة</div>
+                <div class="desc">أرقام عشوائية متجددة دائماً للمقارنة (أكبر، أصغر، يساوي).</div>
             </div>
             <button class="btn-play" onclick="openGame('compare')">العب الآن</button>
         </div>
@@ -98,8 +98,8 @@
             <span class="badge medium">متوسط - علوم</span>
             <div>
                 <div class="icon" style="color:var(--purple);"><i class="fa-solid fa-flask"></i></div>
-                <div class="title">تصنيف الكائنات والعلوم</div>
-                <div class="desc">صنف العناصر المكتشفة هل هي (حيوانات، نباتات، أم جماد).</div>
+                <div class="title">موسوعة تصنيف العلوم</div>
+                <div class="desc">صنف العناصر والحيوانات والنباتات والجماد من مكتبة واسعة.</div>
             </div>
             <button class="btn-play" onclick="openGame('science')">العب الآن</button>
         </div>
@@ -109,8 +109,8 @@
             <span class="badge medium">متوسط - ذاكرة</span>
             <div>
                 <div class="icon" style="color:var(--rose);"><i class="fa-solid fa-brain"></i></div>
-                <div class="title">مطابقة البطاقات والتركيز</div>
-                <div class="desc">تقوية الذاكرة البصرية عبر البحث عن الصور والبطاقات المتطابقة.</div>
+                <div class="title">مطابقة الذاكرة المتغيرة</div>
+                <div class="desc">شبكة بطاقات تتغير صورها وإيموجيهاتها في كل دورة.</div>
             </div>
             <button class="btn-play" onclick="openGame('memory')">العب الآن</button>
         </div>
@@ -120,8 +120,8 @@
             <span class="badge hard">متقدم - رياضيات</span>
             <div>
                 <div class="icon" style="color:var(--accent);"><i class="fa-solid fa-calculator"></i></div>
-                <div class="title">تحدي جدول الضرب السريع</div>
-                <div class="desc">اختبر حفظك لجدول الضرب وسرعة إجابتك في مسابقة التحدي.</div>
+                <div class="title">تحدي جدول الضرب اللانهائي</div>
+                <div class="desc">مسائل ضرب وتوليد أرقام لا نهائية مع خيارات ذكية.</div>
             </div>
             <button class="btn-play" onclick="openGame('multiply')">العب الآن</button>
         </div>
@@ -132,7 +132,7 @@
             <div>
                 <div class="icon" style="color:var(--amber);"><i class="fa-solid fa-puzzle-piece"></i></div>
                 <div class="title">تفكيك وتجميع الكلمات</div>
-                <div class="desc">إعادة ترتيب الحروف المبعثرة لتكوين الكلمة الصحيحة والمفيدة.</div>
+                <div class="desc">حروف مبعثرة عشوائياً لكلمات متنوعة لإعادة ترتيبها.</div>
             </div>
             <button class="btn-play" onclick="openGame('spelling')">العب الآن</button>
         </div>
@@ -166,18 +166,27 @@
             container.innerHTML = '';
         }
 
-        /* 1. لعبة الحروف العربية */
-        const letterData = [
-            { char: 'أ', word: 'أسد 🦁', options: ['أسد 🦁', 'بطة 🦆', 'تفاحة 🍎'] },
-            { char: 'ب', word: 'بطة 🦆', options: ['جمل 🐪', 'بطة 🦆', 'أسد 🦁'] },
-            { char: 'ت', word: 'تفاحة 🍎', options: ['تفاحة 🍎', 'ثعلب 🦊', 'باب 🚪'] }
+        /* 1. لعبة الحروف العربية الموسعة */
+        const letterBank = [
+            { char: 'أ', word: 'أسد 🦁', wrong: ['بطة 🦆', 'تفاحة 🍎', 'جمل 🐪'] },
+            { char: 'ب', word: 'بطة 🦆', wrong: ['ثعلب 🦊', 'تمساح 🐊', 'حصان 🐴'] },
+            { char: 'ت', word: 'تفاحة 🍎', wrong: ['دب 🐻', 'زرافة 🦒', 'سمكة 🐟'] },
+            { char: 'ج', word: 'جمل 🐪', wrong: ['قطة 🐱', 'كلب 🐶', 'فراشة 🦋'] },
+            { char: 'ح', word: 'حصان 🐴', wrong: ['فيل 🐘', 'قرد 🐒', 'أسد 🦁'] },
+            { char: 'خ', word: 'خروف 🐑', wrong: ['ارنب 🐰', 'ذئب 🐺', 'حمامة 🕊️'] },
+            { char: 'د', word: 'دب 🐻', wrong: ['ثعبان 🐍', 'بطة 🦆', 'زرافة 🦒'] },
+            { char: 'ر', word: 'رمان 🫐', wrong: ['موز 🍌', 'عنب 🍇', 'ليمون 🍋'] },
+            { char: 'س', word: 'سمكة 🐟', wrong: ['عصفور 🐦', 'نحلة 🐝', 'نملة 🐜'] },
+            { char: 'ش', word: 'شمس ☀️', wrong: ['قمر 🌙', 'نجمة 🌟', 'سحابة ☁️'] }
         ];
         function initLetters() {
-            let item = letterData[Math.floor(Math.random() * letterData.length)];
+            let item = letterBank[Math.floor(Math.random() * letterBank.length)];
+            let options = [item.word, ...item.wrong.sort(() => 0.5 - Math.random()).slice(0, 2)].sort(() => 0.5 - Math.random());
+            
             container.innerHTML = `
                 <h2 style="color:var(--amber);">🔤 ما هي الكلمة التي تبدأ بحرف (${item.char})؟</h2>
-                <div style="font-size:4rem; margin:20px 0; color:var(--accent);">${item.char}</div>
-                ${item.options.map(o => `<button class="opt-btn" onclick="checkLetter('${o}', '${item.word}')">${o}</button>`).join('')}
+                <div style="font-size:4.5rem; margin:15px 0; color:var(--accent);">${item.char}</div>
+                ${options.map(o => `<button class="opt-btn" onclick="checkLetter('${o}', '${item.word}')">${o}</button>`).join('')}
                 <div id="lRes" style="margin-top:15px; font-size:1.2rem; font-weight:bold;"></div>
             `;
         }
@@ -185,24 +194,31 @@
             let res = document.getElementById('lRes');
             if(selected === correct) {
                 res.innerHTML = '<span style="color:var(--green);">ممتاز! إجابة صحيحة 🥳</span>';
-                setTimeout(initLetters, 1200);
+                setTimeout(initLetters, 1000);
             } else {
                 res.innerHTML = '<span style="color:var(--rose);">حاول مرة أخرى ❌</span>';
             }
         }
 
-        /* 2. لعبة الإنجليزي */
-        const engData = [
-            { img: '🍎', name: 'Apple', options: ['Apple', 'Banana', 'Orange'] },
-            { img: '🐶', name: 'Dog', options: ['Cat', 'Dog', 'Lion'] },
-            { img: '🚗', name: 'Car', options: ['Bus', 'Car', 'Plane'] }
+        /* 2. لعبة الإنجليزي الموسعة */
+        const engBank = [
+            { img: '🍎', name: 'Apple', wrong: ['Banana', 'Orange', 'Grape'] },
+            { img: '🐶', name: 'Dog', wrong: ['Cat', 'Lion', 'Tiger'] },
+            { img: '🚗', name: 'Car', wrong: ['Bus', 'Plane', 'Train'] },
+            { img: '🐱', name: 'Cat', wrong: ['Dog', 'Monkey', 'Elephant'] },
+            { img: '🍌', name: 'Banana', wrong: ['Apple', 'Mango', 'Peach'] },
+            { img: '🚀', name: 'Rocket', wrong: ['Car', 'Bike', 'Ship'] },
+            { img: '⚽', name: 'Ball', wrong: ['Box', 'Book', 'Pen'] },
+            { img: '🦁', name: 'Lion', wrong: ['Cat', 'Fox', 'Wolf'] }
         ];
         function initEnglish() {
-            let item = engData[Math.floor(Math.random() * engData.length)];
+            let item = engBank[Math.floor(Math.random() * engBank.length)];
+            let options = [item.name, ...item.wrong.sort(() => 0.5 - Math.random()).slice(0, 2)].sort(() => 0.5 - Math.random());
+            
             container.innerHTML = `
                 <h2 style="color:var(--accent);">🍎 اختر الاسم الصحيح بالإنجليزية:</h2>
                 <div style="font-size:4.5rem; margin:15px 0;">${item.img}</div>
-                ${item.options.map(o => `<button class="opt-btn" onclick="checkEng('${o}', '${item.name}')">${o}</button>`).join('')}
+                ${options.map(o => `<button class="opt-btn" onclick="checkEng('${o}', '${item.name}')">${o}</button>`).join('')}
                 <div id="eRes" style="margin-top:15px; font-size:1.2rem; font-weight:bold;"></div>
             `;
         }
@@ -210,20 +226,20 @@
             let res = document.getElementById('eRes');
             if(selected === correct) {
                 res.innerHTML = '<span style="color:var(--green);">Great Job! 🌟</span>';
-                setTimeout(initEnglish, 1200);
+                setTimeout(initEnglish, 1000);
             } else {
                 res.innerHTML = '<span style="color:var(--rose);">Try Again! ❌</span>';
             }
         }
 
-        /* 3. لعبة مقارنة الأعداد */
+        /* 3. لعبة مقارنة الأعداد (توليد غير محدود) */
         function initCompare() {
-            let n1 = Math.floor(Math.random() * 50) + 1;
-            let n2 = Math.floor(Math.random() * 50) + 1;
+            let n1 = Math.floor(Math.random() * 100) + 1;
+            let n2 = Math.floor(Math.random() * 100) + 1;
             let correct = n1 > n2 ? '>' : (n1 < n2 ? '<' : '=');
             container.innerHTML = `
                 <h2 style="color:var(--amber);">🔢 اختر رمز المقارنة الصحيح:</h2>
-                <div style="font-size:2.5rem; margin:20px 0; font-weight:bold;">${n1}  [ ؟ ]  ${n2}</div>
+                <div style="font-size:2.8rem; margin:20px 0; font-weight:bold; color:var(--accent);">${n1}  [ ؟ ]  ${n2}</div>
                 <div style="display:flex; gap:10px;">
                     <button class="opt-btn" onclick="checkComp('>', '${correct}')">أكبر من ( > )</button>
                     <button class="opt-btn" onclick="checkComp('=', '${correct}')">يساوي ( = )</button>
@@ -236,25 +252,24 @@
             let res = document.getElementById('cRes');
             if(selected === correct) {
                 res.innerHTML = '<span style="color:var(--green);">أحسنت! إجابة دقيقة 👏</span>';
-                setTimeout(initCompare, 1200);
+                setTimeout(initCompare, 1000);
             } else {
                 res.innerHTML = '<span style="color:var(--rose);">خطأ، ركز ورتب الأرقام ❌</span>';
             }
         }
 
-        /* 4. لعبة العلوم والتصنيف */
-        const sciData = [
-            { item: '🦁 أسد', type: 'حيوان' },
-            { item: '🌴 نخلة', type: 'نبات' },
-            { item: '🚗 سيارة', type: 'جماد' },
-            { item: '🦅 صقر', type: 'حيوان' },
-            { item: '🌸 زهرة', type: 'نبات' }
+        /* 4. علوم وتصنيف موسع */
+        const sciBank = [
+            { item: '🦁 أسد', type: 'حيوان' }, { item: '🌴 نخلة', type: 'نبات' }, { item: '🚗 سيارة', type: 'جماد' },
+            { item: '🦅 صقر', type: 'حيوان' }, { item: '🌸 زهرة', type: 'نبات' }, { item: '💻 كمبيوتر', type: 'جماد' },
+            { item: '🐬 دلفين', type: 'حيوان' }, { item: '🌲 شجرة', type: 'نبات' }, { item: '📱 هاتف', type: 'جماد' },
+            { item: '🐘 فيل', type: 'حيوان' }, { item: '🌾 قمح', type: 'نبات' }, { item: '🧱 حجر', type: 'جماد' }
         ];
         function initScience() {
-            let cur = sciData[Math.floor(Math.random() * sciData.length)];
+            let cur = sciBank[Math.floor(Math.random() * sciBank.length)];
             container.innerHTML = `
                 <h2 style="color:var(--purple);">🔬 ماذا يمثل هذا العنصر؟</h2>
-                <div style="font-size:3rem; margin:20px 0; font-weight:bold;">${cur.item}</div>
+                <div style="font-size:3.2rem; margin:20px 0; font-weight:bold;">${cur.item}</div>
                 <button class="opt-btn" onclick="checkSci('حيوان', '${cur.type}')">حيوان 🐾</button>
                 <button class="opt-btn" onclick="checkSci('نبات', '${cur.type}')">نبات 🌿</button>
                 <button class="opt-btn" onclick="checkSci('جماد', '${cur.type}')">جماد 🧱</button>
@@ -265,15 +280,17 @@
             let res = document.getElementById('sRes');
             if(selected === correct) {
                 res.innerHTML = '<span style="color:var(--green);">إجابة علمية صحيحة! 🎉</span>';
-                setTimeout(initScience, 1200);
+                setTimeout(initScience, 1000);
             } else {
                 res.innerHTML = '<span style="color:var(--rose);">إجابة خاطئة، حاول مجدداً ❌</span>';
             }
         }
 
-        /* 5. لعبة الذاكرة التعليمية */
+        /* 5. لعبة الذاكرة المتغيرة عشوائياً */
+        const emojiPool = ['🍎','🐶','🚗','⭐','🎈','🐸','🚀','⚽','🍉','🤖','👑','🍕'];
         function initMemory() {
-            const items = ['🍎','🍎','🐶','🐶','🚗','🚗','⭐','⭐'].sort(()=>Math.random()-0.5);
+            let picked = emojiPool.sort(() => 0.5 - Math.random()).slice(0, 4);
+            let items = [...picked, ...picked].sort(() => 0.5 - Math.random());
             container.innerHTML = `
                 <h2 style="color:var(--rose);">🧠 طابق البطاقات المماثلة:</h2>
                 <div class="memory-grid">
@@ -289,18 +306,18 @@
             else {
                 if(firstMem.dataset.e !== card.dataset.e) {
                     let temp = firstMem;
-                    setTimeout(() => { temp.innerText = '❓'; card.innerText = '❓'; }, 600);
+                    setTimeout(() => { temp.innerText = '❓'; card.innerText = '❓'; }, 500);
                 }
                 firstMem = null;
             }
         }
 
-        /* 6. جدول الضرب السريع */
+        /* 6. جدول ضرب لا نهائي وبخيارات ذكية */
         function initMultiply() {
-            let a = Math.floor(Math.random() * 9) + 1;
-            let b = Math.floor(Math.random() * 9) + 1;
+            let a = Math.floor(Math.random() * 10) + 1;
+            let b = Math.floor(Math.random() * 10) + 1;
             let ans = a * b;
-            let opts = [ans, ans + 2, ans - 3].sort(()=>Math.random()-0.5);
+            let opts = [ans, ans + Math.floor(Math.random()*4)+1, Math.max(1, ans - Math.floor(Math.random()*4)-1)].sort(()=>Math.random()-0.5);
             container.innerHTML = `
                 <h2 style="color:var(--amber);">✖️ ما هو حاصل ضرب:</h2>
                 <div style="font-size:3.5rem; margin:15px 0; font-weight:bold; color:var(--accent);">${a} × ${b}</div>
@@ -312,24 +329,28 @@
             let res = document.getElementById('mRes');
             if(selected === correct) {
                 res.innerHTML = '<span style="color:var(--green);">بطل! إجابة صحيحة ⚡</span>';
-                setTimeout(initMultiply, 1200);
+                setTimeout(initMultiply, 1000);
             } else {
                 res.innerHTML = '<span style="color:var(--rose);">خاطئ! ركز في جدول الضرب ❌</span>';
             }
         }
 
-        /* 7. تكوين وتجميع الكلمات */
-        const spellData = [
-            { mixed: 'م - ل - ق', correct: 'قلم', hint: 'نكتب به في الدفتر ✏️' },
-            { mixed: 'س - م - ش', correct: 'شمس', hint: 'تضيء لنا في النهار ☀️' },
-            { mixed: 'ب - ك - ت - ا', correct: 'كتاب', hint: 'نقرأ منه الدروس 📖' }
+        /* 7. تجميع وتركيب الكلمات الموسع */
+        const spellBank = [
+            { correct: 'قلم', hint: 'نكتب به في الدفتر ✏️' },
+            { correct: 'شمس', hint: 'تضيء لنا في النهار ☀️' },
+            { correct: 'كتاب', hint: 'نقرأ منه الدروس 📖' },
+            { correct: 'مدرسة', hint: 'نتعلم فيها العلوم 🏫' },
+            { correct: 'زرافة', hint: 'حيوان رقبته طويلة 🦒' },
+            { correct: 'سيارة', hint: 'وسيلة نقل على الطريق 🚗' }
         ];
         function initSpelling() {
-            let cur = spellData[Math.floor(Math.random() * spellData.length)];
+            let cur = spellBank[Math.floor(Math.random() * spellBank.length)];
+            let mixed = cur.correct.split('').sort(() => 0.5 - Math.random()).join(' - ');
             container.innerHTML = `
                 <h2 style="color:var(--accent);">🧩 رتب الحروف لتكون الكلمة:</h2>
                 <p style="color:var(--sub); margin:10px 0;">تلميح: ${cur.hint}</p>
-                <div style="font-size:2.5rem; letter-spacing:5px; margin:15px 0; font-weight:bold; color:var(--amber);">${cur.mixed}</div>
+                <div style="font-size:2.5rem; letter-spacing:3px; margin:15px 0; font-weight:bold; color:var(--amber);">${mixed}</div>
                 <input type="text" id="spInput" style="padding:10px; border-radius:8px; border:none; font-size:1.2rem; text-align:center; width:180px;" placeholder="اكتب الكلمة هنا">
                 <br><br>
                 <button class="btn-play" onclick="checkSpell('${cur.correct}')">تحقق من الكلمة</button>
@@ -341,7 +362,7 @@
             let res = document.getElementById('spRes');
             if(val === correct) {
                 res.innerHTML = '<span style="color:var(--green);">عبقري! كلمة صحيحة 🌟</span>';
-                setTimeout(initSpelling, 1200);
+                setTimeout(initSpelling, 1000);
             } else {
                 res.innerHTML = '<span style="color:var(--rose);">حاول إعادة ترتيب الحروف ❌</span>';
             }
