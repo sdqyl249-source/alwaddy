@@ -81,7 +81,6 @@
         }
 
         .stat-item { display: flex; align-items: center; gap: 8px; font-size: 16px; }
-        .stat-item i { color: #f59e0b; }
 
         .subject-select, .level-select {
             display: grid;
@@ -146,7 +145,14 @@
             border-color: var(--primary);
         }
 
-        /* Leaderboard */
+        .feedback-msg {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            min-height: 25px;
+        }
+
         .leaderboard-section {
             margin-top: 35px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -169,8 +175,6 @@
             cursor: pointer;
             font-size: 0.85rem;
         }
-
-        .admin-btn:hover { color: white; border-color: white; }
 
         .leaderboard-list { list-style: none; padding: 0; margin: 0; }
 
@@ -195,7 +199,6 @@
             display: none;
         }
 
-        /* Modal Popup */
         .modal {
             display: none;
             position: fixed;
@@ -229,31 +232,26 @@
             margin-top: 15px;
             display: inline-block;
             text-decoration: none;
-            transition: 0.3s;
         }
-
-        .btn-reward:hover { background: #059669; }
     </style>
 </head>
 <body>
 
-    <!-- الشريط العلوي -->
     <div class="header-bar">
         <a href="index.html" class="btn-home"><i class="fa-solid fa-house"></i> الرئيسية</a>
         <h3 style="margin:0;"><i class="fa-solid fa-gamepad" style="color: #f59e0b;"></i> الألعاب التعليمية - منصة الوادي</h3>
     </div>
 
     <div class="game-container">
-        <!-- الإحصائيات -->
         <div class="game-stats">
             <div class="stat-item"><i class="fa-solid fa-heart" style="color:#ef4444;"></i> المحاولات: <span id="lives">3</span></div>
-            <div class="stat-item"><i class="fa-solid fa-trophy"></i> النقاط: <span id="score">0</span></div>
-            <div class="stat-item"><i class="fa-solid fa-book-open"></i> المادة: <span id="current-subject">لم تحدد</span></div>
+            <div class="stat-item"><i class="fa-solid fa-trophy" style="color:#f59e0b;"></i> النقاط: <span id="score">0</span></div>
+            <div class="stat-item"><i class="fa-solid fa-book-open" style="color:#6366f1;"></i> المادة: <span id="current-subject">لم تحدد</span></div>
         </div>
 
         <!-- اختيار المادة -->
         <div id="subject-section">
-            <h3 style="text-align: center; margin-bottom: 20px;">اختر اللعبة / المادة التعليمية 🎮</h3>
+            <h3 style="text-align: center; margin-bottom: 20px;">اختر المادة التعليمية 🎮</h3>
             <div class="subject-select">
                 <button class="btn-option" onclick="selectSubject('الرياضيات')"><i class="fa-solid fa-calculator"></i>الرياضيات</button>
                 <button class="btn-option" onclick="selectSubject('العربية')"><i class="fa-solid fa-font"></i>اللغة العربية</button>
@@ -275,10 +273,11 @@
             </div>
         </div>
 
-        <!-- منطقة الألعاب والأسئلة -->
+        <!-- منطقة الأسئلة -->
         <div id="quiz-section" style="display: none;">
             <div class="question-box" id="question-text">جاري تحميل السؤال...</div>
             <div class="options-grid" id="options-container"></div>
+            <div class="feedback-msg" id="feedback-msg"></div>
         </div>
 
         <!-- لوحة المتصدرين -->
@@ -291,7 +290,6 @@
         </div>
     </div>
 
-    <!-- نافذة المكافأة (Rewarded Ads Popup) -->
     <div class="modal" id="reward-modal">
         <div class="modal-content">
             <h2 style="color: #ef4444; margin-top:0;">💔 انتهت محاولاتك!</h2>
@@ -301,42 +299,94 @@
     </div>
 
     <script>
-        // بنك الألعاب والأسئلة لجميع المواد والأقسام
-        const questionsBank = {
+        // قاعدة أسئلة موسعة
+        const staticQuestions = {
             'الرياضيات': {
-                easy: [ { q: "كم يساوي: 3 + 2 ؟", a: ["5", "4", "6", "3"], c: 0 }, { q: "كم يساوي: 7 - 3 ؟", a: ["2", "4", "5", "3"], c: 1 } ],
-                medium: [ { q: "حاصل ضرب: 5 × 4 = ؟", a: ["15", "20", "25", "18"], c: 1 } ],
-                hard: [ { q: "احسب النتيجة: (12 ÷ 3) + 6 = ؟", a: ["10", "12", "8", "14"], c: 0 } ]
+                easy: [
+                    { q: "كم يساوي: 3 + 2 ؟", a: ["5", "4", "6", "3"], c: 0 },
+                    { q: "كم يساوي: 7 - 3 ؟", a: ["4", "2", "5", "3"], c: 0 },
+                    { q: "العدد التالي للعدد 8 هو:", a: ["9", "7", "10", "6"], c: 0 }
+                ],
+                medium: [
+                    { q: "حاصل ضرب: 5 × 4 = ؟", a: ["20", "15", "25", "18"], c: 0 },
+                    { q: "كم يساوي: 36 ÷ 6 ؟", a: ["6", "5", "7", "8"], c: 0 }
+                ],
+                hard: [
+                    { q: "احسب النتيجة: (12 ÷ 3) + 6 = ؟", a: ["10", "12", "8", "14"], c: 0 },
+                    { q: "مربع العدد 5 يساوي:", a: ["25", "20", "15", "30"], c: 0 }
+                ]
             },
             'العربية': {
-                easy: [ { q: "ما الحرف الأول في كلمة (مَدْرَسَة)؟", a: ["م", "د", "ر", "س"], c: 0 } ],
-                medium: [ { q: "كلمة (يَكْتُبُ) هي:", a: ["اسم", "فعل مضارع", "حرف", "فعل أمر"], c: 1 } ],
-                hard: [ { q: "علامة رفع الفاعل الأصلية هي:", a: ["الضمة", "الفتحة", "الكسرة", "السكون"], c: 0 } ]
+                easy: [
+                    { q: "ما الحرف الأول في كلمة (مَدْرَسَة)؟", a: ["م", "د", "ر", "س"], c: 0 },
+                    { q: "كلمة (شَمْس) تبدأ بحرف:", a: ["ش", "س", "ص", "ض"], c: 0 }
+                ],
+                medium: [
+                    { q: "كلمة (يَكْتُبُ) هي:", a: ["فعل مضارع", "اسم", "حرف", "فعل أمر"], c: 0 },
+                    { q: "جمع كلمة (كِتَاب) هو:", a: ["كُتُب", "كُتّاب", "مَكْتَبَة", "كِتَابَات"], c: 0 }
+                ],
+                hard: [
+                    { q: "علامة رفع الفاعل الأصلية هي:", a: ["الضمة", "الفتحة", "الكسرة", "السكون"], c: 0 },
+                    { q: "إنّ وأخواتها تدخل على الجملة الاسمية فـ:", a: ["تنصب المبتدأ وترفع الخبر", "ترفع المبتدأ وتنصب الخبر", "تجر الطرفين", "تتركهما مرفوعين"], c: 0 }
+                ]
             },
             'العلوم': {
-                easy: [ { q: "أي من يلي يعتبر من الكائنات الحية؟", a: ["الحصان", "الحجر", "القلم", "الكرسي"], c: 0 } ],
-                medium: [ { q: "حالة الماء عند تجمده تتحول إلى حالة:", a: ["صلبة", "سائلة", "غازية", "مرنة"], c: 0 } ],
-                hard: [ { q: "العضو المسؤول عن تنقية الدم في جسم الإنسان هو:", a: ["الكلية", "القلب", "المعدة", "الرئة"], c: 0 } ]
+                easy: [
+                    { q: "أي مما يلي كائن حي؟", a: ["الشجرة", "الحجر", "القلم", "السيارة"], c: 0 },
+                    { q: "ما هو عضو التنفس عند الإنسان؟", a: ["الرئة", "القلب", "المعدة", "العين"], c: 0 }
+                ],
+                medium: [
+                    { q: "تتحول المادة السائلة إلى غازية عن طريق:", a: ["التبخر", "التجمد", "التكثف", "الإنصهار"], c: 0 }
+                ],
+                hard: [
+                    { q: "العضو المسؤول عن تنقية الدم في جسم الإنسان هو:", a: ["الكلية", "القلب", "الكبد", "الطحال"], c: 0 }
+                ]
             },
             'الانكليزي': {
-                easy: [ { q: "معنى كلمة (Cat) باللغة العربية:", a: ["قطة", "كلب", "عصفور", "سمكة"], c: 0 } ],
-                medium: [ { q: "جمع كلمة (Book) هو:", a: ["Books", "Bookes", "Booking", "Booked"], c: 0 } ],
-                hard: [ { q: "الماضي من الفعل (Go) هو:", a: ["Went", "Gone", "Going", "Goes"], c: 0 } ]
+                easy: [
+                    { q: "معنى كلمة (Apple) باللغة العربية:", a: ["تفاحة", "موزة", "برتقالة", "عنب"], c: 0 },
+                    { q: "معنى كلمة (Dog) هو:", a: ["كلب", "قطة", "أسد", "طير"], c: 0 }
+                ],
+                medium: [
+                    { q: "جمع كلمة (Child) هو:", a: ["Children", "Childs", "Childes", "Childing"], c: 0 }
+                ],
+                hard: [
+                    { q: "الماضي من الفعل (Go) هو:", a: ["Went", "Gone", "Going", "Goes"], c: 0 }
+                ]
             },
             'الاسلامية': {
-                easy: [ { q: "كم عدد أركان الإسلام؟", a: ["5", "6", "4", "3"], c: 0 } ],
-                medium: [ { q: "الصلاة التي ليس فيها ركوع ولا سجود هي صلاة:", a: ["الجنازة", "العيد", "الجمعة", "الفجر"], c: 0 } ],
-                hard: [ { q: "أول غزوة في الإسلام هي غزوة:", a: ["الأبواء (ودان)", "بدر", "أحد", "الخندق"], c: 0 } ]
+                easy: [
+                    { q: "كم عدد أركان الإسلام؟", a: ["5", "6", "4", "3"], c: 0 },
+                    { q: "ما هي القبلة المسلمين عند الصلاة؟", a: ["الكعبة المشرفة", "المسجد الأقصى", "الروضة الشريفة", "مكة المكرمة"], c: 0 }
+                ],
+                medium: [
+                    { q: "الصلاة التي ليس فيها ركوع ولا سجود هي صلاة:", a: ["الجنازة", "العيد", "الجمعة", "الاستسقاء"], c: 0 }
+                ],
+                hard: [
+                    { q: "أول غزوة في الإسلام هي غزوة:", a: ["الأبواء (ودان)", "بدر", "أحد", "الخندق"], c: 0 }
+                ]
             },
             'الاجتماعيات': {
-                easy: [ { q: "تشرق الشمس من جهة:", a: ["الشرق", "الغرب", "الشمال", "الجنوب"], c: 0 } ],
-                medium: [ { q: "عاصمة العراق هي مدينة:", a: ["بغداد", "البصرة", "أربيل", "الموصل"], c: 0 } ],
-                hard: [ { q: "يمر نهر الدجلة والفرات ببلاد الرافدين، أين يتقيان؟", a: ["القرنة", "الكوت", "العمارة", "الناصرية"], c: 0 } ]
+                easy: [
+                    { q: "تشرق الشمس من جهة:", a: ["الشرق", "الغرب", "الشمال", "الجنوب"], c: 0 }
+                ],
+                medium: [
+                    { q: "عاصمة العراق هي مدينة:", a: ["بغداد", "البصرة", "أربيل", "الموصل"], c: 0 }
+                ],
+                hard: [
+                    { q: "يمر نهر الدجلة والفرات ببلاد الرافدين، أين يتقيان لتكوين شط العرب؟", a: ["القرنة", "الكوت", "العمارة", "الناصرية"], c: 0 }
+                ]
             },
             'البازل': {
-                easy: [ { q: "ما الشكل الذي يحتوي على 3 أضلاع؟", a: ["المثلث", "المربع", "الدائرة", "المستطيل"], c: 0 } ],
-                medium: [ { q: "أكمل النمط: 2 ، 4 ، 6 ، ... ؟", a: ["8", "7", "9", "10"], c: 0 } ],
-                hard: [ { q: "إذا كان عقرب الساعات على 3 وعقرب الدقائق على 12، فكم الساعة؟", a: ["الثالثة تماماً", "الرابعة", "الثانية", "السادسة"], c: 0 } ]
+                easy: [
+                    { q: "ما الشكل الذي يحتوي على 3 أضلاع؟", a: ["المثلث", "المربع", "الدائرة", "المستطيل"], c: 0 }
+                ],
+                medium: [
+                    { q: "أكمل النمط: 2 ، 4 ، 6 ، ... ؟", a: ["8", "7", "9", "10"], c: 0 }
+                ],
+                hard: [
+                    { q: "إذا كان عقرب الساعات على 3 وعقرب الدقائق على 12، فكم الساعة؟", a: ["الثالثة تماماً", "الرابعة", "الثانية", "السادسة"], c: 0 }
+                ]
             }
         };
 
@@ -345,6 +395,8 @@
         let score = 0;
         let lives = 3;
         let isAdmin = false;
+        let currentQuestionIndex = 0;
+        let activeQuestionsList = [];
 
         let leaderboard = JSON.parse(localStorage.getItem('alwaddy_leaderboard')) || [
             { name: "علي الحسين", score: 150 },
@@ -362,53 +414,96 @@
             currentLevel = level;
             document.getElementById('level-section').style.display = 'none';
             document.getElementById('quiz-section').style.display = 'block';
+            
+            prepareQuestionPool();
+            currentQuestionIndex = 0;
             loadNextQuestion();
         }
 
-        function loadNextQuestion() {
-            if (lives <= 0) return;
-
-            let subQuestions = questionsBank[currentSubject] ? questionsBank[currentSubject][currentLevel] : null;
-            
-            if (!subQuestions || subQuestions.length === 0) {
-                document.getElementById('question-text').innerText = "سؤال عام: 2 + 2 = ؟";
-                renderOptions(["4", "3", "5", "6"], 0);
-                return;
+        function prepareQuestionPool() {
+            activeQuestionsList = [];
+            if (staticQuestions[currentSubject] && staticQuestions[currentSubject][currentLevel]) {
+                activeQuestionsList = [...staticQuestions[currentSubject][currentLevel]];
             }
 
-            let randomQ = subQuestions[Math.floor(Math.random() * subQuestions.length)];
-            document.getElementById('question-text').innerText = randomQ.q;
-            renderOptions(randomQ.a, randomQ.c);
+            // توليد أسئلة ديناميكية إضافية لضمان التجديد وعدم الانتهاء
+            for (let i = 0; i < 20; i++) {
+                if (currentSubject === 'الرياضيات') {
+                    let num1 = Math.floor(Math.random() * (currentLevel === 'easy' ? 10 : currentLevel === 'medium' ? 50 : 100)) + 1;
+                    let num2 = Math.floor(Math.random() * (currentLevel === 'easy' ? 10 : currentLevel === 'medium' ? 20 : 50)) + 1;
+                    let correctAns = num1 + num2;
+                    activeQuestionsList.push({
+                        q: `كم يساوي: ${num1} + ${num2} ؟`,
+                        a: [`${correctAns}`, `${correctAns + 2}`, `${correctAns - 1}`, `${correctAns + 5}`],
+                        c: 0
+                    });
+                }
+            }
+
+            // خلط الأسئلة عشوائياً
+            activeQuestionsList.sort(() => Math.random() - 0.5);
         }
 
-        function renderOptions(options, correctIdx) {
+        function loadNextQuestion() {
+            document.getElementById('feedback-msg').innerText = '';
+
+            if (lives <= 0) return;
+
+            if (currentQuestionIndex >= activeQuestionsList.length) {
+                prepareQuestionPool(); // إعادة تدوير وبناء بنك جديد عند انتهاء الأسئلة
+                currentQuestionIndex = 0;
+            }
+
+            let currentQ = activeQuestionsList[currentQuestionIndex];
+            document.getElementById('question-text').innerText = currentQ.q;
+            
+            // خلط الخيارات عشوائياً لضمان عدم ثبات الإجابة في الخيار الأول
+            let optionsWithStatus = currentQ.a.map((opt, idx) => ({
+                text: opt,
+                isCorrect: idx === currentQ.c
+            }));
+            optionsWithStatus.sort(() => Math.random() - 0.5);
+
+            renderOptions(optionsWithStatus);
+        }
+
+        function renderOptions(optionsArray) {
             let container = document.getElementById('options-container');
             container.innerHTML = '';
-            options.forEach((opt, idx) => {
+
+            optionsArray.forEach((optObj) => {
                 let btn = document.createElement('button');
                 btn.className = 'btn-answer';
-                btn.innerText = opt;
-                btn.onclick = () => checkAnswer(idx === correctIdx);
+                btn.innerText = optObj.text;
+                btn.onclick = () => handleAnswer(optObj.isCorrect);
                 container.appendChild(btn);
             });
         }
 
-        function checkAnswer(isCorrect) {
+        function handleAnswer(isCorrect) {
+            currentQuestionIndex++; // الانتقال التلقائي للسؤال التالي
+            
             if (isCorrect) {
                 score += (currentLevel === 'easy' ? 10 : currentLevel === 'medium' ? 20 : 30);
                 document.getElementById('score').innerText = score;
-                alert("إجابة ممتازة وصحيحة! 🎉");
+                document.getElementById('feedback-msg').style.color = '#10b981';
+                document.getElementById('feedback-msg').innerText = "إجابة صحيحة ممتازة! 🎉";
             } else {
                 lives--;
                 document.getElementById('lives').innerText = lives;
+                document.getElementById('feedback-msg').style.color = '#ef4444';
+                document.getElementById('feedback-msg').innerText = "إجابة خاطئة 💔";
+                
                 if (lives <= 0) {
-                    showRewardModal();
+                    setTimeout(() => showRewardModal(), 600);
                     return;
-                } else {
-                    alert("إجابة خاطئة، حاول مرة أخرى 💔");
                 }
             }
-            loadNextQuestion();
+
+            // تحميل السؤال القادم بعد نصف ثانية
+            setTimeout(() => {
+                loadNextQuestion();
+            }, 600);
         }
 
         function showRewardModal() {
@@ -468,7 +563,7 @@
         renderLeaderboard();
     </script>
 
-    <!-- 🎯 كود إعلان الـ Popunder الخاص بك لـ Adsterra -->
+    <!-- كود إعلان Popunder -->
     <script src="https://pl30567936.effectivecpmnetwork.com/75/71/e0/7571e0e12a8e91b91d02f47ecb8b87ea.js"></script>
 
 </body>
