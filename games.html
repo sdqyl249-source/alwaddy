@@ -204,7 +204,7 @@
 
     <footer>جميع الحقوق محفوظة © منصة الوادي التعليمية 2026</footer>
 
-    <script src="scriot.js"></script>
+    <script src="script.js"></script>
     <script>
         let isAdmin = false;
 
@@ -558,57 +558,45 @@
                 <div style="background:#1e293b; padding:20px; border-radius:12px; max-width:350px; margin:0 auto;">
                     <p style="color:#fbbf24; font-weight:bold;">التلميح: ${currentWordObj.hint}</p>
                     <input type="text" id="wInput" placeholder="خمن الكلمة..." style="width:100%; padding:10px; font-size:18px; text-align:center; border-radius:8px; border:1px solid #f6ad55; background:#020617; color:#fff; margin-bottom:15px;">
-                    <button style="background:#10b981; color:white; border:none; padding:10px; border-radius:8px; width:100%; font-weight:bold; cursor:pointer;" onclick="checkWordGuess()">تأكيد الكلمة 💡</button>
+                    <button style="background:#d97706; color:white; border:none; padding:10px; border-radius:8px; width:100%; font-weight:bold; cursor:pointer;" onclick="checkWordGuess()">تأكيد الإجابة 🚀</button>
                 </div>
             `;
         }
         function checkWordGuess() {
             const val = document.getElementById("wInput").value.trim();
             if (val === currentWordObj.w) {
-                alert("💡 إجابة ذكية وصحيحة! حصلت على 15 نقطة!");
-                addPoints(15);
+                alert("🎉 تخمين صحيح وفي محله! حصلت على 10 نقاط!");
+                addPoints(10);
                 closeGameArea();
-            } else {
-                alert("❌ حاول مرة أخرى!");
-            }
+            } else { alert("❌ تخمين غير صحيح، حاول مجدداً!"); }
         }
 
-        /* 6. لعبة المتاهة التفاعلية */
+        /* 6. لعبة المتاهة البسيطة */
         function startMazeGame() {
-            openGameArea("🌀 متاهة التفكير والهروب");
+            openGameArea("🌀 متاهة التفكير والهروب السريع");
             const container = document.getElementById("gameContainer");
             container.innerHTML = `
-                <p style="color:#a0aec0;">وجه الكرة 🔴 نحو الهدف 🏁 باستخدام الأزرار للهروب كلياً!</p>
-                <div style="display:grid; grid-template-columns:repeat(3, 60px); grid-gap:5px; justify-content:center; margin:15px auto;">
-                    <div style="border:1px solid #334155; height:60px; display:flex; align-items:center; justify-content:center;" id="m1">🔴</div>
-                    <div style="border:1px solid #334155; height:60px; background:#1e293b;" id="m2"></div>
-                    <div style="border:1px solid #334155; height:60px; background:#1e293b;" id="m3"></div>
-                    <div style="border:1px solid #334155; height:60px; background:#1e293b;" id="m4"></div>
-                    <div style="border:1px solid #334155; height:60px; background:#1e293b;" id="m5"></div>
-                    <div style="border:1px solid #334155; height:60px; display:flex; align-items:center; justify-content:center;" id="m6">🏁</div>
+                <p style="color:#a0aec0;">اضغط على الزر للوصول لخط النهاية وحصد النقاط!</p>
+                <div style="margin: 30px auto; width: 120px; height: 120px; background: #312e81; border: 2px dashed #f6ad55; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                    <button style="background:#10b981; color:white; border:none; padding:12px 20px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="finishMaze()">تجاوز المتاهة 🏁</button>
                 </div>
-                <button style="background:#d97706; color:white; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="stepMaze()">تحريك خطوة للأمام 🏃</button>
             `;
         }
-        let mazeStep = 1;
-        function stepMaze() {
-            document.getElementById(`m${mazeStep}`).innerText = "";
-            mazeStep++;
-            if (mazeStep <= 6) {
-                document.getElementById(`m${mazeStep}`).innerText = "🔴";
-            }
-            if (mazeStep === 6) {
-                setTimeout(() => {
-                    alert("🏆 وصلت إلى نهاية المتاهة بنجاح وحصلت على 20 نقطة!");
-                    addPoints(20);
-                    closeGameArea();
-                }, 200);
-            }
+        function finishMaze() {
+            alert("🌀 أحسنت بالخروج من المتاهة بنجاح! تم إضافة 10 نقاط لحسابك.");
+            addPoints(10);
+            closeGameArea();
         }
 
+        // التهيئة عند التحميل
         document.addEventListener('DOMContentLoaded', () => {
             initUserInfo();
         });
     </script>
+
+    <!-- أكواد إعلانات Adsterra تم إدراجها بنجاح -->
+    <script src="https://pl30567680.effectivecpmnetwork.com/0c/63/61/0c63614dfd4b8d6396d805d790b93258.js"></script>
+    <script src="https://pl30567936.effectivecpmnetwork.com/75/71/e0/7571e0e12a8e91b91d02f47ecb8b87ea.js"></script>
+
 </body>
 </html>
