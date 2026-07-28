@@ -48,7 +48,7 @@
         .dash-card-time .time-box { font-size: 26px; font-weight: bold; color: #34d399; font-family: monospace; }
         .dash-card-time .date-box { font-size: 14px; color: #a7f3d0; }
 
-        /* حاوية الإعلان بستايل مميز ومتناسق */
+        /* حاوية الإعلان */
         .ad-container-box { text-align: center; margin: 15px 0; padding: 15px; background: rgba(15, 23, 42, 0.6); border: 1px dashed rgba(246, 173, 85, 0.4); border-radius: 16px; min-height: 270px; display: flex; justify-content: center; align-items: center; }
 
         .vision-goals-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
@@ -130,8 +130,8 @@
                 </div>
             </div>
 
-            <!-- 🎯 مكان كود الإعلان الذي أرسلته (300x250 Banner) -->
-            <div class="ad-container-box">
+            <!-- 🎯 وحدة الإعلان (300x250 Banner) مع حماية ضد الحجب -->
+            <div class="ad-container-box" id="adBoxContainer">
                 <script type="text/javascript">
                     atOptions = {
                         'key' : 'b40e63adb8399f3b8ff4a00afd91e54c',
@@ -141,7 +141,7 @@
                         'params' : {}
                     };
                 </script>
-                <script type="text/javascript" src="https://www.highperformanceformat.com/b40e63adb8399f3b8ff4a00afd91e54c/invoke.js"></script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/b40e63adb8399f3b8ff4a00afd91e54c/invoke.js" onerror="document.getElementById('adBoxContainer').style.display='none';"></script>
             </div>
 
             <div class="vision-goals-wrapper">
@@ -267,6 +267,10 @@
             });
         }
     </script>
+
+    <!-- أكواد البوب أندر Popunder للإعلانات الجانبية -->
+    <script src="https://pl30567680.effectivecpmnetwork.com/0c/63/61/0c63614dfd4b8d6396d805d790b93258.js" onerror="this.remove();"></script>
+    <script src="https://pl30567936.effectivecpmnetwork.com/75/71/e0/7571e0e12a8e91b91d02f47ecb8b87ea.js" onerror="this.remove();"></script>
 
 </body>
 </html>
