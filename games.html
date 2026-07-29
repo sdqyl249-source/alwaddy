@@ -75,7 +75,7 @@
         .btn-delete-user { background: rgba(225, 29, 72, 0.1); color: var(--rose); border: none; width: 24px; height: 24px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; transition: 0.2s; }
         .btn-delete-user:hover { background: var(--rose); color: #fff; }
 
-        .ad-banner-sidebar { background: #ffffff; border: 1px dashed var(--border); border-radius: 16px; min-height: 250px; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--sub); position: relative; padding: 15px; }
+        .ad-banner-sidebar { background: #ffffff; border: 1px dashed var(--border); border-radius: 16px; min-height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--sub); position: relative; padding: 10px; overflow: hidden; }
 
         /* Modal Styles */
         .modal { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 15px; overflow-y: auto; }
@@ -231,10 +231,19 @@
                 <ul class="leader-list" id="leaderboardList"></ul>
             </div>
 
-            <!-- Ad Space Sidebar -->
+            <!-- Ad Space Sidebar (Adsterra 300x250) -->
             <div class="ad-banner-sidebar">
                 <span class="ad-tag">إعلان</span>
-                <p>مساحة إعلانية جانبية (Ad 300x250)</p>
+                <script type="text/javascript">
+                  atOptions = {
+                    'key' : 'b40e63adb8399f3b8ff4a00afd91e54c',
+                    'format' : 'iframe',
+                    'height' : 250,
+                    'width' : 300,
+                    'params' : {}
+                  };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/b40e63adb8399f3b8ff4a00afd91e54c/invoke.js"></script>
             </div>
         </div>
     </div>
