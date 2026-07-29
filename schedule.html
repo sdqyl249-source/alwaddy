@@ -8,48 +8,263 @@
 <title>الجدول الدراسي - منصة الوادي</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background-color: #020617; color: #ffffff; box-sizing: border-box; }
+body { 
+    font-family: 'Segoe UI', Tahoma, sans-serif; 
+    margin: 0; 
+    background-color: #f0f4f9; 
+    color: #2d3748; 
+    box-sizing: border-box; 
+}
 *, *:before, *:after { box-sizing: inherit; }
-.sidebar { height: 100vh; width: 0; position: fixed; top: 0; right: 0; background: linear-gradient(180deg, #0f172a, #020617); box-shadow: 0 4px 30px rgba(0,0,0,0.8); transition: width 0.4s; overflow-x: hidden; z-index: 1000; display: flex; flex-direction: column; padding: 20px 0; border-left: 1px solid rgba(246, 173, 85, 0.3); }
-.sidebar-title { color: #f6ad55; font-size: 21px; font-weight: bold; padding-bottom: 20px; border-bottom: 2px solid rgba(246, 173, 85, 0.3); margin-bottom: 15px; text-align: center; white-space: nowrap; text-shadow: 0 2px 10px rgba(246, 173, 85, 0.2); }
-.menu-item { color: #e2e8f0; background: rgba(246, 173, 85, 0.03); border: 1px solid rgba(246, 173, 85, 0.1); border-radius: 12px; margin: 8px 15px; padding: 12px 18px; text-align: center; transition: 0.3s; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; white-space: nowrap; font-weight: 500; text-decoration: none; }
-.menu-item i { color: #f6ad55; }
-.menu-item:hover { background: rgba(246, 173, 85, 0.15); color: #f6ad55; border-color: rgba(246, 173, 85, 0.5); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(246, 173, 85, 0.15); }
-.logout-btn { margin-top: auto; padding: 12px; background: rgba(229, 62, 62, 0.1); color: #fca5a5; border: 1px solid rgba(229, 62, 62, 0.3); border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: bold; width: 80%; margin: 20px auto; }
-.logout-btn:hover { background: #e53e3e; color: white; }
-.toggle-btn { position: fixed; top: 20px; right: 20px; z-index: 1002; padding: 12px 20px; cursor: pointer; background: #0f172a; color: #f6ad55; border: 1px solid rgba(246, 173, 85, 0.3); border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-weight: bold; font-size: 14px; }
+
+/* القائمة الجانبية (Sidebar) */
+.sidebar { 
+    height: 100vh; 
+    width: 0; 
+    position: fixed; 
+    top: 0; 
+    right: 0; 
+    background: linear-gradient(180deg, #ffffff, #f1f5f9); 
+    box-shadow: -4px 0 25px rgba(0,0,0,0.08); 
+    transition: width 0.4s; 
+    overflow-x: hidden; 
+    z-index: 1000; 
+    display: flex; 
+    flex-direction: column; 
+    padding: 20px 0; 
+    border-left: 2px solid #e2e8f0; 
+}
+.sidebar-title { 
+    color: #0284c7; 
+    font-size: 21px; 
+    font-weight: bold; 
+    padding-bottom: 20px; 
+    border-bottom: 2px solid #e2e8f0; 
+    margin-bottom: 15px; 
+    text-align: center; 
+    white-space: nowrap; 
+}
+.menu-item { 
+    color: #334155; 
+    background: #ffffff; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 12px; 
+    margin: 8px 15px; 
+    padding: 12px 18px; 
+    text-align: center; 
+    transition: 0.3s; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 10px; 
+    white-space: nowrap; 
+    font-weight: 600; 
+    text-decoration: none; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+.menu-item i { color: #0284c7; }
+.menu-item:hover { 
+    background: #e0f2fe; 
+    color: #0369a1; 
+    border-color: #38bdf8; 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15); 
+}
+.logout-btn { 
+    margin-top: auto; 
+    padding: 12px; 
+    background: #fee2e2; 
+    color: #dc2626; 
+    border: 1px solid #fca5a5; 
+    border-radius: 12px; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    font-weight: bold; 
+    width: 80%; 
+    margin: 20px auto; 
+}
+.logout-btn:hover { background: #ef4444; color: white; }
+
+/* زر القائمة */
+.toggle-btn { 
+    position: fixed; 
+    top: 20px; 
+    right: 20px; 
+    z-index: 1002; 
+    padding: 12px 22px; 
+    cursor: pointer; 
+    background: #ffffff; 
+    color: #0284c7; 
+    border: 2px solid #38bdf8; 
+    border-radius: 50px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06); 
+    font-weight: bold; 
+    font-size: 14px; 
+    transition: 0.3s;
+}
+.toggle-btn:hover {
+    background: #0284c7;
+    color: #ffffff;
+}
+
 .main-content { margin-right: 0; padding: 20px; transition: 0.4s; max-width: 1300px; margin: 0 auto; width: 100%; }
-.page-header { background: linear-gradient(135deg, #0f172a, #1e293b); color: #f6ad55; border: 1px solid rgba(246, 173, 85, 0.2); padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center; }
-.page-header h1 { margin: 0 0 8px 0; font-size: 24px; }
-.page-header p { margin: 0; opacity: 0.95; font-size: 14px; color: #a0aec0; }
-.controls-bar { background: #0f172a; padding: 15px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); border: 1px solid rgba(246, 173, 85, 0.15); margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+
+/* الهيدر والعناوين */
+.page-header { 
+    background: linear-gradient(135deg, #0284c7, #38bdf8); 
+    color: #ffffff; 
+    padding: 25px; 
+    border-radius: 18px; 
+    margin-bottom: 20px; 
+    box-shadow: 0 8px 20px rgba(2, 132, 199, 0.2); 
+    text-align: center; 
+}
+.page-header h1 { margin: 0 0 8px 0; font-size: 26px; }
+.page-header p { margin: 0; opacity: 0.95; font-size: 15px; color: #f0f9ff; }
+
+/* شريط التحكم */
+.controls-bar { 
+    background: #ffffff; 
+    padding: 18px; 
+    border-radius: 16px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04); 
+    border: 1px solid #e2e8f0; 
+    margin-bottom: 20px; 
+    display: flex; 
+    gap: 15px; 
+    flex-wrap: wrap; 
+    align-items: center; 
+    justify-content: space-between; 
+}
 .control-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; width: 100%; }
-.control-group label { font-weight: bold; font-size: 14px; color: #f6ad55; }
-.control-group select, .control-group button, .control-group a { padding: 8px 12px; border: 1px solid rgba(246, 173, 85, 0.3); border-radius: 8px; font-size: 14px; outline: none; background: #020617; color: #fff; }
-.control-group select { cursor: pointer; }
-.print-btn { background: #d97706; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
-.print-btn:hover { background: #b45309; }
-.home-btn { background: #334155; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; text-decoration: none; display: inline-flex; align-items: center; }
+.control-group label { font-weight: bold; font-size: 14px; color: #0369a1; }
+.control-group select, .control-group button, .control-group a { 
+    padding: 10px 14px; 
+    border: 1.5px solid #cbd5e1; 
+    border-radius: 10px; 
+    font-size: 14px; 
+    outline: none; 
+    background: #f8fafc; 
+    color: #1e293b; 
+    font-weight: 600;
+}
+.control-group select { cursor: pointer; background-color: #ffffff; }
+
+.print-btn { 
+    background: linear-gradient(135deg, #10b981, #059669); 
+    color: white !important; 
+    border: none !important; 
+    font-weight: bold; 
+    cursor: pointer; 
+    transition: 0.2s; 
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+}
+.print-btn:hover { background: #047857; }
+
+.home-btn { 
+    background: #64748b; 
+    color: white !important; 
+    border: none !important; 
+    font-weight: bold; 
+    cursor: pointer; 
+    transition: 0.2s; 
+    text-decoration: none; 
+    display: inline-flex; 
+    align-items: center; 
+}
 .home-btn:hover { background: #475569; }
-.admin-controls { display: none; background: #0f172a; border: 2px dashed rgba(246, 173, 85, 0.4); padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
-.admin-controls button { background: #d97706; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; margin: 5px; transition: 0.2s; }
-.admin-controls button:hover { background: #b45309; }
-.schedule-table-container { background: #0f172a; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); overflow-x: auto; border: 1px solid rgba(246, 173, 85, 0.15); margin-bottom: 20px; }
+
+/* تحكم الأدمن */
+.admin-controls { 
+    display: none; 
+    background: #fffbebf8; 
+    border: 2px dashed #f59e0b; 
+    padding: 18px; 
+    border-radius: 16px; 
+    margin-bottom: 20px; 
+    text-align: center; 
+}
+.admin-controls h4 { margin: 0 0 12px 0; color: #b45309; }
+.admin-controls button { 
+    background: #f59e0b; 
+    color: white; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 8px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    margin: 4px; 
+    transition: 0.2s; 
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+}
+.admin-controls button:hover { background: #d97706; }
+
+/* الجدول الحصص */
+.schedule-table-container { 
+    background: #ffffff; 
+    border-radius: 16px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
+    overflow-x: auto; 
+    border: 1px solid #e2e8f0; 
+    margin-bottom: 20px; 
+}
 table { width: 100%; border-collapse: collapse; text-align: center; min-width: 650px; }
-th, td { border: 1px solid rgba(246, 173, 85, 0.15); padding: 10px; font-size: 13px; vertical-align: middle; }
-th { background: #1e293b; color: #f6ad55; font-weight: bold; }
-tr:nth-child(even) { background: rgba(2, 6, 23, 0.3); }
+th, td { border: 1px solid #e2e8f0; padding: 12px; font-size: 14px; vertical-align: middle; }
+th { background: #f0f9ff; color: #0284c7; font-weight: bold; font-size: 15px; }
+
+/* خلفيات ملونة منوعة للأيام */
+tr:nth-child(1) td:first-child { background: #e0f2fe !important; color: #0369a1 !important; }
+tr:nth-child(2) td:first-child { background: #fef3c7 !important; color: #b45309 !important; }
+tr:nth-child(3) td:first-child { background: #dcfce7 !important; color: #15803d !important; }
+tr:nth-child(4) td:first-child { background: #fce7f3 !important; color: #be185d !important; }
+tr:nth-child(5) td:first-child { background: #f3e8ff !important; color: #6b21a8 !important; }
+
+tr:hover { background-color: #f8fafc; }
+
 .cell-content { display: flex; flex-direction: column; gap: 6px; min-width: 120px; }
-.cell-select, .cell-input { width: 100%; padding: 6px; border: 1px solid rgba(246, 173, 85, 0.2); border-radius: 6px; font-size: 12px; background: #020617; color: #fff; box-sizing: border-box; }
-.cell-view-subject { font-weight: bold; color: #f6ad55; font-size: 14px; }
-.cell-view-teacher { font-size: 12px; color: #a0aec0; background: #1e293b; padding: 3px 6px; border-radius: 4px; display: inline-block; border: 1px solid rgba(246, 173, 85, 0.1); }
-.save-schedule-btn { background: #d97706; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px; display: none; margin: 20px auto; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3); transition: 0.2s; }
-.save-schedule-btn:hover { background: #b45309; }
+.cell-select, .cell-input { 
+    width: 100%; 
+    padding: 7px; 
+    border: 1px solid #cbd5e1; 
+    border-radius: 8px; 
+    font-size: 13px; 
+    background: #ffffff; 
+    color: #1e293b; 
+    box-sizing: border-box; 
+}
+.cell-view-subject { font-weight: bold; color: #0284c7; font-size: 15px; }
+.cell-view-teacher { 
+    font-size: 12px; 
+    color: #475569; 
+    background: #f1f5f9; 
+    padding: 4px 8px; 
+    border-radius: 6px; 
+    display: inline-block; 
+    border: 1px solid #e2e8f0; 
+    font-weight: 600;
+}
+
+.save-schedule-btn { 
+    background: linear-gradient(135deg, #f59e0b, #d97706); 
+    color: white; 
+    border: none; 
+    padding: 14px 35px; 
+    border-radius: 12px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    font-size: 16px; 
+    display: none; 
+    margin: 20px auto; 
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); 
+    transition: 0.2s; 
+}
+.save-schedule-btn:hover { background: #b45309; transform: translateY(-2px); }
 
 @media(min-width: 768px) {
     .main-content { padding: 30px; }
     .control-group { width: auto; }
-    th, td { padding: 12px; font-size: 14px; }
+    th, td { padding: 14px; font-size: 14px; }
 }
 
 @media print {
@@ -58,7 +273,7 @@ tr:nth-child(even) { background: rgba(2, 6, 23, 0.3); }
     .main-content { margin: 0; padding: 0; max-width: 100%; }
     .schedule-table-container { box-shadow: none; border: 1px solid #000; overflow: visible; background: white !important; }
     th { background: #eee !important; color: #000 !important; -webkit-print-color-adjust: exact; }
-    td { border: 1px solid #000 !important; color: #000 !important; }
+    td { border: 1px solid #000 !important; color: #000 !important; background: transparent !important; }
     .cell-view-subject { color: #000 !important; }
     .cell-view-teacher { background: #eee !important; color: #000 !important; border: none !important; }
 }
@@ -89,7 +304,7 @@ tr:nth-child(even) { background: rgba(2, 6, 23, 0.3); }
     </div>
 
     <div class="admin-controls" id="adminControlsPanel">
-        <h4 style="margin: 0 0 10px 0; color: #f6ad55;">⚙️ لوحة تحكم المدير (تعديل هيكل الجدول)</h4>
+        <h4>⚙️ لوحة تحكم المدير (تعديل هيكل الجدول)</h4>
         <button onclick="window.addGrade()">+ إضافة صف دراسي</button>
         <button onclick="window.removeGrade()">- حذف صف دراسي</button>
         <button onclick="window.addSection()">+ إضافة شعبة</button>
@@ -231,7 +446,7 @@ window.renderScheduleTable = function() {
     // بناء جدول الأيام
     daysOfWeek.forEach((day, dIndex) => {
         const tr = document.createElement('tr');
-        let tdHTML = `<td style="font-weight: bold; background: #0f172a; color: #f6ad55;">${day}</td>`;
+        let tdHTML = `<td style="font-weight: bold;">${day}</td>`;
         
         for(let p = 1; p <= totalPeriods; p++) {
             const savedCell = (remoteScheduleData[grade] && remoteScheduleData[grade][section] && remoteScheduleData[grade][section][`day${dIndex}_p${p}`]) || { subject: '', teacher: '' };
@@ -364,10 +579,8 @@ window.removePeriod = function() {
     renderScheduleTable();
 };
 </script>
-    <!-- الكود الإعلاني الخاص بك من Adsterra -->
-    <script src="https://pl30567936.effectivecpmnetwork.com/75/71/e0/7571e0e12a8e91b91d02f47ecb8b87ea.js"></script>
 
-</body>
-</html>
+<script src="https://pl30567936.effectivecpmnetwork.com/75/71/e0/7571e0e12a8e91b91d02f47ecb8b87ea.js"></script>
+
 </body>
 </html>
