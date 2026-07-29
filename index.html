@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* 1️⃣ التنسيقات المفتراضية (الوضع الفاتح Light Mode) */
+        /* 1️⃣ التنسيقات الافتراضية (الوضع الفاتح Light Mode) */
         :root {
             --primary-color: #0284c7;
             --primary-hover: #0369a1;
@@ -325,30 +325,33 @@
         let db;
         let currentUser = null;
 
-        // --- ☀️🌙 برمجة التحكم بالوضع النهاري والليلي ---
+        // --- ☀️🌙 برمجة التحكم بالوضع النهاري والليلي المحدثة ---
         function applySavedTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // اعتماد القيمة المحفوظة أو إعداد النظام الافتراضي
+            const themeToApply = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
+
             const themeIcon = document.getElementById('themeIcon');
             const themeText = document.getElementById('themeText');
 
-            if (savedTheme === 'dark') {
+            if (themeToApply === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
-                if(themeIcon) themeIcon.className = 'fa-solid fa-sun';
-                if(themeText) themeText.textContent = 'الوضع النهاري';
+                if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
+                if (themeText) themeText.textContent = 'الوضع النهاري';
             } else {
                 document.documentElement.setAttribute('data-theme', 'light');
-                if(themeIcon) themeIcon.className = 'fa-solid fa-moon';
-                if(themeText) themeText.textContent = 'الوضع الليلي';
+                if (themeIcon) themeIcon.className = 'fa-solid fa-moon';
+                if (themeText) themeText.textContent = 'الوضع الليلي';
             }
         }
 
         function toggleTheme() {
             const currentTheme = document.documentElement.getAttribute('data-theme');
-            if (currentTheme === 'dark') {
-                localStorage.setItem('theme', 'light');
-            } else {
-                localStorage.setItem('theme', 'dark');
-            }
+            const newTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+            
+            localStorage.setItem('theme', newTheme);
             applySavedTheme();
         }
 
