@@ -7,85 +7,93 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --accent: #38bdf8;
-            --green: #34d399;
-            --amber: #fbbf24;
-            --rose: #fb7185;
-            --purple: #c084fc;
-            --indigo: #6366f1;
-            --text: #f8fafc;
-            --sub: #94a3b8;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --accent: #0284c7;
+            --green: #10b981;
+            --amber: #d97706;
+            --rose: #e11d48;
+            --purple: #9333ea;
+            --indigo: #4f46e5;
+            --text: #0f172a;
+            --sub: #64748b;
+            --border: #e2e8f0;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding: 20px; min-height: 100vh; }
 
         /* Header Bar */
-        .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 20px auto; background: var(--card); padding: 15px 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); gap: 15px; }
-        .header h1 { font-size: 1.4rem; color: var(--amber); display: flex; align-items: center; gap: 10px; }
-        .user-stats { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+        .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 20px auto; background: var(--card); padding: 15px 25px; border-radius: 16px; border: 1px solid var(--border); gap: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .header h1 { font-size: 1.4rem; color: var(--indigo); display: flex; align-items: center; gap: 10px; }
+        .user-stats { display: flex; align-items: center; gap: 15px; background: #f8fafc; padding: 8px 16px; border-radius: 12px; border: 1px solid var(--border); }
         .score-box { font-size: 1.1rem; font-weight: bold; color: var(--green); display: flex; align-items: center; gap: 6px; }
-        .btn-home { background: #4f46e5; color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; transition: 0.2s; }
+        .btn-home { background: var(--indigo); color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; transition: 0.2s; }
         .btn-home:hover { opacity: 0.9; }
 
         /* Top Ad Banner */
-        .ad-banner-top { max-width: 1200px; margin: 0 auto 25px auto; background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(192, 132, 252, 0.1)); border: 1px dashed var(--accent); border-radius: 12px; min-height: 80px; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--sub); position: relative; overflow: hidden; }
-        .ad-tag { position: absolute; top: 4px; right: 8px; font-size: 0.65rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+        .ad-banner-top { max-width: 1200px; margin: 0 auto 25px auto; background: linear-gradient(135deg, rgba(2, 132, 199, 0.08), rgba(147, 51, 234, 0.08)); border: 1px dashed var(--accent); border-radius: 12px; min-height: 80px; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--sub); position: relative; overflow: hidden; }
+        .ad-tag { position: absolute; top: 4px; right: 8px; font-size: 0.65rem; background: rgba(0,0,0,0.05); padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
 
         /* Main Grid Layout */
-        .main-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 320px; gap: 25px; }
+        .main-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 340px; gap: 25px; }
         @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-        .card { background: var(--card); border-radius: 18px; padding: 20px; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .card { background: var(--card); border-radius: 18px; padding: 20px; border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: 0.3s; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03); }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08); }
 
         .badge { position: absolute; top: 15px; left: 15px; padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; }
-        .easy { background: rgba(52, 211, 153, 0.2); color: var(--green); }
-        .medium { background: rgba(251, 191, 36, 0.2); color: var(--amber); }
-        .hard { background: rgba(251, 113, 133, 0.2); color: var(--rose); }
+        .easy { background: #d1fae5; color: #047857; }
+        .medium { background: #fef3c7; color: #b45309; }
+        .hard { background: #ffe4e6; color: #be123c; }
 
-        .icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 15px; background: rgba(255,255,255,0.05); }
-        .title { font-size: 1.2rem; margin-bottom: 8px; font-weight: bold; }
+        .icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 15px; background: #f8fafc; }
+        .title { font-size: 1.2rem; margin-bottom: 8px; font-weight: bold; color: var(--text); }
         .desc { font-size: 0.88rem; color: var(--sub); margin-bottom: 20px; line-height: 1.4; }
-        .btn-play { background: var(--green); color: #0f172a; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; transition: 0.2s; }
+        .btn-play { background: var(--green); color: #ffffff; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; transition: 0.2s; }
         .btn-play:hover { opacity: 0.9; }
 
         /* Sidebar Leaderboard */
         .sidebar { display: flex; flex-direction: column; gap: 20px; }
-        .leaderboard-card { background: var(--card); border-radius: 18px; padding: 20px; border: 1px solid rgba(255,255,255,0.08); }
-        .leaderboard-card h3 { color: var(--amber); font-size: 1.2rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .leader-list { list-style: none; }
-        .leader-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .leader-item:last-child { border-bottom: none; }
-        .rank { font-weight: bold; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; background: rgba(255,255,255,0.1); margin-left: 8px; }
-        .top1 .rank { background: var(--amber); color: #000; }
-        .top2 .rank { background: #94a3b8; color: #000; }
-        .top3 .rank { background: #b45309; color: #fff; }
-        .leader-info { display: flex; align-items: center; }
-        .leader-score { color: var(--accent); font-weight: bold; font-size: 0.95rem; }
+        .leaderboard-card { background: var(--card); border-radius: 18px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03); }
+        .leaderboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .leaderboard-card h3 { color: var(--amber); font-size: 1.1rem; display: flex; align-items: center; gap: 8px; margin: 0; }
+        .btn-reset-lb { background: none; border: none; color: var(--sub); cursor: pointer; font-size: 0.8rem; text-decoration: underline; }
+        .btn-reset-lb:hover { color: var(--rose); }
 
-        .ad-banner-sidebar { background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.2); border-radius: 16px; min-height: 250px; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--sub); position: relative; padding: 15px; }
+        .leader-list { list-style: none; }
+        .leader-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .leader-item:last-child { border-bottom: none; }
+        .rank { font-weight: bold; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; background: #f1f5f9; color: var(--text); margin-left: 8px; }
+        .top1 .rank { background: #fef08a; color: #854d0e; }
+        .top2 .rank { background: #e2e8f0; color: #475569; }
+        .top3 .rank { background: #ffedd5; color: #9a3412; }
+        .leader-info { display: flex; align-items: center; }
+        .leader-actions { display: flex; align-items: center; gap: 8px; }
+        .leader-score { color: var(--accent); font-weight: bold; font-size: 0.9rem; }
+        .btn-delete-user { background: rgba(225, 29, 72, 0.1); color: var(--rose); border: none; width: 24px; height: 24px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; transition: 0.2s; }
+        .btn-delete-user:hover { background: var(--rose); color: #fff; }
+
+        .ad-banner-sidebar { background: #ffffff; border: 1px dashed var(--border); border-radius: 16px; min-height: 250px; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--sub); position: relative; padding: 15px; }
 
         /* Modal Styles */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999; align-items: center; justify-content: center; padding: 15px; overflow-y: auto; }
-        .modal-box { background: var(--card); border-radius: 20px; padding: 25px; max-width: 520px; width: 100%; text-align: center; border: 1px solid rgba(255,255,255,0.1); position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 15px; overflow-y: auto; }
+        .modal-box { background: var(--card); border-radius: 20px; padding: 25px; max-width: 520px; width: 100%; text-align: center; border: 1px solid var(--border); position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
         .btn-close { position: absolute; top: 15px; left: 15px; background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; z-index: 10; }
 
-        .opt-btn { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 12px; border-radius: 10px; font-size: 1.1rem; cursor: pointer; width: 100%; margin: 6px 0; transition: 0.2s; font-weight: bold; }
-        .opt-btn:hover { background: var(--accent); color: #000; }
+        .opt-btn { background: #f8fafc; color: var(--text); border: 1px solid var(--border); padding: 12px; border-radius: 10px; font-size: 1.1rem; cursor: pointer; width: 100%; margin: 6px 0; transition: 0.2s; font-weight: bold; }
+        .opt-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
         /* Crossword Dynamic Styles */
-        .crossword-grid { display: grid; gap: 5px; justify-content: center; margin: 15px 0; background: #0f172a; padding: 10px; border-radius: 12px; }
-        .cw-cell { width: 38px; height: 38px; background-color: #1e293b; border-radius: 6px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .crossword-grid { display: grid; gap: 5px; justify-content: center; margin: 15px 0; background: #e2e8f0; padding: 10px; border-radius: 12px; }
+        .cw-cell { width: 38px; height: 38px; background-color: #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: center; position: relative; }
         .cw-cell.active { background-color: #ffffff; }
         .cw-cell input { width: 100%; height: 100%; border: none; background: transparent; text-align: center; font-size: 1.1rem; font-weight: bold; color: #0f172a; outline: none; }
         .cw-number { position: absolute; top: 2px; right: 3px; font-size: 0.55rem; color: #64748b; font-weight: bold; }
 
         .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 15px 0; }
-        .mem-card { background: var(--accent); height: 65px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; cursor: pointer; color: #000; font-weight: bold; }
+        .mem-card { background: var(--accent); height: 65px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; cursor: pointer; color: #fff; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -216,7 +224,10 @@
         <div class="sidebar">
             <!-- Global Leaderboard -->
             <div class="leaderboard-card">
-                <h3><i class="fa-solid fa-trophy"></i> لوحة متصدري الوادي</h3>
+                <div class="leaderboard-header">
+                    <h3><i class="fa-solid fa-trophy"></i> لوحة المتصدرين</h3>
+                    <button class="btn-reset-lb" onclick="resetLeaderboard()" title="استعادة القائمة الافتراضية">إعادة ضبط</button>
+                </div>
                 <ul class="leader-list" id="leaderboardList"></ul>
             </div>
 
@@ -237,42 +248,79 @@
     </div>
 
     <script>
-        // Score Engine & Global Leaderboard
+        // Score Engine & Global Leaderboard Logic
         let totalScore = parseInt(localStorage.getItem('alwadi_user_score')) || 0;
         document.getElementById('userTotalScore').innerText = totalScore;
 
-        const globalLeaders = [
-            { name: "أحمد علي", score: 450 },
-            { name: "سارة محمود", score: 380 },
-            { name: "عمر خالد", score: 310 },
-            { name: "أنت (الطالب)", score: totalScore },
-            { name: "مريم بدر", score: 190 }
+        const defaultLeaders = [
+            { id: 1, name: "أحمد علي", score: 450 },
+            { id: 2, name: "سارة محمود", score: 380 },
+            { id: 3, name: "عمر خالد", score: 310 },
+            { id: 4, name: "أنت (الطالب)", score: totalScore, isUser: true },
+            { id: 5, name: "مريم بدر", score: 190 }
         ];
+
+        let globalLeaders = JSON.parse(localStorage.getItem('alwadi_leaderboard')) || defaultLeaders;
 
         function addPoints(pts) {
             totalScore += pts;
             localStorage.setItem('alwadi_user_score', totalScore);
             document.getElementById('userTotalScore').innerText = totalScore;
-            updateLeaderboard();
+            
+            // تحديث نقاط الطالب داخل قائمة المتصدرين
+            let userObj = globalLeaders.find(l => l.isUser);
+            if (userObj) {
+                userObj.score = totalScore;
+            } else {
+                globalLeaders.push({ id: Date.now(), name: "أنت (الطالب)", score: totalScore, isUser: true });
+            }
+            saveAndUpdateLeaderboard();
         }
 
-        function updateLeaderboard() {
-            const userIndex = globalLeaders.findIndex(l => l.name.includes("أنت"));
-            if(userIndex !== -1) globalLeaders[userIndex].score = totalScore;
+        function deletePlayer(id) {
+            globalLeaders = globalLeaders.filter(player => player.id !== id);
+            saveAndUpdateLeaderboard();
+        }
+
+        function resetLeaderboard() {
+            if(confirm("هل تريد إعادة ضبط لوحة المتصدرين للوضع الافتراضي؟")) {
+                globalLeaders = JSON.parse(JSON.stringify(defaultLeaders));
+                let userObj = globalLeaders.find(l => l.isUser);
+                if(userObj) userObj.score = totalScore;
+                saveAndUpdateLeaderboard();
+            }
+        }
+
+        function saveAndUpdateLeaderboard() {
+            localStorage.setItem('alwadi_leaderboard', JSON.stringify(globalLeaders));
+            
+            // ترتيب اللاعبين حسب النقاط
             globalLeaders.sort((a, b) => b.score - a.score);
 
             const listEl = document.getElementById('leaderboardList');
+            if (globalLeaders.length === 0) {
+                listEl.innerHTML = `<li style="text-align:center; padding:15px; color:var(--sub); font-size:0.9rem;">لا يوجد لاعبين حالياً</li>`;
+                return;
+            }
+
             listEl.innerHTML = globalLeaders.map((player, idx) => `
                 <li class="leader-item ${idx < 3 ? 'top' + (idx+1) : ''}">
                     <div class="leader-info">
                         <span class="rank">${idx + 1}</span>
-                        <span>${player.name}</span>
+                        <span style="${player.isUser ? 'font-weight:bold; color:var(--indigo);' : ''}">${player.name}</span>
                     </div>
-                    <span class="leader-score">${player.score} نقطة</span>
+                    <div class="leader-actions">
+                        <span class="leader-score">${player.score} ن</span>
+                        <button class="btn-delete-user" onclick="deletePlayer(${player.id})" title="حذف اللاعب">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
                 </li>
             `).join('');
         }
-        updateLeaderboard();
+        
+        // Initial render
+        saveAndUpdateLeaderboard();
 
         // Modal Router
         const modal = document.getElementById('gameModal');
@@ -322,7 +370,7 @@
                     clearInterval(gameTimer);
                     container.innerHTML = `
                         <h2 style="color:var(--rose);">⌛ انتهى الوقت!</h2>
-                        <p style="margin:15px 0;">جمعت <b>${secScore}</b> إجابات صحيحة!</p>
+                        <p style="margin:15px 0; color:var(--sub);">جمعت <b style="color:var(--text);">${secScore}</b> إجابات صحيحة!</p>
                         <button class="opt-btn" onclick="initSecondsGame()">إعادة التحدي 🔄</button>
                     `;
                 }
@@ -332,8 +380,8 @@
             let item = secondsBank[Math.floor(Math.random() * secondsBank.length)];
             container.innerHTML = `
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <span style="color:var(--amber);">الوقت: <b id="secTimer">${secTimeLeft}</b> ثانية</span>
-                    <span style="color:var(--green);">نقاط الجولة: ${secScore}</span>
+                    <span style="color:var(--amber); font-weight:bold;">الوقت: <b id="secTimer">${secTimeLeft}</b> ثانية</span>
+                    <span style="color:var(--green); font-weight:bold;">نقاط الجولة: ${secScore}</span>
                 </div>
                 <h3 style="margin:15px 0;">${item.q}</h3>
                 ${item.opts.map(o => `<button class="opt-btn" onclick="checkSecAns('${o}', '${item.ans}')">${o}</button>`).join('')}
@@ -408,7 +456,7 @@
             let data = masterCwBank[lvl] || masterCwBank[1];
             container.innerHTML = `
                 <h3 style="color:var(--amber);">✏️ الكلمات المتقاطعة - المستوى ${lvl} من 5</h3>
-                <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:10px; margin:10px 0; font-size:0.85rem; text-align:right;">
+                <div style="background:#f1f5f9; padding:10px; border-radius:10px; margin:10px 0; font-size:0.85rem; text-align:right; border:1px solid var(--border);">
                     ${data.clues.map(c => `<div>${c}</div>`).join('')}
                 </div>
                 <div class="crossword-grid" style="grid-template-columns: repeat(${data.size}, 38px);">
@@ -425,7 +473,7 @@
                         return `<div class="cw-cell"></div>`;
                     }).join('')}
                 </div>
-                <button class="opt-btn" style="background:var(--green); color:#000;" onclick="checkCwAnswers(${lvl})">التحقق من الحل ✅</button>
+                <button class="opt-btn" style="background:var(--green); color:#fff; border:none;" onclick="checkCwAnswers(${lvl})">التحقق من الحل ✅</button>
             `;
         }
 
@@ -599,7 +647,7 @@
                 <h2 style="color:var(--accent);">🧩 رتب الحروف:</h2>
                 <p style="color:var(--sub); margin:10px 0;">تلميح: ${cur.hint}</p>
                 <div style="font-size:2.5rem; margin:15px 0; font-weight:bold; color:var(--amber);">${mixed}</div>
-                <input type="text" id="spInput" style="padding:10px; border-radius:8px; border:none; font-size:1.2rem; text-align:center; width:180px;" placeholder="اكتب الكلمة">
+                <input type="text" id="spInput" style="padding:10px; border-radius:8px; border:1px solid var(--border); font-size:1.2rem; text-align:center; width:180px;" placeholder="اكتب الكلمة">
                 <br><br>
                 <button class="btn-play" onclick="checkSpell('${cur.correct}')">تحقق</button>
                 <div id="spRes" style="margin-top:15px; font-size:1.2rem; font-weight:bold;"></div>
