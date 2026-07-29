@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الوادي التعليمية - مكتبة المرحلة الابتدائية</title>
+    <title>منصة الوادي التعليمية - مكتبة المرحلة الابتدائية والترفيه</title>
     
     <!-- ⬇️ كود إعلانات Adsterra -->
     <script src="https://pl30567680.effectivecpmnetwork.com/0c/63/61/0c63614dfd4b8d6396d805d790b93258.js"></script>
@@ -53,13 +53,14 @@
         }
         .btn-back-platform:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
 
-        /* لوحة إضافة الكتب */
+        /* لوحة إضافة الكتب (مخفية للطلاب) */
         .admin-panel { 
             background: #f0fdf4; 
             border: 1px solid #bbf7d0; 
             border-radius: var(--radius-md); 
             padding: 15px; 
             margin: 20px 0; 
+            display: none; /* يتم إظهارها للمعلم/الأدمن فقط عبر JS */
         }
         .admin-title { font-size: 15px; font-weight: 700; color: #166534; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .admin-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
@@ -70,11 +71,11 @@
         .btn-admin:hover { background-color: var(--admin-hover); }
 
         /* قسم الهيدر الداخلي */
-        .hero-section { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: white; padding: 25px 15px; border-radius: var(--radius-md); margin-bottom: 25px; text-align: center; }
+        .hero-section { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: white; padding: 25px 15px; border-radius: var(--radius-md); margin-bottom: 25px; text-text-align: center; text-align: center; }
         .hero-section h2 { font-size: 20px; margin-bottom: 5px; }
         .hero-section p { font-size: 13px; opacity: 0.9; }
 
-        /* شبكة بطاقات الصفوف الدراسية */
+        /* شبكة بطاقات الصفوف والأقسام */
         .classes-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
@@ -102,13 +103,15 @@
             justify-content: space-between;
         }
 
-        /* خلفيات متدرجة للصفوف */
+        /* خلفيات متدرجة للصفوف والأقسام جديدة */
         .class-card[data-class="first"] .class-header { background: linear-gradient(135deg, #ff7e5f, #feb47b); }
         .class-card[data-class="second"] .class-header { background: linear-gradient(135deg, #11998e, #38ef7d); }
         .class-card[data-class="third"] .class-header { background: linear-gradient(135deg, #fc4a1a, #f7b733); }
         .class-card[data-class="fourth"] .class-header { background: linear-gradient(135deg, #8e2de2, #4a00e0); }
         .class-card[data-class="fifth"] .class-header { background: linear-gradient(135deg, #f80759, #bc4e9c); }
         .class-card[data-class="sixth"] .class-header { background: linear-gradient(135deg, #00c6ff, #0072ff); }
+        .class-card[data-class="story"] .class-header { background: linear-gradient(135deg, #ec4899, #8b5cf6); }
+        .class-card[data-class="drawing"] .class-header { background: linear-gradient(135deg, #10b981, #059669); }
 
         .books-list {
             padding: 15px;
@@ -167,6 +170,7 @@
             gap: 4px;
             transition: 0.2s;
             cursor: pointer;
+            border: none;
         }
 
         .btn-download:hover { background-color: var(--primary-hover); }
@@ -191,7 +195,7 @@
         <div class="container header-wrapper">
             <a href="#" class="brand-logo">
                 <i class="fa-solid fa-shapes"></i>
-                <span>مكتبة المرحلة الابتدائية</span>
+                <span>مكتبة المرحلة الابتدائية والترفيه</span>
             </a>
             <a href="index.html" class="btn-back-platform">
                 <i class="fa-solid fa-house"></i> المنصة الرئيسية
@@ -201,18 +205,18 @@
 
     <main class="container">
 
-        <!-- لوحة إضافة الكتب -->
-        <section class="admin-panel">
+        <!-- لوحة إضافة الكتب (تظهر فقط للمعلم/الأدمن) -->
+        <section class="admin-panel" id="adminPanel">
             <div class="admin-title">
-                <i class="fa-solid fa-user-shield"></i> إضافة كتاب جديد إلى أحد الصفوف (PDF بأي حجم)
+                <i class="fa-solid fa-user-shield"></i> إضافة عنصر جديد (كتاب، قصة، تلوين) بأي حجم
             </div>
             <form id="addBookForm" class="admin-form" onsubmit="uploadBookFromDevice(event)">
                 <div class="form-group">
-                    <label>اسم الكتاب / المادة</label>
-                    <input type="text" id="bookTitleInput" class="form-control" placeholder="مثال: قراءتي" required>
+                    <label>اسم الملف / الكتاب / القصة</label>
+                    <input type="text" id="bookTitleInput" class="form-control" placeholder="مثال: قصة السندباد / كراسة التلوين" required>
                 </div>
                 <div class="form-group">
-                    <label>الصف الدراسي</label>
+                    <label>القسم / الصف الدراسي</label>
                     <select id="bookClassSelect" class="form-control">
                         <option value="first">الأول الابتدائي</option>
                         <option value="second">الثاني الابتدائي</option>
@@ -220,6 +224,8 @@
                         <option value="fourth">الرابع الابتدائي</option>
                         <option value="fifth">الخامس الابتدائي</option>
                         <option value="sixth">السادس الابتدائي</option>
+                        <option value="story">📖 قسم القصص والروايات</option>
+                        <option value="drawing">🎨 قسم الرسم والتلوين</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -227,18 +233,19 @@
                     <input type="file" id="pdfFileInput" class="form-control" accept="application/pdf" required>
                 </div>
                 <button type="submit" id="btnSubmit" class="btn-admin">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> رفع وحفظ الكتاب في الصف المحدد
+                    <i class="fa-solid fa-cloud-arrow-up"></i> رفع وحفظ الملف في القسم المحدد
                 </button>
             </form>
         </section>
 
         <section class="hero-section">
-            <h2>مناهج المرحلة الابتدائية</h2>
-            <p>اختر الصف الدراسي لتحميل الكتب والمناهج المتاحة</p>
+            <h2>المناهج والقصص والأنشطة الترفيهية</h2>
+            <p>اختر القسم المطلوب لتحميل المناهج الدراسية، القصص، وأنشطة التلوين المتاحة</p>
         </section>
 
-        <!-- شبكة الصفوف الدراسية -->
+        <!-- شبكة الصفوف والأقسام -->
         <div class="classes-grid" id="classesContainer">
+            <!-- الصفوف الدراسية -->
             <div class="class-card" data-class="first">
                 <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الأول الابتدائي</span></div>
                 <div class="books-list" id="list-first"></div>
@@ -263,6 +270,16 @@
                 <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> السادس الابتدائي</span></div>
                 <div class="books-list" id="list-sixth"></div>
             </div>
+
+            <!-- أقسام الترفيه الجديدة -->
+            <div class="class-card" data-class="story">
+                <div class="class-header"><span><i class="fa-solid fa-book-open-reader"></i> 📖 قسم القصص والروايات</span></div>
+                <div class="books-list" id="list-story"></div>
+            </div>
+            <div class="class-card" data-class="drawing">
+                <div class="class-header"><span><i class="fa-solid fa-palette"></i> 🎨 قسم الرسم والتلوين</span></div>
+                <div class="books-list" id="list-drawing"></div>
+            </div>
         </div>
 
     </main>
@@ -271,9 +288,10 @@
         const DB_NAME = 'AlWaddyBooksDB';
         const DB_VERSION = 1;
         const STORE_NAME = 'books';
-        const classKeys = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'];
+        const classKeys = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'story', 'drawing'];
 
         let db;
+        let currentUser = null;
 
         // تهيئة قاعدة البيانات IndexedDB
         function initDB() {
@@ -297,6 +315,20 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
+            // فحص رتبة المستخدم الحالي لإخفاء الأدوات عن الطالب
+            try {
+                const userString = localStorage.getItem("currentUser");
+                if (userString) currentUser = JSON.parse(userString);
+            } catch(e) {}
+
+            const adminPanel = document.getElementById('adminPanel');
+            // إذا لم يكن الحساب طالباً (معلم أو أدمن)، يظهر قسم الرفع
+            if (currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin')) {
+                adminPanel.style.display = 'block';
+            } else {
+                adminPanel.style.display = 'none'; // مخفي تماماً عن الطالب
+            }
+
             await initDB();
             renderBooks();
         });
@@ -315,7 +347,8 @@
 
         async function renderBooks() {
             const books = await getAllBooks();
-            
+            const isStaff = currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin');
+
             classKeys.forEach(key => {
                 const listElem = document.getElementById(`list-${key}`);
                 if (listElem) listElem.innerHTML = '';
@@ -323,26 +356,36 @@
 
             classKeys.forEach(key => {
                 const listElem = document.getElementById(`list-${key}`);
+                if (!listElem) return;
+
                 const classBooks = books.filter(b => b.category === key);
 
                 if (classBooks.length === 0) {
-                    listElem.innerHTML = `<div class="empty-msg">لا توجد كتب مضافة لهذا الصف حالياً.</div>`;
+                    listElem.innerHTML = `<div class="empty-msg">لا توجد عناصر مضافة لهذا القسم حالياً.</div>`;
                 } else {
                     classBooks.forEach(book => {
                         const bookItem = document.createElement('div');
                         bookItem.className = 'book-item';
+                        
+                        // اختيار الأيقونة المناسبة حسب نوع القسم
+                        let iconClass = 'fa-file-pdf';
+                        let iconColor = '#ef4444';
+                        if (key === 'story') { iconClass = 'fa-book-open-reader'; iconColor = '#ec4899'; }
+                        else if (key === 'drawing') { iconClass = 'fa-palette'; iconColor = '#10b981'; }
+
                         bookItem.innerHTML = `
                             <div class="book-item-title">
-                                <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+                                <i class="fa-solid ${iconClass}" style="color: ${iconColor};"></i>
                                 <span>${book.title}</span>
                             </div>
                             <div class="book-actions">
                                 <button onclick="downloadBook(${book.id})" class="btn-download">
                                     <i class="fa-solid fa-download"></i> تحميل
                                 </button>
-                                <button onclick="deleteBook(${book.id})" class="btn-delete" title="حذف الكتاب">
+                                ${isStaff ? `
+                                <button onclick="deleteBook(${book.id})" class="btn-delete" title="حذف">
                                     <i class="fa-solid fa-trash"></i>
-                                </button>
+                                </button>` : ''}
                             </div>
                         `;
                         listElem.appendChild(bookItem);
@@ -351,7 +394,7 @@
             });
         }
 
-        // رفع وحفظ الملف الكبير في IndexedDB
+        // رفع وحفظ الملف في IndexedDB
         async function uploadBookFromDevice(event) {
             event.preventDefault();
 
@@ -368,13 +411,13 @@
             const file = fileInput.files[0];
 
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري حفظ الملف الكبير...`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...`;
 
             const newBook = {
                 id: Date.now(),
                 title: title,
                 category: category,
-                fileData: file // نُخزن الملف نفسه مباشرة بدون قيود على الحجم
+                fileData: file
             };
 
             const transaction = db.transaction([STORE_NAME], 'readwrite');
@@ -383,20 +426,20 @@
 
             request.onsuccess = () => {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> رفع وحفظ الكتاب في الصف المحدد`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> رفع وحفظ الملف في القسم المحدد`;
                 renderBooks();
                 document.getElementById('addBookForm').reset();
-                alert("تمت إضافة الكتاب بنجاح وبأي حجم!");
+                alert("تمت إضافة العنصر بنجاح!");
             };
 
             request.onerror = () => {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> رفع وحفظ الكتاب في الصف المحدد`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> رفع وحفظ الملف في القسم المحدد`;
                 alert("حدث خطأ أثناء الحفظ.");
             };
         }
 
-        // تحميل الكتاب المظبوط حجمه
+        // تحميل الملف
         async function downloadBook(bookId) {
             const transaction = db.transaction([STORE_NAME], 'readonly');
             const store = transaction.objectStore(STORE_NAME);
@@ -417,9 +460,9 @@
             };
         }
 
-        // حذف الكتاب
+        // حذف الملف
         async function deleteBook(bookId) {
-            if (confirm("هل أنت متأكد من رغبتك في حذف هذا الكتاب؟")) {
+            if (confirm("هل أنت متأكد من رغبتك في حذف هذا العنصر؟")) {
                 const transaction = db.transaction([STORE_NAME], 'readwrite');
                 const store = transaction.objectStore(STORE_NAME);
                 const request = store.delete(bookId);
