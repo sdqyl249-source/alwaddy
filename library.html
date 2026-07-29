@@ -166,6 +166,7 @@
             align-items: center;
             gap: 4px;
             transition: 0.2s;
+            cursor: pointer;
         }
 
         .btn-download:hover { background-color: var(--primary-hover); }
@@ -200,10 +201,10 @@
 
     <main class="container">
 
-        <!-- لوحة إضافة الكتب ظاهر دائماً لتستطيع إضافة الكتب بحرية -->
+        <!-- لوحة إضافة الكتب -->
         <section class="admin-panel">
             <div class="admin-title">
-                <i class="fa-solid fa-user-shield"></i> إضافة كتاب جديد إلى أحد الصفوف (PDF)
+                <i class="fa-solid fa-user-shield"></i> إضافة كتاب جديد إلى أحد الصفوف (PDF بأي حجم)
             </div>
             <form id="addBookForm" class="admin-form" onsubmit="uploadBookFromDevice(event)">
                 <div class="form-group">
@@ -225,7 +226,7 @@
                     <label>اختر ملف PDF من جهازك</label>
                     <input type="file" id="pdfFileInput" class="form-control" accept="application/pdf" required>
                 </div>
-                <button type="submit" class="btn-admin">
+                <button type="submit" id="btnSubmit" class="btn-admin">
                     <i class="fa-solid fa-cloud-arrow-up"></i> رفع وحفظ الكتاب في الصف المحدد
                 </button>
             </form>
@@ -238,84 +239,88 @@
 
         <!-- شبكة الصفوف الدراسية -->
         <div class="classes-grid" id="classesContainer">
-            
-            <!-- الصف الأول -->
             <div class="class-card" data-class="first">
-                <div class="class-header">
-                    <span><i class="fa-solid fa-graduation-cap"></i> الأول الابتدائي</span>
-                </div>
+                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الأول الابتدائي</span></div>
                 <div class="books-list" id="list-first"></div>
             </div>
-
-            <!-- الصف الثاني -->
             <div class="class-card" data-class="second">
-                <div class="class-header">
-                    <span><i class="fa-solid fa-graduation-cap"></i> الثاني الابتدائي</span>
-                </div>
+                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الثاني الابتدائي</span></div>
                 <div class="books-list" id="list-second"></div>
             </div>
-
-            <!-- الصف الثالث -->
             <div class="class-card" data-class="third">
-                <div class="class-header">
-                    <span><i class="fa-solid fa-graduation-cap"></i> الثالث الابتدائي</span>
-                </div>
+                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الثالث الابتدائي</span></div>
                 <div class="books-list" id="list-third"></div>
             </div>
-
-            <!-- الصف الرابع -->
             <div class="class-card" data-class="fourth">
-                <div class="class-header">
-                    <span><i class="fa-solid fa-graduation-cap"></i> الرابع الابتدائي</span>
-                </div>
+                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الرابع الابتدائي</span></div>
                 <div class="books-list" id="list-fourth"></div>
             </div>
-
-            <!-- الصف الخامس -->
             <div class="class-card" data-class="fifth">
-                <div class="class-header">
-                    <span><i class="fa-solid fa-graduation-cap"></i> الخامس الابتدائي</span>
-                </div>
+                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الخامس الابتدائي</span></div>
                 <div class="books-list" id="list-fifth"></div>
             </div>
-
-            <!-- الصف السادس -->
             <div class="class-card" data-class="sixth">
-                <div class="class-header">
-                    <span><i class="fa-solid fa-graduation-cap"></i> السادس الابتدائي</span>
-                </div>
+                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> السادس الابتدائي</span></div>
                 <div class="books-list" id="list-sixth"></div>
             </div>
-
         </div>
 
     </main>
 
     <script>
-        const STORAGE_KEY = 'alwaddy_primary_books_v2';
+        const DB_NAME = 'AlWaddyBooksDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'books';
         const classKeys = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'];
 
-        document.addEventListener('DOMContentLoaded', loadSavedBooks);
+        let db;
 
-        function getStoredBooks() {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            return stored ? JSON.parse(stored) : []; // قائمة فارغة افتراضياً
+        // تهيئة قاعدة البيانات IndexedDB
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                
+                request.onupgradeneeded = (e) => {
+                    db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                    }
+                };
+
+                request.onsuccess = (e) => {
+                    db = e.target.result;
+                    resolve(db);
+                };
+
+                request.onerror = (e) => reject('خطأ في فتح قاعدة البيانات');
+            });
         }
 
-        function loadSavedBooks() {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initDB();
             renderBooks();
+        });
+
+        // جلب كافة الكتب من قاعدة البيانات
+        function getAllBooks() {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.getAll();
+
+                request.onsuccess = () => resolve(request.result || []);
+                request.onerror = () => reject('فشل جلب الكتب');
+            });
         }
 
-        function renderBooks() {
-            const books = getStoredBooks();
+        async function renderBooks() {
+            const books = await getAllBooks();
             
-            // تفريغ كافة القوائم أولاً
             classKeys.forEach(key => {
                 const listElem = document.getElementById(`list-${key}`);
                 if (listElem) listElem.innerHTML = '';
             });
 
-            // توزيع الكتب على القوائم بحسب الصف
             classKeys.forEach(key => {
                 const listElem = document.getElementById(`list-${key}`);
                 const classBooks = books.filter(b => b.category === key);
@@ -332,9 +337,9 @@
                                 <span>${book.title}</span>
                             </div>
                             <div class="book-actions">
-                                <a href="${book.fileData}" download="${book.title}.pdf" class="btn-download">
+                                <button onclick="downloadBook(${book.id})" class="btn-download">
                                     <i class="fa-solid fa-download"></i> تحميل
-                                </a>
+                                </button>
                                 <button onclick="deleteBook(${book.id})" class="btn-delete" title="حذف الكتاب">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -346,12 +351,14 @@
             });
         }
 
-        function uploadBookFromDevice(event) {
+        // رفع وحفظ الملف الكبير في IndexedDB
+        async function uploadBookFromDevice(event) {
             event.preventDefault();
 
             const title = document.getElementById('bookTitleInput').value.trim();
             const category = document.getElementById('bookClassSelect').value;
             const fileInput = document.getElementById('pdfFileInput');
+            const submitBtn = document.getElementById('btnSubmit');
 
             if (fileInput.files.length === 0) {
                 alert("يرجى اختيار ملف PDF من جهازك أولاً!");
@@ -359,46 +366,65 @@
             }
 
             const file = fileInput.files[0];
-            
-            // تنبيه حجم الملف لحفظ المساحة
-            if (file.size > 5 * 1024 * 1024) { 
-                alert("حجم الملف كبير جداً للتخزين المحلي. يرجى اختيار ملف بحجم أقل من 5 ميغابايت.");
-                return;
-            }
 
-            const reader = new FileReader();
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري حفظ الملف الكبير...`;
 
-            reader.onload = function(e) {
-                const fileBase64 = e.target.result;
-                const newBook = {
-                    id: Date.now(),
-                    title: title,
-                    category: category,
-                    fileData: fileBase64
-                };
-
-                const currentBooks = getStoredBooks();
-                currentBooks.unshift(newBook);
-
-                try {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentBooks));
-                    renderBooks();
-                    document.getElementById('addBookForm').reset();
-                    alert("تمت إضافة الكتاب بنجاح للبطاقة الخاصة به!");
-                } catch (err) {
-                    alert("تعذر الحفظ: مساحة التخزين المحلية ممتلئة. حاول حذف بعض الكتب القديمة.");
-                }
+            const newBook = {
+                id: Date.now(),
+                title: title,
+                category: category,
+                fileData: file // نُخزن الملف نفسه مباشرة بدون قيود على الحجم
             };
 
-            reader.readAsDataURL(file);
+            const transaction = db.transaction([STORE_NAME], 'readwrite');
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.add(newBook);
+
+            request.onsuccess = () => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> رفع وحفظ الكتاب في الصف المحدد`;
+                renderBooks();
+                document.getElementById('addBookForm').reset();
+                alert("تمت إضافة الكتاب بنجاح وبأي حجم!");
+            };
+
+            request.onerror = () => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> رفع وحفظ الكتاب في الصف المحدد`;
+                alert("حدث خطأ أثناء الحفظ.");
+            };
         }
 
-        function deleteBook(bookId) {
+        // تحميل الكتاب المظبوط حجمه
+        async function downloadBook(bookId) {
+            const transaction = db.transaction([STORE_NAME], 'readonly');
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.get(bookId);
+
+            request.onsuccess = () => {
+                const book = request.result;
+                if (book) {
+                    const url = URL.createObjectURL(book.fileData);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${book.title}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+            };
+        }
+
+        // حذف الكتاب
+        async function deleteBook(bookId) {
             if (confirm("هل أنت متأكد من رغبتك في حذف هذا الكتاب؟")) {
-                let currentBooks = getStoredBooks();
-                currentBooks = currentBooks.filter(b => b.id !== bookId);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(currentBooks));
-                renderBooks();
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.delete(bookId);
+
+                request.onsuccess = () => renderBooks();
             }
         }
     </script>
