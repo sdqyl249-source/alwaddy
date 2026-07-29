@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الوادي - الألعاب التعليمية المتجددة</title>
+    <title>منصة الوادي - الألعاب التعليمية التفاعلية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -21,11 +21,24 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding: 20px; min-height: 100vh; }
 
-        .header { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 30px auto; background: var(--card); padding: 15px 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
+        /* Header Bar */
+        .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 20px auto; background: var(--card); padding: 15px 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); gap: 15px; }
         .header h1 { font-size: 1.4rem; color: var(--amber); display: flex; align-items: center; gap: 10px; }
-        .btn-home { background: #4f46e5; color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; }
+        .user-stats { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+        .score-box { font-size: 1.1rem; font-weight: bold; color: var(--green); display: flex; align-items: center; gap: 6px; }
+        .btn-home { background: #4f46e5; color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 10px; font-weight: bold; transition: 0.2s; }
+        .btn-home:hover { opacity: 0.9; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+        /* Strategic Ad Banner Top */
+        .ad-banner-top { max-width: 1200px; margin: 0 auto 25px auto; background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(192, 132, 252, 0.1)); border: 1px dashed var(--accent); border-radius: 12px; min-height: 80px; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--sub); position: relative; overflow: hidden; }
+        .ad-tag { position: absolute; top: 4px; right: 8px; font-size: 0.65rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+
+        /* Layout Container */
+        .main-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 320px; gap: 25px; }
+        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } }
+
+        /* Games Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
         .card { background: var(--card); border-radius: 18px; padding: 20px; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); border-color: var(--accent); }
 
@@ -37,8 +50,24 @@
         .icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 15px; background: rgba(255,255,255,0.05); }
         .title { font-size: 1.2rem; margin-bottom: 8px; font-weight: bold; }
         .desc { font-size: 0.88rem; color: var(--sub); margin-bottom: 20px; line-height: 1.4; }
+        .btn-play { background: var(--green); color: #0f172a; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; transition: 0.2s; }
+        .btn-play:hover { opacity: 0.9; }
 
-        .btn-play { background: var(--green); color: #0f172a; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; }
+        /* Sidebar: Leaderboard & Ads */
+        .sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .leaderboard-card { background: var(--card); border-radius: 18px; padding: 20px; border: 1px solid rgba(255,255,255,0.08); }
+        .leaderboard-card h3 { color: var(--amber); font-size: 1.2rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .leader-list { list-style: none; }
+        .leader-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .leader-item:last-child { border-bottom: none; }
+        .rank { font-weight: bold; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; background: rgba(255,255,255,0.1); margin-left: 8px; }
+        .top1 .rank { background: var(--amber); color: #000; }
+        .top2 .rank { background: #94a3b8; color: #000; }
+        .top3 .rank { background: #b45309; color: #fff; }
+        .leader-info { display: flex; align-items: center; }
+        .leader-score { color: var(--accent); font-weight: bold; font-size: 0.95rem; }
+
+        .ad-banner-sidebar { background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.2); border-radius: 16px; min-height: 250px; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--sub); position: relative; padding: 15px; }
 
         /* Modal Game Container */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999; align-items: center; justify-content: center; padding: 15px; }
@@ -54,91 +83,123 @@
 </head>
 <body>
 
+    <!-- Header Section -->
     <div class="header">
-        <h1><i class="fa-solid fa-graduation-cap"></i> الألعاب التعليمية التفاعلية للأطفال</h1>
+        <h1><i class="fa-solid fa-graduation-cap"></i> منصة الوادي - الألعاب التعليمية</h1>
+        <div class="user-stats">
+            <span>مجموع نقاطك:</span>
+            <div class="score-box"><i class="fa-solid fa-star"></i> <span id="userTotalScore">0</span></div>
+        </div>
         <a href="index.html" class="btn-home"><i class="fa-solid fa-house"></i> الرئيسية</a>
     </div>
 
-    <div class="grid">
-        <!-- لعبة 1 -->
-        <div class="card">
-            <span class="badge easy">مبتدئ - عربي</span>
-            <div>
-                <div class="icon" style="color:var(--green);"><i class="fa-solid fa-font"></i></div>
-                <div class="title">التعرف على الحروف والأشكال</div>
-                <div class="desc">اختبر معرفتك بالحروف الأولى لمئات الكلمات المصورة.</div>
+    <!-- Top Strategic Ad Space -->
+    <div class="ad-banner-top">
+        <span class="ad-tag">إعلان</span>
+        <p>مساحة إعلانية علوية استراتيجية - ضع شفرة Adsterra أو Google AdSense هنا</p>
+    </div>
+
+    <!-- Main Content Layout -->
+    <div class="main-container">
+        <!-- Interactive Games Grid -->
+        <div class="grid">
+            <!-- Game 1 -->
+            <div class="card">
+                <span class="badge easy">مبتدئ - عربي</span>
+                <div>
+                    <div class="icon" style="color:var(--green);"><i class="fa-solid fa-font"></i></div>
+                    <div class="title">التعرف على الحروف للأطفال</div>
+                    <div class="desc">اختبر معرفتك بالحروف الأولى لمئات الكلمات المصورة.</div>
+                </div>
+                <button class="btn-play" onclick="openGame('letters')">العب الآن</button>
             </div>
-            <button class="btn-play" onclick="openGame('letters')">العب الآن</button>
+
+            <!-- Game 2 -->
+            <div class="card">
+                <span class="badge easy">مبتدئ - إنجليزي</span>
+                <div>
+                    <div class="icon" style="color:var(--accent);"><i class="fa-solid fa-language"></i></div>
+                    <div class="title">مفردات الإنجليزية (English)</div>
+                    <div class="desc">تعلم أسماء الحيوانات والأشكال والفواكه بالإنجليزية.</div>
+                </div>
+                <button class="btn-play" onclick="openGame('english')">العب الآن</button>
+            </div>
+
+            <!-- Game 3 -->
+            <div class="card">
+                <span class="badge medium">متوسط - رياضيات</span>
+                <div>
+                    <div class="icon" style="color:var(--amber);"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <div class="title">مقارنة الأعداد المتجددة</div>
+                    <div class="desc">أرقام عشوائية متجددة دائماً للمقارنة (أكبر، أصغر، يساوي).</div>
+                </div>
+                <button class="btn-play" onclick="openGame('compare')">العب الآن</button>
+            </div>
+
+            <!-- Game 4 -->
+            <div class="card">
+                <span class="badge medium">متوسط - علوم</span>
+                <div>
+                    <div class="icon" style="color:var(--purple);"><i class="fa-solid fa-flask"></i></div>
+                    <div class="title">موسوعة تصنيف العلوم</div>
+                    <div class="desc">صنف العناصر والحيوانات والنباتات والجماد من مكتبة واسعة.</div>
+                </div>
+                <button class="btn-play" onclick="openGame('science')">العب الآن</button>
+            </div>
+
+            <!-- Game 5 -->
+            <div class="card">
+                <span class="badge medium">متوسط - ذاكرة</span>
+                <div>
+                    <div class="icon" style="color:var(--rose);"><i class="fa-solid fa-brain"></i></div>
+                    <div class="title">مطابقة الذاكرة المتغيرة</div>
+                    <div class="desc">شبكة بطاقات تتغير صورها وإيموجيهاتها في كل دورة.</div>
+                </div>
+                <button class="btn-play" onclick="openGame('memory')">العب الآن</button>
+            </div>
+
+            <!-- Game 6 -->
+            <div class="card">
+                <span class="badge hard">متقدم - رياضيات</span>
+                <div>
+                    <div class="icon" style="color:var(--accent);"><i class="fa-solid fa-calculator"></i></div>
+                    <div class="title">تحدي جدول الضرب اللانهائي</div>
+                    <div class="desc">مسائل ضرب وتوليد أرقام لا نهائية مع خيارات ذكية.</div>
+                </div>
+                <button class="btn-play" onclick="openGame('multiply')">العب الآن</button>
+            </div>
+
+            <!-- Game 7 -->
+            <div class="card">
+                <span class="badge hard">متقدم - لغويات</span>
+                <div>
+                    <div class="icon" style="color:var(--amber);"><i class="fa-solid fa-puzzle-piece"></i></div>
+                    <div class="title">تفكيك وتجميع الكلمات</div>
+                    <div class="desc">حروف مبعثرة عشوائياً لكلمات متنوعة لإعادة ترتيبها.</div>
+                </div>
+                <button class="btn-play" onclick="openGame('spelling')">العب الآن</button>
+            </div>
         </div>
 
-        <!-- لعبة 2 -->
-        <div class="card">
-            <span class="badge easy">مبتدئ - إنجليزي</span>
-            <div>
-                <div class="icon" style="color:var(--accent);"><i class="fa-solid fa-language"></i></div>
-                <div class="title">مفردات الإنجليزية (English Vocab)</div>
-                <div class="desc">تعلم أسماء الحيوانات والأشكال والفواكه بالإنجليزية.</div>
+        <!-- Sidebar Section -->
+        <div class="sidebar">
+            <!-- Global Leaderboard -->
+            <div class="leaderboard-card">
+                <h3><i class="fa-solid fa-trophy"></i> لوحة متصدري الوادي</h3>
+                <ul class="leader-list" id="leaderboardList">
+                    <!-- Data populated dynamic via JavaScript -->
+                </ul>
             </div>
-            <button class="btn-play" onclick="openGame('english')">العب الآن</button>
-        </div>
 
-        <!-- لعبة 3 -->
-        <div class="card">
-            <span class="badge medium">متوسط - رياضيات</span>
-            <div>
-                <div class="icon" style="color:var(--amber);"><i class="fa-solid fa-scale-balanced"></i></div>
-                <div class="title">مقارنة الأعداد المتجددة</div>
-                <div class="desc">أرقام عشوائية متجددة دائماً للمقارنة (أكبر، أصغر، يساوي).</div>
+            <!-- Strategic Ad Space Sidebar -->
+            <div class="ad-banner-sidebar">
+                <span class="ad-tag">إعلان</span>
+                <p>مساحة إعلانية جانبية مربعة (Banner Ad 300x250)</p>
             </div>
-            <button class="btn-play" onclick="openGame('compare')">العب الآن</button>
-        </div>
-
-        <!-- لعبة 4 -->
-        <div class="card">
-            <span class="badge medium">متوسط - علوم</span>
-            <div>
-                <div class="icon" style="color:var(--purple);"><i class="fa-solid fa-flask"></i></div>
-                <div class="title">موسوعة تصنيف العلوم</div>
-                <div class="desc">صنف العناصر والحيوانات والنباتات والجماد من مكتبة واسعة.</div>
-            </div>
-            <button class="btn-play" onclick="openGame('science')">العب الآن</button>
-        </div>
-
-        <!-- لعبة 5 -->
-        <div class="card">
-            <span class="badge medium">متوسط - ذاكرة</span>
-            <div>
-                <div class="icon" style="color:var(--rose);"><i class="fa-solid fa-brain"></i></div>
-                <div class="title">مطابقة الذاكرة المتغيرة</div>
-                <div class="desc">شبكة بطاقات تتغير صورها وإيموجيهاتها في كل دورة.</div>
-            </div>
-            <button class="btn-play" onclick="openGame('memory')">العب الآن</button>
-        </div>
-
-        <!-- لعبة 6 -->
-        <div class="card">
-            <span class="badge hard">متقدم - رياضيات</span>
-            <div>
-                <div class="icon" style="color:var(--accent);"><i class="fa-solid fa-calculator"></i></div>
-                <div class="title">تحدي جدول الضرب اللانهائي</div>
-                <div class="desc">مسائل ضرب وتوليد أرقام لا نهائية مع خيارات ذكية.</div>
-            </div>
-            <button class="btn-play" onclick="openGame('multiply')">العب الآن</button>
-        </div>
-
-        <!-- لعبة 7 -->
-        <div class="card">
-            <span class="badge hard">متقدم - لغويات</span>
-            <div>
-                <div class="icon" style="color:var(--amber);"><i class="fa-solid fa-puzzle-piece"></i></div>
-                <div class="title">تفكيك وتجميع الكلمات</div>
-                <div class="desc">حروف مبعثرة عشوائياً لكلمات متنوعة لإعادة ترتيبها.</div>
-            </div>
-            <button class="btn-play" onclick="openGame('spelling')">العب الآن</button>
         </div>
     </div>
 
-    <!-- نافذة اللعبة -->
+    <!-- Game Modal -->
     <div class="modal" id="gameModal">
         <div class="modal-box">
             <button class="btn-close" onclick="closeGame()">إغلاق ✖</button>
@@ -147,6 +208,47 @@
     </div>
 
     <script>
+        // Total Score & Leaderboard State Logic
+        let totalScore = parseInt(localStorage.getItem('alwadi_user_score')) || 0;
+        document.getElementById('userTotalScore').innerText = totalScore;
+
+        const globalLeaders = [
+            { name: "أحمد علي", score: 450 },
+            { name: "سارة محمود", score: 380 },
+            { name: "عمر خالد", score: 310 },
+            { name: "أنت (الطالب)", score: totalScore },
+            { name: "مريم بدر", score: 190 }
+        ];
+
+        function addPoints(pts) {
+            totalScore += pts;
+            localStorage.setItem('alwadi_user_score', totalScore);
+            document.getElementById('userTotalScore').innerText = totalScore;
+            updateLeaderboard();
+        }
+
+        function updateLeaderboard() {
+            // Update current user score in global list
+            const userIndex = globalLeaders.findIndex(l => l.name.includes("أنت"));
+            if(userIndex !== -1) globalLeaders[userIndex].score = totalScore;
+            
+            // Sort high to low
+            globalLeaders.sort((a, b) => b.score - a.score);
+
+            const listEl = document.getElementById('leaderboardList');
+            listEl.innerHTML = globalLeaders.map((player, idx) => `
+                <li class="leader-item ${idx < 3 ? 'top' + (idx+1) : ''}">
+                    <div class="leader-info">
+                        <span class="rank">${idx + 1}</span>
+                        <span>${player.name}</span>
+                    </div>
+                    <span class="leader-score">${player.score} نقطة</span>
+                </li>
+            `).join('');
+        }
+        updateLeaderboard();
+
+        // Game Modal Logic
         const modal = document.getElementById('gameModal');
         const container = document.getElementById('gameContainer');
 
@@ -166,7 +268,7 @@
             container.innerHTML = '';
         }
 
-        /* 1. لعبة الحروف العربية الموسعة */
+        /* 1. لعبة الحروف العربية */
         const letterBank = [
             { char: 'أ', word: 'أسد 🦁', wrong: ['بطة 🦆', 'تفاحة 🍎', 'جمل 🐪'] },
             { char: 'ب', word: 'بطة 🦆', wrong: ['ثعلب 🦊', 'تمساح 🐊', 'حصان 🐴'] },
@@ -193,14 +295,15 @@
         function checkLetter(selected, correct) {
             let res = document.getElementById('lRes');
             if(selected === correct) {
-                res.innerHTML = '<span style="color:var(--green);">ممتاز! إجابة صحيحة 🥳</span>';
+                res.innerHTML = '<span style="color:var(--green);">ممتاز! إجابة صحيحة (+10 نقاط) 🥳</span>';
+                addPoints(10);
                 setTimeout(initLetters, 1000);
             } else {
                 res.innerHTML = '<span style="color:var(--rose);">حاول مرة أخرى ❌</span>';
             }
         }
 
-        /* 2. لعبة الإنجليزي الموسعة */
+        /* 2. لعبة الإنجليزي */
         const engBank = [
             { img: '🍎', name: 'Apple', wrong: ['Banana', 'Orange', 'Grape'] },
             { img: '🐶', name: 'Dog', wrong: ['Cat', 'Lion', 'Tiger'] },
@@ -225,14 +328,15 @@
         function checkEng(selected, correct) {
             let res = document.getElementById('eRes');
             if(selected === correct) {
-                res.innerHTML = '<span style="color:var(--green);">Great Job! 🌟</span>';
+                res.innerHTML = '<span style="color:var(--green);">Great Job! (+10 pts) 🌟</span>';
+                addPoints(10);
                 setTimeout(initEnglish, 1000);
             } else {
                 res.innerHTML = '<span style="color:var(--rose);">Try Again! ❌</span>';
             }
         }
 
-        /* 3. لعبة مقارنة الأعداد (توليد غير محدود) */
+        /* 3. لعبة مقارنة الأعداد */
         function initCompare() {
             let n1 = Math.floor(Math.random() * 100) + 1;
             let n2 = Math.floor(Math.random() * 100) + 1;
@@ -251,14 +355,15 @@
         function checkComp(selected, correct) {
             let res = document.getElementById('cRes');
             if(selected === correct) {
-                res.innerHTML = '<span style="color:var(--green);">أحسنت! إجابة دقيقة 👏</span>';
+                res.innerHTML = '<span style="color:var(--green);">أحسنت! إجابة دقيقة (+10 نقاط) 👏</span>';
+                addPoints(10);
                 setTimeout(initCompare, 1000);
             } else {
                 res.innerHTML = '<span style="color:var(--rose);">خطأ، ركز ورتب الأرقام ❌</span>';
             }
         }
 
-        /* 4. علوم وتصنيف موسع */
+        /* 4. علوم وتصنيف */
         const sciBank = [
             { item: '🦁 أسد', type: 'حيوان' }, { item: '🌴 نخلة', type: 'نبات' }, { item: '🚗 سيارة', type: 'جماد' },
             { item: '🦅 صقر', type: 'حيوان' }, { item: '🌸 زهرة', type: 'نبات' }, { item: '💻 كمبيوتر', type: 'جماد' },
@@ -279,16 +384,19 @@
         function checkSci(selected, correct) {
             let res = document.getElementById('sRes');
             if(selected === correct) {
-                res.innerHTML = '<span style="color:var(--green);">إجابة علمية صحيحة! 🎉</span>';
+                res.innerHTML = '<span style="color:var(--green);">إجابة علمية صحيحة! (+10 نقاط) 🎉</span>';
+                addPoints(10);
                 setTimeout(initScience, 1000);
             } else {
                 res.innerHTML = '<span style="color:var(--rose);">إجابة خاطئة، حاول مجدداً ❌</span>';
             }
         }
 
-        /* 5. لعبة الذاكرة المتغيرة عشوائياً */
+        /* 5. لعبة الذاكرة */
         const emojiPool = ['🍎','🐶','🚗','⭐','🎈','🐸','🚀','⚽','🍉','🤖','👑','🍕'];
+        let matchedPairs = 0;
         function initMemory() {
+            matchedPairs = 0;
             let picked = emojiPool.sort(() => 0.5 - Math.random()).slice(0, 4);
             let items = [...picked, ...picked].sort(() => 0.5 - Math.random());
             container.innerHTML = `
@@ -296,6 +404,7 @@
                 <div class="memory-grid">
                     ${items.map((e) => `<div class="mem-card" data-e="${e}" onclick="flipMem(this)">❓</div>`).join('')}
                 </div>
+                <div id="memRes" style="margin-top:10px; font-weight:bold; color:var(--green);"></div>
             `;
         }
         let firstMem = null;
@@ -307,12 +416,19 @@
                 if(firstMem.dataset.e !== card.dataset.e) {
                     let temp = firstMem;
                     setTimeout(() => { temp.innerText = '❓'; card.innerText = '❓'; }, 500);
+                } else {
+                    matchedPairs++;
+                    if(matchedPairs === 4) {
+                        document.getElementById('memRes').innerText = "رائع! أنهيت المطابقة بنجاح (+20 نقطة) 🎉";
+                        addPoints(20);
+                        setTimeout(initMemory, 1500);
+                    }
                 }
                 firstMem = null;
             }
         }
 
-        /* 6. جدول ضرب لا نهائي وبخيارات ذكية */
+        /* 6. جدول الضرب */
         function initMultiply() {
             let a = Math.floor(Math.random() * 10) + 1;
             let b = Math.floor(Math.random() * 10) + 1;
@@ -328,14 +444,15 @@
         function checkMul(selected, correct) {
             let res = document.getElementById('mRes');
             if(selected === correct) {
-                res.innerHTML = '<span style="color:var(--green);">بطل! إجابة صحيحة ⚡</span>';
+                res.innerHTML = '<span style="color:var(--green);">بطل! إجابة صحيحة (+10 نقاط) ⚡</span>';
+                addPoints(10);
                 setTimeout(initMultiply, 1000);
             } else {
                 res.innerHTML = '<span style="color:var(--rose);">خاطئ! ركز في جدول الضرب ❌</span>';
             }
         }
 
-        /* 7. تجميع وتركيب الكلمات الموسع */
+        /* 7. تجميع والكلمات */
         const spellBank = [
             { correct: 'قلم', hint: 'نكتب به في الدفتر ✏️' },
             { correct: 'شمس', hint: 'تضيء لنا في النهار ☀️' },
@@ -361,7 +478,8 @@
             let val = document.getElementById('spInput').value.trim();
             let res = document.getElementById('spRes');
             if(val === correct) {
-                res.innerHTML = '<span style="color:var(--green);">عبقري! كلمة صحيحة 🌟</span>';
+                res.innerHTML = '<span style="color:var(--green);">عبقري! كلمة صحيحة (+10 نقاط) 🌟</span>';
+                addPoints(10);
                 setTimeout(initSpelling, 1000);
             } else {
                 res.innerHTML = '<span style="color:var(--rose);">حاول إعادة ترتيب الحروف ❌</span>';
