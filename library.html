@@ -53,8 +53,15 @@
         }
         .btn-back-platform:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
 
-        /* لوحة إضافة الكتب */
-        .admin-panel { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-md); padding: 15px; margin: 20px 0; }
+        /* لوحة إضافة الكتب (مخفية افتراضياً) */
+        .admin-panel { 
+            display: none; /* إخفاء النموذج للزوار العاديين */
+            background: #f0fdf4; 
+            border: 1px solid #bbf7d0; 
+            border-radius: var(--radius-md); 
+            padding: 15px; 
+            margin: 20px 0; 
+        }
         .admin-title { font-size: 15px; font-weight: 700; color: #166534; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .admin-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
         .form-group { display: flex; flex-direction: column; gap: 4px; }
@@ -203,7 +210,8 @@
 
     <main class="container">
 
-        <section class="admin-panel">
+        <!-- لوحة إضافة الكتب (إضافة ID لسهولة التحكم بها عبر JS) -->
+        <section id="adminPanelSection" class="admin-panel">
             <div class="admin-title">
                 <i class="fa-solid fa-user-shield"></i> إضافة كتاب جديد من الجهاز (حفظ دائم)
             </div>
@@ -275,7 +283,24 @@
             { id: 6, title: 'الرياضيات للصف السادس', category: 'sixth', fileData: '#' }
         ];
 
-        document.addEventListener('DOMContentLoaded', loadSavedBooks);
+        document.addEventListener('DOMContentLoaded', () => {
+            checkUserPermission();
+            loadSavedBooks();
+        });
+
+        // ⬇️ فحص صلاحيات المستخدم لإظهار أو إخفاء لوحة إضافة الكتب
+        function checkUserPermission() {
+            // يمكنك تعيين القيمة إلى 'true' عند تسجيل دخول العضو أو الأدمن من صفحة الدخول
+            const isLoggedIn = localStorage.getItem('isLoggedIn'); 
+            const userRole = localStorage.getItem('userRole'); // 'admin' أو 'member'
+
+            const adminPanel = document.getElementById('adminPanelSection');
+            if (isLoggedIn === 'true' || userRole === 'admin' || userRole === 'member') {
+                adminPanel.style.display = 'block';
+            } else {
+                adminPanel.style.display = 'none';
+            }
+        }
 
         function getStoredBooks() {
             const stored = localStorage.getItem(STORAGE_KEY);
@@ -395,9 +420,6 @@
             renderBooks();
         }
     </script>
-    <!-- ... محتوى صفحة المكتبة ... -->
     <script src="https://pl30567936.effectivecpmnetwork.com/75/71/e0/7571e0e12a8e91b91d02f47ecb8b87ea.js"></script>
-</body>
-</html>
 </body>
 </html>
