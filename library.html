@@ -53,14 +53,14 @@
         }
         .btn-back-platform:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
 
-        /* لوحة إضافة الكتب (مخفية للطلاب) */
+        /* لوحة إضافة عناصر ترفيهية اختيارية */
         .admin-panel { 
             background: #f0fdf4; 
             border: 1px solid #bbf7d0; 
             border-radius: var(--radius-md); 
             padding: 15px; 
             margin: 20px 0; 
-            display: none; /* يتم إظهارها للمعلم/الأدمن فقط عبر JS */
+            display: none;
         }
         .admin-title { font-size: 15px; font-weight: 700; color: #166534; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .admin-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
@@ -71,7 +71,7 @@
         .btn-admin:hover { background-color: var(--admin-hover); }
 
         /* قسم الهيدر الداخلي */
-        .hero-section { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: white; padding: 25px 15px; border-radius: var(--radius-md); margin-bottom: 25px; text-text-align: center; text-align: center; }
+        .hero-section { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: white; padding: 25px 15px; border-radius: var(--radius-md); margin-bottom: 25px; text-align: center; }
         .hero-section h2 { font-size: 20px; margin-bottom: 5px; }
         .hero-section p { font-size: 13px; opacity: 0.9; }
 
@@ -103,7 +103,6 @@
             justify-content: space-between;
         }
 
-        /* خلفيات متدرجة للصفوف والأقسام جديدة */
         .class-card[data-class="first"] .class-header { background: linear-gradient(135deg, #ff7e5f, #feb47b); }
         .class-card[data-class="second"] .class-header { background: linear-gradient(135deg, #11998e, #38ef7d); }
         .class-card[data-class="third"] .class-header { background: linear-gradient(135deg, #fc4a1a, #f7b733); }
@@ -114,12 +113,39 @@
         .class-card[data-class="drawing"] .class-header { background: linear-gradient(135deg, #10b981, #059669); }
 
         .books-list {
-            padding: 15px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            min-height: 120px;
+            gap: 12px;
+            align-items: center;
             justify-content: center;
+            min-height: 120px;
+        }
+
+        .folder-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .btn-folder-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: background 0.2s;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
+        }
+
+        .btn-folder-link:hover {
+            background-color: var(--primary-hover);
         }
 
         .empty-msg {
@@ -129,8 +155,8 @@
             font-style: italic;
         }
 
-        /* عنصر الكتاب داخل الصف */
         .book-item {
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -151,12 +177,6 @@
             word-break: break-word;
         }
 
-        .book-actions {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
         .btn-download {
             background-color: var(--primary-color);
             color: white;
@@ -168,12 +188,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            transition: 0.2s;
-            cursor: pointer;
-            border: none;
         }
-
-        .btn-download:hover { background-color: var(--primary-hover); }
 
         .btn-delete {
             background: rgba(239, 68, 68, 0.1);
@@ -183,10 +198,7 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
-            transition: 0.2s;
         }
-
-        .btn-delete:hover { background: var(--danger-color); color: white; }
     </style>
 </head>
 <body>
@@ -205,272 +217,218 @@
 
     <main class="container">
 
-        <!-- لوحة إضافة الكتب (تظهر فقط للمعلم/الأدمن) -->
+        <!-- لوحة إضافة قصص/أنشطة إضافية للترفيه -->
         <section class="admin-panel" id="adminPanel">
             <div class="admin-title">
-                <i class="fa-solid fa-user-shield"></i> إضافة عنصر جديد (كتاب، قصة، تلوين) بأي حجم
+                <i class="fa-solid fa-plus-circle"></i> إضافة قصة أو نشاط ترفيهي إضافي
             </div>
-            <form id="addBookForm" class="admin-form" onsubmit="uploadBookFromDevice(event)">
+            <form id="addBookForm" class="admin-form">
                 <div class="form-group">
-                    <label>اسم الملف / الكتاب / القصة</label>
-                    <input type="text" id="bookTitleInput" class="form-control" placeholder="مثال: قصة السندباد / كراسة التلوين" required>
+                    <label>عنوان المادة / القصة</label>
+                    <input type="text" id="bookTitleInput" class="form-control" placeholder="مثال: قصة علاء الدين" required>
                 </div>
                 <div class="form-group">
-                    <label>القسم / الصف الدراسي</label>
-                    <select id="bookClassSelect" class="form-control">
-                        <option value="first">الأول الابتدائي</option>
-                        <option value="second">الثاني الابتدائي</option>
-                        <option value="third">الثالث الابتدائي</option>
-                        <option value="fourth">الرابع الابتدائي</option>
-                        <option value="fifth">الخامس الابتدائي</option>
-                        <option value="sixth">السادس الابتدائي</option>
+                    <label>القسم المخصص</label>
+                    <select id="bookClassSelect" class="form-control" required>
                         <option value="story">📖 قسم القصص والروايات</option>
                         <option value="drawing">🎨 قسم الرسم والتلوين</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>اختر ملف PDF من جهازك</label>
-                    <input type="file" id="pdfFileInput" class="form-control" accept="application/pdf" required>
+                    <label>رابط التحميل Direct Link</label>
+                    <input type="url" id="pdfUrlInput" class="form-control" placeholder="https://..." required>
                 </div>
                 <button type="submit" id="btnSubmit" class="btn-admin">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> رفع وحفظ الملف في القسم المحدد
+                    <i class="fa-solid fa-link"></i> نشر العنصر
                 </button>
             </form>
         </section>
 
         <section class="hero-section">
             <h2>المناهج والقصص والأنشطة الترفيهية</h2>
-            <p>اختر القسم المطلوب لتحميل المناهج الدراسية، القصص، وأنشطة التلوين المتاحة</p>
+            <p>اختر الصف المطلوب للانتقال المباشر لمكتبة كتب المنهج المقررة</p>
         </section>
 
-        <!-- شبكة الصفوف والأقسام -->
-        <div class="classes-grid" id="classesContainer">
-            <!-- الصفوف الدراسية -->
+        <!-- شبكة بطاقات الصفوف -->
+        <div class="classes-grid">
+            
+            <!-- الأول الابتدائي -->
             <div class="class-card" data-class="first">
                 <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الأول الابتدائي</span></div>
-                <div class="books-list" id="list-first"></div>
-            </div>
-            <div class="class-card" data-class="second">
-                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الثاني الابتدائي</span></div>
-                <div class="books-list" id="list-second"></div>
-            </div>
-            <div class="class-card" data-class="third">
-                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الثالث الابتدائي</span></div>
-                <div class="books-list" id="list-third"></div>
-            </div>
-            <div class="class-card" data-class="fourth">
-                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الرابع الابتدائي</span></div>
-                <div class="books-list" id="list-fourth"></div>
-            </div>
-            <div class="class-card" data-class="fifth">
-                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الخامس الابتدائي</span></div>
-                <div class="books-list" id="list-fifth"></div>
-            </div>
-            <div class="class-card" data-class="sixth">
-                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> السادس الابتدائي</span></div>
-                <div class="books-list" id="list-sixth"></div>
+                <div class="books-list">
+                    <p class="folder-desc">تحميل جميع كتب ومناهج الأول الابتدائي</p>
+                    <a href="https://www.mediafire.com/folder/h4igxjj9oobnu/الاول" target="_blank" class="btn-folder-link">
+                        <i class="fa-solid fa-folder-open"></i> استعراض الكتب وتحميلها
+                    </a>
+                </div>
             </div>
 
-            <!-- أقسام الترفيه الجديدة -->
+            <!-- الثاني الابتدائي -->
+            <div class="class-card" data-class="second">
+                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الثاني الابتدائي</span></div>
+                <div class="books-list">
+                    <p class="folder-desc">تحميل جميع كتب ومناهج الثاني الابتدائي</p>
+                    <a href="https://www.mediafire.com/folder/d7xoptx468c5o/الثاني" target="_blank" class="btn-folder-link">
+                        <i class="fa-solid fa-folder-open"></i> استعراض الكتب وتحميلها
+                    </a>
+                </div>
+            </div>
+
+            <!-- الثالث الابتدائي -->
+            <div class="class-card" data-class="third">
+                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الثالث الابتدائي</span></div>
+                <div class="books-list">
+                    <p class="folder-desc">تحميل جميع كتب ومناهج الثالث الابتدائي</p>
+                    <a href="https://www.mediafire.com/folder/agaeg4ktd9ybj/الثالث" target="_blank" class="btn-folder-link">
+                        <i class="fa-solid fa-folder-open"></i> استعراض الكتب وتحميلها
+                    </a>
+                </div>
+            </div>
+
+            <!-- الرابع الابتدائي -->
+            <div class="class-card" data-class="fourth">
+                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الرابع الابتدائي</span></div>
+                <div class="books-list">
+                    <p class="folder-desc">تحميل جميع كتب ومناهج الرابع الابتدائي</p>
+                    <a href="https://www.mediafire.com/folder/9yqjmgnrppii7/الرابع" target="_blank" class="btn-folder-link">
+                        <i class="fa-solid fa-folder-open"></i> استعراض الكتب وتحميلها
+                    </a>
+                </div>
+            </div>
+
+            <!-- الخامس الابتدائي -->
+            <div class="class-card" data-class="fifth">
+                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الخامس الابتدائي</span></div>
+                <div class="books-list">
+                    <p class="folder-desc">تحميل جميع كتب ومناهج الخامس الابتدائي</p>
+                    <a href="https://www.mediafire.com/folder/msmfvvbr9rti1/الخامس" target="_blank" class="btn-folder-link">
+                        <i class="fa-solid fa-folder-open"></i> استعراض الكتب وتحميلها
+                    </a>
+                </div>
+            </div>
+
+            <!-- السادس الابتدائي -->
+            <div class="class-card" data-class="sixth">
+                <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> السادس الابتدائي</span></div>
+                <div class="books-list">
+                    <p class="folder-desc">تحميل جميع كتب ومناهج السادس الابتدائي</p>
+                    <a href="https://www.mediafire.com/folder/q4napmbvtgzb9/السادس" target="_blank" class="btn-folder-link">
+                        <i class="fa-solid fa-folder-open"></i> استعراض الكتب وتحميلها
+                    </a>
+                </div>
+            </div>
+
+            <!-- قسم القصص -->
             <div class="class-card" data-class="story">
                 <div class="class-header"><span><i class="fa-solid fa-book-open-reader"></i> 📖 قسم القصص والروايات</span></div>
                 <div class="books-list" id="list-story"></div>
             </div>
+
+            <!-- قسم التلوين -->
             <div class="class-card" data-class="drawing">
                 <div class="class-header"><span><i class="fa-solid fa-palette"></i> 🎨 قسم الرسم والتلوين</span></div>
                 <div class="books-list" id="list-drawing"></div>
             </div>
+
         </div>
 
     </main>
 
-    <script>
-        const DB_NAME = 'AlWaddyBooksDB';
-        const DB_VERSION = 1;
-        const STORE_NAME = 'books';
-        const classKeys = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'story', 'drawing'];
+    <!-- قواعد البيانات للترفيه -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        let db;
+        const firebaseConfig = {
+            apiKey: "AIzaSyDopYhY0QaxB-GQdAKQXDFz0ib1mlGyNRI",
+            authDomain: "alwaddy-4eee6.firebaseapp.com",
+            projectId: "alwaddy-4eee6",
+            storageBucket: "alwaddy-4eee6.firebasestorage.app",
+            messagingSenderId: "40515973626",
+            appId: "1:40515973626:web:2e5cbf3e3269aecb783443"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         let currentUser = null;
+        try {
+            const userString = localStorage.getItem("currentUser");
+            if (userString) currentUser = JSON.parse(userString);
+        } catch(e) {}
 
-        // تهيئة قاعدة البيانات IndexedDB
-        function initDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, DB_VERSION);
-                
-                request.onupgradeneeded = (e) => {
-                    db = e.target.result;
-                    if (!db.objectStoreNames.contains(STORE_NAME)) {
-                        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
-                    }
-                };
+        const adminPanel = document.getElementById('adminPanel');
+        const isStaff = currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin' || currentUser.role === 'المدير' || currentUser.role === 'الأستاذ');
+        
+        if (isStaff) adminPanel.style.display = 'block';
 
-                request.onsuccess = (e) => {
-                    db = e.target.result;
-                    resolve(db);
-                };
-
-                request.onerror = (e) => reject('خطأ في فتح قاعدة البيانات');
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            // فحص رتبة المستخدم الحالي لإخفاء الأدوات عن الطالب
-            try {
-                const userString = localStorage.getItem("currentUser");
-                if (userString) currentUser = JSON.parse(userString);
-            } catch(e) {}
-
-            const adminPanel = document.getElementById('adminPanel');
-            // إذا لم يكن الحساب طالباً (معلم أو أدمن)، يظهر قسم الرفع
-            if (currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin')) {
-                adminPanel.style.display = 'block';
-            } else {
-                adminPanel.style.display = 'none'; // مخفي تماماً عن الطالب
-            }
-
-            await initDB();
-            renderBooks();
-        });
-
-        // جلب كافة الكتب من قاعدة البيانات
-        function getAllBooks() {
-            return new Promise((resolve, reject) => {
-                const transaction = db.transaction([STORE_NAME], 'readonly');
-                const store = transaction.objectStore(STORE_NAME);
-                const request = store.getAll();
-
-                request.onsuccess = () => resolve(request.result || []);
-                request.onerror = () => reject('فشل جلب الكتب');
-            });
-        }
-
-        async function renderBooks() {
-            const books = await getAllBooks();
-            const isStaff = currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin');
-
-            classKeys.forEach(key => {
-                const listElem = document.getElementById(`list-${key}`);
-                if (listElem) listElem.innerHTML = '';
-            });
-
-            classKeys.forEach(key => {
-                const listElem = document.getElementById(`list-${key}`);
-                if (!listElem) return;
-
-                const classBooks = books.filter(b => b.category === key);
-
-                if (classBooks.length === 0) {
-                    listElem.innerHTML = `<div class="empty-msg">لا توجد عناصر مضافة لهذا القسم حالياً.</div>`;
-                } else {
-                    classBooks.forEach(book => {
-                        const bookItem = document.createElement('div');
-                        bookItem.className = 'book-item';
-                        
-                        // اختيار الأيقونة المناسبة حسب نوع القسم
-                        let iconClass = 'fa-file-pdf';
-                        let iconColor = '#ef4444';
-                        if (key === 'story') { iconClass = 'fa-book-open-reader'; iconColor = '#ec4899'; }
-                        else if (key === 'drawing') { iconClass = 'fa-palette'; iconColor = '#10b981'; }
-
-                        bookItem.innerHTML = `
-                            <div class="book-item-title">
-                                <i class="fa-solid ${iconClass}" style="color: ${iconColor};"></i>
-                                <span>${book.title}</span>
-                            </div>
-                            <div class="book-actions">
-                                <button onclick="downloadBook(${book.id})" class="btn-download">
-                                    <i class="fa-solid fa-download"></i> تحميل
-                                </button>
-                                ${isStaff ? `
-                                <button onclick="deleteBook(${book.id})" class="btn-delete" title="حذف">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>` : ''}
-                            </div>
-                        `;
-                        listElem.appendChild(bookItem);
-                    });
-                }
-            });
-        }
-
-        // رفع وحفظ الملف في IndexedDB
-        async function uploadBookFromDevice(event) {
-            event.preventDefault();
-
+        // إضافة ترفيه
+        document.getElementById('addBookForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
             const title = document.getElementById('bookTitleInput').value.trim();
             const category = document.getElementById('bookClassSelect').value;
-            const fileInput = document.getElementById('pdfFileInput');
-            const submitBtn = document.getElementById('btnSubmit');
+            const pdfUrl = document.getElementById('pdfUrlInput').value.trim();
 
-            if (fileInput.files.length === 0) {
-                alert("يرجى اختيار ملف PDF من جهازك أولاً!");
-                return;
-            }
-
-            const file = fileInput.files[0];
-
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...`;
-
-            const newBook = {
-                id: Date.now(),
-                title: title,
-                category: category,
-                fileData: file
-            };
-
-            const transaction = db.transaction([STORE_NAME], 'readwrite');
-            const store = transaction.objectStore(STORE_NAME);
-            const request = store.add(newBook);
-
-            request.onsuccess = () => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> رفع وحفظ الملف في القسم المحدد`;
-                renderBooks();
+            try {
+                await addDoc(collection(db, "alwaddy_books"), { title, category, pdfUrl, createdAt: new Date() });
+                alert("تمت الإضافة بنجاح!");
                 document.getElementById('addBookForm').reset();
-                alert("تمت إضافة العنصر بنجاح!");
-            };
+                renderExtra();
+            } catch (error) { alert("حدث خطأ!"); }
+        });
 
-            request.onerror = () => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> رفع وحفظ الملف في القسم المحدد`;
-                alert("حدث خطأ أثناء الحفظ.");
-            };
+        async function renderExtra() {
+            ['story', 'drawing'].forEach(k => {
+                const el = document.getElementById(`list-${k}`);
+                if (el) el.innerHTML = '<div class="empty-msg">جاري تحميل البيانات...</div>';
+            });
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "alwaddy_books"));
+                const books = [];
+                querySnapshot.forEach((docSnap) => books.push({ id: docSnap.id, ...docSnap.data() }));
+
+                ['story', 'drawing'].forEach(key => {
+                    const listElem = document.getElementById(`list-${key}`);
+                    if (!listElem) return;
+                    const items = books.filter(b => b.category === key);
+                    listElem.innerHTML = '';
+
+                    if (items.length === 0) {
+                        listElem.innerHTML = `<div class="empty-msg">لا توجد عناصر مضافة حالياً.</div>`;
+                    } else {
+                        items.forEach(book => {
+                            const bookItem = document.createElement('div');
+                            bookItem.className = 'book-item';
+                            bookItem.innerHTML = `
+                                <div class="book-item-title">
+                                    <i class="fa-solid ${key === 'story' ? 'fa-book-open-reader' : 'fa-palette'}"></i>
+                                    <span>${book.title}</span>
+                                </div>
+                                <div style="display:flex; gap:5px;">
+                                    <a href="${book.pdfUrl}" target="_blank" class="btn-download"><i class="fa-solid fa-download"></i> فتح</a>
+                                    ${isStaff ? `<button data-id="${book.id}" class="btn-delete btn-delete-action"><i class="fa-solid fa-trash"></i></button>` : ''}
+                                </div>
+                            `;
+                            listElem.appendChild(bookItem);
+                        });
+                    }
+                });
+
+                document.querySelectorAll('.btn-delete-action').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const docId = btn.getAttribute('data-id');
+                        if (confirm("هل تريد الحذف؟")) {
+                            await deleteDoc(doc(db, "alwaddy_books", docId));
+                            renderExtra();
+                        }
+                    });
+                });
+            } catch (err) {}
         }
-
-        // تحميل الملف
-        async function downloadBook(bookId) {
-            const transaction = db.transaction([STORE_NAME], 'readonly');
-            const store = transaction.objectStore(STORE_NAME);
-            const request = store.get(bookId);
-
-            request.onsuccess = () => {
-                const book = request.result;
-                if (book) {
-                    const url = URL.createObjectURL(book.fileData);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `${book.title}.pdf`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }
-            };
-        }
-
-        // حذف الملف
-        async function deleteBook(bookId) {
-            if (confirm("هل أنت متأكد من رغبتك في حذف هذا العنصر؟")) {
-                const transaction = db.transaction([STORE_NAME], 'readwrite');
-                const store = transaction.objectStore(STORE_NAME);
-                const request = store.delete(bookId);
-
-                request.onsuccess = () => renderBooks();
-            }
-        }
+        renderExtra();
     </script>
+
     <script src="https://pl30567936.effectivecpmnetwork.com/75/71/e0/7571e0e12a8e91b91d02f47ecb8b87ea.js"></script>
 </body>
 </html>
