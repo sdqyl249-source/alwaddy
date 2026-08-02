@@ -290,7 +290,7 @@ tr:hover { background-color: #f8fafc; }
     <div class="sidebar-title">🏞️ منصة الوادي</div>
     <a href="index.html" class="menu-item"><i class="fa-solid fa-house"></i> الرئيسية</a>
     <a href="classes.html" class="menu-item"><i class="fa-solid fa-school"></i> إدارة الصفوف والدردشة</a>
-    <a href="schedule.html" class="menu-item"><i class="fa-solid fa-clock"></i> الحصص والجداول</a>
+    <a href="schedule.html" class="menu-item"><i class="fa-solid fa-clock"></i> الجدول</a>
     <a href="games.html" class="menu-item"><i class="fa-solid fa-gamepad"></i> الألعاب والترفيه</a>
     <a href="library.html" class="menu-item"><i class="fa-solid fa-book"></i> المكتبة الرقمية</a>
     <button onclick="localStorage.removeItem('currentUser'); window.location.href='login.html';" class="logout-btn">تسجيل الخروج</button>
@@ -301,7 +301,7 @@ tr:hover { background-color: #f8fafc; }
 <div class="main-content">
     <div class="page-header">
         <h1>⏰ الجدول الدراسي الأسبوعي</h1>
-        <p>عرض وتنظيم الحصص الدراسية اليومية حسب الصف والشعبة (من الأحد إلى الخميس)</p>
+        <p>"خطوة نحو القمة"</p>
     </div>
 
     <div class="admin-controls" id="adminControlsPanel">
@@ -310,8 +310,8 @@ tr:hover { background-color: #f8fafc; }
         <button onclick="window.removeGrade()">- حذف صف دراسي</button>
         <button onclick="window.addSection()">+ إضافة شعبة</button>
         <button onclick="window.removeSection()">- حذف شعبة</button>
-        <button onclick="window.addPeriod()">+ إضافة حصة دراسية</button>
-        <button onclick="window.removePeriod()">- حذف حصة دراسية</button>
+        <button onclick="window.addPeriod()">+ إضافة درس </button>
+        <button onclick="window.removePeriod()">- حذف درس </button>
     </div>
 
     <div class="controls-bar">
@@ -368,11 +368,11 @@ const subjectsOptions = [
     'اللغة العربية',
     'الرياضيات',
     'العلوم',
-    'التربية الإسلامية',
+    'الإسلامية',
     'اللغة الإنجليزية',
     'الاجتماعيات',
-    'التربية الفنية',
-    'الرياضة والبدنية'
+    'الفنية',
+    'الرياضة'
 ];
 
 let remoteScheduleData = {};
@@ -438,9 +438,9 @@ window.renderScheduleTable = function() {
     tbody.innerHTML = "";
 
     // بناء الهيدر
-    let headersHTML = `<th>اليوم / الحصة</th>`;
+    let headersHTML = `<th>اليوم / الدرس</th>`;
     for(let p = 1; p <= totalPeriods; p++) {
-        headersHTML += `<th>الحصة ${p}</th>`;
+        headersHTML += `<th>الدرس ${p}</th>`;
     }
     theadTr.innerHTML = headersHTML;
 
@@ -575,7 +575,7 @@ window.addPeriod = function() {
 };
 
 window.removePeriod = function() {
-    if(totalPeriods <= 1) return alert("يجب أن تبقى حصة واحدة على الأقل.");
+    if(totalPeriods <= 1) return alert("يجب أن يبقى درس واحد على الأقل.");
     totalPeriods--;
     renderScheduleTable();
 };
