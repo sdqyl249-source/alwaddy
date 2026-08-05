@@ -53,7 +53,7 @@
         }
         .btn-back-platform:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
 
-        /* لوحة إضافة عناصر ترفيهية */
+        /* لوحة إضافة محتوى جديد */
         .admin-panel { 
             background: #f0fdf4; 
             border: 1px solid #bbf7d0; 
@@ -187,6 +187,7 @@
             align-items: center;
             gap: 6px;
             transition: background 0.2s;
+            white-space: nowrap;
         }
 
         .btn-download:hover {
@@ -223,15 +224,15 @@
         <!-- لوحة إضافة محتوى للترفيه الإبداعي -->
         <section class="admin-panel" id="adminPanel">
             <div class="admin-title">
-                <i class="fa-solid fa-plus-circle"></i> إضافة رابط قصة أو قناة تليجرام جديدة
+                <i class="fa-solid fa-plus-circle"></i> إضافة نشاط أو منشور جديد للقناة
             </div>
             <form id="addBookForm" class="admin-form">
                 <div class="form-group">
-                    <label>عنوان المحتوى / اسم القناة</label>
-                    <input type="text" id="bookTitleInput" class="form-control" placeholder="مثال: قناة منصة الوادي أو قصة علاء الدين" required>
+                    <label>عنوان المحتوى / النشاط</label>
+                    <input type="text" id="bookTitleInput" class="form-control" placeholder="مثال: قصة علاء الدين، كتاب تلوين للأطفال" required>
                 </div>
                 <div class="form-group">
-                    <label>رابط التليجرام أو الرابط المباشر</label>
+                    <label>رابط المنشور أو القناة في التليجرام</label>
                     <input type="url" id="pdfUrlInput" class="form-control" placeholder="https://t.me/alwaddyplatform" required>
                 </div>
                 <button type="submit" id="btnSubmit" class="btn-admin">
@@ -389,21 +390,41 @@
 
                 listElem.innerHTML = '';
 
-                // عنصر افتراضي للقناة الرئيسية لتظهر دائماً
-                const mainChannel = {
-                    id: 'main-telegram',
-                    title: 'قناة منصة الوادي الرسمية على تليجرام',
-                    pdfUrl: 'https://t.me/alwaddyplatform',
-                    isFixed: true
-                };
+                // قائمة بمحتويات ثابتة ومتنوعة للقناة لتشجيع الزوار على الدخول والمتابعة
+                const defaultChannelItems = [
+                    {
+                        id: 'main-channel',
+                        title: '📢 القناة الرسمية لمنصة الوادي التعليمية',
+                        pdfUrl: 'https://t.me/alwaddyplatform',
+                        isFixed: true
+                    },
+                    {
+                        id: 'stories-item',
+                        title: '📖 قصص وحكايات مصورة للأطفال',
+                        pdfUrl: 'https://t.me/alwaddyplatform',
+                        isFixed: true
+                    },
+                    {
+                        id: 'drawing-item',
+                        title: '🎨 أوراق عمل ورسومات للتلوين',
+                        pdfUrl: 'https://t.me/alwaddyplatform',
+                        isFixed: true
+                    },
+                    {
+                        id: 'quiz-item',
+                        title: '🧩 مسابقات وألغاز ترفيهية ذكية',
+                        pdfUrl: 'https://t.me/alwaddyplatform',
+                        isFixed: true
+                    }
+                ];
 
-                const allItems = [mainChannel, ...books];
+                const allItems = [...defaultChannelItems, ...books];
 
                 allItems.forEach(book => {
                     const isTelegram = book.pdfUrl.includes("t.me") || book.pdfUrl.includes("telegram");
                     const iconClass = isTelegram ? "fa-telegram" : "fa-link";
                     const iconPrefix = isTelegram ? "fa-brands" : "fa-solid";
-                    const btnText = isTelegram ? "انضمام للقناة" : "زيارة الرابط";
+                    const btnText = isTelegram ? "عرض بالقناة" : "زيارة الرابط";
 
                     const bookItem = document.createElement('div');
                     bookItem.className = 'book-item';
@@ -427,7 +448,7 @@
                     btn.addEventListener('click', async () => {
                         const docId = btn.getAttribute('data-id');
                         if (confirm("هل تريد الحذف؟")) {
-                            await deleteDoc(doc(doc(db, "alwaddy_books", docId)));
+                            await deleteDoc(doc(db, "alwaddy_books", docId));
                             renderExtra();
                         }
                     });
