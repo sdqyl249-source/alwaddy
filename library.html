@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة الوادي التعليمية - مكتبة المرحلة الابتدائية والترفيه</title>
-    
-    <!-- ⬇️ كود إعلانات Adsterra -->
+    <!-- كود إعلانات Adsterra -->
     <script src="https://pl30567680.effectivecpmnetwork.com/0c/63/61/0c63614dfd4b8d6396d805d790b93258.js"></script>
-
     <!-- مكتبة الأيقونات Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
             --primary-color: #0284c7;
@@ -25,18 +22,52 @@
             --border-color: #e2e8f0;
             --radius-md: 12px;
             --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
-            --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.12);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); direction: rtl; padding-bottom: 60px; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            direction: rtl;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
 
         /* الهيدر */
-        header { background-color: var(--bg-surface); border-bottom: 1px solid var(--border-color); padding: 14px 0; box-shadow: var(--shadow-sm); }
-        .header-wrapper { display: flex; justify-content: space-between; align-items: center; }
-        .brand-logo { display: flex; align-items: center; gap: 8px; color: var(--primary-color); font-size: 18px; font-weight: 800; text-decoration: none; }
-        
+        header {
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            font-size: 18px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
         .btn-back-platform {
             display: inline-flex;
             align-items: center;
@@ -51,52 +82,114 @@
             border: 1px solid var(--border-color);
             transition: all 0.2s ease;
         }
-        .btn-back-platform:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
 
-        /* لوحة إضافة محتوى جديد */
-        .admin-panel { 
-            background: #f0fdf4; 
-            border: 1px solid #bbf7d0; 
-            border-radius: var(--radius-md); 
-            padding: 15px; 
-            margin: 20px 0; 
-            display: none;
+        .btn-back-platform:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
         }
-        .admin-title { font-size: 15px; font-weight: 700; color: #166534; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        .admin-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
-        .form-group { display: flex; flex-direction: column; gap: 4px; }
-        .form-group label { font-size: 12px; font-weight: 600; color: #14532d; }
-        .form-control { padding: 8px 10px; border: 1px solid #86efac; border-radius: 8px; font-size: 13px; background: white; outline: none; }
-        .btn-admin { background-color: var(--admin-color); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; grid-column: 1 / -1; font-size: 13px; }
-        .btn-admin:hover { background-color: var(--admin-hover); }
+
+        /* لوحة إضافة مادة/ملف جديد */
+        .admin-panel {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: var(--radius-md);
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .admin-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #166534;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #14532d;
+        }
+
+        .form-control {
+            padding: 8px 10px;
+            border: 1px solid #86efac;
+            border-radius: 8px;
+            font-size: 13px;
+            background: white;
+            outline: none;
+        }
+
+        .btn-admin {
+            background-color: var(--admin-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            grid-column: 1 / -1;
+            font-size: 13px;
+        }
+
+        .btn-admin:hover {
+            background-color: var(--admin-hover);
+        }
 
         /* قسم الهيدر الداخلي */
-        .hero-section { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: white; padding: 25px 15px; border-radius: var(--radius-md); margin-bottom: 25px; text-align: center; }
+        .hero-section {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: white;
+            padding: 25px 15px;
+            border-radius: var(--radius-md);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
         .hero-section h2 { font-size: 20px; margin-bottom: 5px; }
         .hero-section p { font-size: 13px; opacity: 0.9; }
 
         /* شبكة بطاقات الصفوف والأقسام */
-        .classes-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 20px; 
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
         }
 
-        .class-card { 
-            background-color: var(--bg-surface); 
-            border-radius: 16px; 
-            overflow: hidden; 
-            box-shadow: var(--shadow-sm); 
+        .class-card {
+            background-color: var(--bg-surface);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
             border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
         }
 
-        .class-header { 
-            padding: 16px; 
-            color: white; 
-            font-weight: 700; 
+        .class-header {
+            padding: 16px;
+            color: white;
+            font-weight: 700;
             font-size: 16px;
             display: flex;
             align-items: center;
@@ -111,12 +204,10 @@
         .class-card[data-class="sixth"] .class-header { background: linear-gradient(135deg, #00c6ff, #0072ff); }
 
         .books-list {
-            padding: 20px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            align-items: center;
-            justify-content: center;
+            gap: 10px;
             min-height: 120px;
         }
 
@@ -125,11 +216,13 @@
             color: var(--text-muted);
             text-align: center;
             line-height: 1.5;
+            margin-bottom: 10px;
         }
 
         .btn-folder-link {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             background-color: var(--primary-color);
             color: white;
@@ -142,17 +235,9 @@
             box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
         }
 
-        .btn-folder-link:hover {
-            background-color: var(--primary-hover);
-        }
+        .btn-folder-link:hover { background-color: var(--primary-hover); }
 
-        .empty-msg {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 13px;
-            font-style: italic;
-        }
-
+        /* تصميم كارت الملف داخل القسم */
         .book-item {
             width: 100%;
             display: flex;
@@ -190,9 +275,7 @@
             white-space: nowrap;
         }
 
-        .btn-download:hover {
-            background-color: #006699;
-        }
+        .btn-download:hover { background-color: #006699; }
 
         .btn-delete {
             background: rgba(239, 68, 68, 0.1);
@@ -206,7 +289,6 @@
     </style>
 </head>
 <body>
-
     <header>
         <div class="container header-wrapper">
             <a href="#" class="brand-logo">
@@ -220,23 +302,22 @@
     </header>
 
     <main class="container">
-
-        <!-- لوحة إضافة محتوى للترفيه الإبداعي -->
+        <!-- نموذج إضافة مادة أو ملف جديد -->
         <section class="admin-panel" id="adminPanel">
             <div class="admin-title">
-                <i class="fa-solid fa-plus-circle"></i> إضافة نشاط أو منشور جديد للقناة
+                <i class="fa-solid fa-plus-circle"></i> إضافة مادة أو ملف جديد إلى قسم الترفيه
             </div>
             <form id="addBookForm" class="admin-form">
                 <div class="form-group">
-                    <label>عنوان المحتوى / النشاط</label>
-                    <input type="text" id="bookTitleInput" class="form-control" placeholder="مثال: قصة علاء الدين، كتاب تلوين للأطفال" required>
+                    <label>اسم المادة / الملف</label>
+                    <input type="text" id="bookTitleInput" class="form-control" placeholder="مثال: قصة علاء الدين / ملزمة تلوين" required>
                 </div>
                 <div class="form-group">
-                    <label>رابط المنشور أو القناة في التليجرام</label>
-                    <input type="url" id="pdfUrlInput" class="form-control" placeholder="https://t.me/alwaddyplatform" required>
+                    <label>رابط التليجرام للملف</label>
+                    <input type="url" id="pdfUrlInput" class="form-control" placeholder="https://t.me/alwaddyplatform/123" required>
                 </div>
                 <button type="submit" id="btnSubmit" class="btn-admin">
-                    <i class="fa-solid fa-paper-plane"></i> نشر العنصر
+                    <i class="fa-solid fa-paper-plane"></i> إضافة الملف للقسم
                 </button>
             </form>
         </section>
@@ -248,7 +329,6 @@
 
         <!-- شبكة بطاقات الصفوف -->
         <div class="classes-grid">
-            
             <!-- الأول الابتدائي -->
             <div class="class-card" data-class="first">
                 <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الأول الابتدائي</span></div>
@@ -315,19 +395,19 @@
                 </div>
             </div>
 
-            <!-- قسم الترفيه والإبداع الموحد -->
+            <!-- قسم الترفيه والإبداع (تظهر فيه المواد والملفات المضافة) -->
             <div class="class-card" data-class="entertainment">
                 <div class="class-header" style="background: linear-gradient(135deg, #ec4899, #10b981);">
                     <span><i class="fa-solid fa-icons"></i> 📖🎨 قسم الترفيه والإبداع</span>
                 </div>
-                <div class="books-list" id="list-entertainment"></div>
+                <div class="books-list" id="list-entertainment">
+                    <!-- تتولى برمجة JavaScript إضافة الملفات هنا تلقائياً -->
+                </div>
             </div>
-
         </div>
-
     </main>
 
-    <!-- قواعد البيانات للترفيه -->
+    <!-- ربط قاعدة بيانات Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -352,36 +432,37 @@
 
         const adminPanel = document.getElementById('adminPanel');
         const isStaff = currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin' || currentUser.role === 'المدير' || currentUser.role === 'الأستاذ');
-        
-        if (isStaff) adminPanel.style.display = 'block';
 
-        // إضافة عنصر جديد
+        // إظهار لوحة الإضافة دائماً للسهولة (أو للمسؤولين فقط حسب اختيارك)
+        adminPanel.style.display = 'block';
+
+        // 1. عند ضغط زر "إضافة الملف للقسم"
         document.getElementById('addBookForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const title = document.getElementById('bookTitleInput').value.trim();
             const pdfUrl = document.getElementById('pdfUrlInput').value.trim();
 
             try {
-                await addDoc(collection(db, "alwaddy_books"), { 
-                    title, 
-                    category: "entertainment", 
-                    pdfUrl, 
-                    createdAt: new Date() 
+                await addDoc(collection(db, "alwaddy_books"), {
+                    title: title,
+                    category: "entertainment",
+                    pdfUrl: pdfUrl,
+                    createdAt: new Date()
                 });
-                alert("تمت الإضافة بنجاح!");
+                alert("تمت إضافة المادة/الملف بنجاح إلى القسم!");
                 document.getElementById('addBookForm').reset();
-                renderExtra();
-            } catch (error) { 
-                alert("حدث خطأ أثناء الإضافة!"); 
+                renderExtra(); // إعادة تحميل القائمة بعد الإضافة
+            } catch (error) {
+                alert("حدث خطأ أثناء الإضافة!");
             }
         });
 
-        // عرض العناصر المضافة
+        // 2. عرض الملفات والمواد داخل القسم
         async function renderExtra() {
             const listElem = document.getElementById('list-entertainment');
             if (!listElem) return;
 
-            listElem.innerHTML = '<div class="empty-msg">جاري تحميل البيانات...</div>';
+            listElem.innerHTML = '<div class="empty-msg" style="text-align:center;">جاري تحميل المواد...</div>';
 
             try {
                 const querySnapshot = await getDocs(collection(db, "alwaddy_books"));
@@ -390,41 +471,21 @@
 
                 listElem.innerHTML = '';
 
-                // قائمة بمحتويات ثابتة ومتنوعة للقناة لتشجيع الزوار على الدخول والمتابعة
+                // قائمة المواد الافتراضية الثابتة
                 const defaultChannelItems = [
-                    {
-                        id: 'main-channel',
-                        title: '📢 القناة الرسمية لمنصة الوادي التعليمية',
-                        pdfUrl: 'https://t.me/alwaddyplatform',
-                        isFixed: true
-                    },
-                    {
-                        id: 'stories-item',
-                        title: '📖 قصص وحكايات مصورة للأطفال',
-                        pdfUrl: 'https://t.me/alwaddyplatform',
-                        isFixed: true
-                    },
-                    {
-                        id: 'drawing-item',
-                        title: '🎨 أوراق عمل ورسومات للتلوين',
-                        pdfUrl: 'https://t.me/alwaddyplatform',
-                        isFixed: true
-                    },
-                    {
-                        id: 'quiz-item',
-                        title: '🧩 مسابقات وألغاز ترفيهية ذكية',
-                        pdfUrl: 'https://t.me/alwaddyplatform',
-                        isFixed: true
-                    }
+                    { id: 'main-channel', title: '📢 القناة الرسمية لمنصة الوادي', pdfUrl: 'https://t.me/alwaddyplatform', isFixed: true },
+                    { id: 'stories-item', title: '📖 قصص وحكايات مصورة للأطفال', pdfUrl: 'https://t.me/alwaddyplatform', isFixed: true },
+                    { id: 'drawing-item', title: '🎨 أوراق عمل ورسومات للتلوين', pdfUrl: 'https://t.me/alwaddyplatform', isFixed: true }
                 ];
 
                 const allItems = [...defaultChannelItems, ...books];
 
+                // إنشاء عنصر زر لكـل مادة/ملف
                 allItems.forEach(book => {
                     const isTelegram = book.pdfUrl.includes("t.me") || book.pdfUrl.includes("telegram");
-                    const iconClass = isTelegram ? "fa-telegram" : "fa-link";
+                    const iconClass = isTelegram ? "fa-telegram" : "fa-file-lines";
                     const iconPrefix = isTelegram ? "fa-brands" : "fa-solid";
-                    const btnText = isTelegram ? "عرض بالقناة" : "زيارة الرابط";
+                    const btnText = isTelegram ? "فتح في التليجرام" : "فتح الرابط";
 
                     const bookItem = document.createElement('div');
                     bookItem.className = 'book-item';
@@ -437,30 +498,30 @@
                             <a href="${book.pdfUrl}" target="_blank" class="btn-download">
                                 <i class="${iconPrefix} ${iconClass}"></i> ${btnText}
                             </a>
-                            ${(isStaff && !book.isFixed) ? `<button data-id="${book.id}" class="btn-delete btn-delete-action"><i class="fa-solid fa-trash"></i></button>` : ''}
+                            ${(!book.isFixed) ? `<button data-id="${book.id}" class="btn-delete btn-delete-action"><i class="fa-solid fa-trash"></i></button>` : ''}
                         </div>
                     `;
                     listElem.appendChild(bookItem);
                 });
 
-                // تفعيل زري الحذف للمسؤولين
+                // إمكانية حذف العناصر المضافة
                 document.querySelectorAll('.btn-delete-action').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const docId = btn.getAttribute('data-id');
-                        if (confirm("هل تريد الحذف؟")) {
-                            await deleteDoc(doc(db, "alwaddy_books", docId));
+                        if (confirm("هل تريد حذف هذا الملف؟")) {
+                            await deleteDoc(doc(docId));
                             renderExtra();
                         }
                     });
                 });
+
             } catch (err) {
-                listElem.innerHTML = `<div class="empty-msg">فشل تحميل البيانات.</div>`;
+                listElem.innerHTML = `<div class="empty-msg" style="text-align:center;">فشل تحميل البيانات.</div>`;
             }
         }
 
         renderExtra();
     </script>
-
     <script src="https://pl30567936.effectivecpmnetwork.com/75/71/e0/7571e0e12a8e91b91d02f47ecb8b87ea.js"></script>
 </body>
 </html>
