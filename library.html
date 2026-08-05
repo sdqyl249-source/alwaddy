@@ -156,6 +156,11 @@
             background-color: var(--admin-hover);
         }
 
+        .btn-admin:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
         /* قسم الهيدر الداخلي */
         .hero-section {
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
@@ -286,6 +291,11 @@
             cursor: pointer;
             font-size: 12px;
         }
+
+        .btn-delete:hover {
+            background: var(--danger-color);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -334,7 +344,7 @@
                 <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الأول الابتدائي</span></div>
                 <div class="books-list">
                     <p class="folder-desc">تحميل جميع كتب ومناهج الأول الابتدائي</p>
-                    <a href="https://www.mediafire.com/folder/h4igxjj9oobnu/الاول" target="_blank" class="btn-folder-link">
+                    <a href="https://www.mediafire.com/folder/h4igxjj9oobnu/الاول" target="_blank" rel="noopener noreferrer" class="btn-folder-link">
                         <i class="fa-solid fa-folder-open"></i> استعراض الكتب وتحميلها
                     </a>
                 </div>
@@ -345,7 +355,7 @@
                 <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الثاني الابتدائي</span></div>
                 <div class="books-list">
                     <p class="folder-desc">تحميل جميع كتب ومناهج الثاني الابتدائي</p>
-                    <a href="https://www.mediafire.com/folder/d7xoptx468c5o/الثاني" target="_blank" class="btn-folder-link">
+                    <a href="https://www.mediafire.com/folder/d7xoptx468c5o/الثاني" target="_blank" rel="noopener noreferrer" class="btn-folder-link">
                         <i class="fa-solid fa-folder-open"></i> استعراض الكتب وتحميلها
                     </a>
                 </div>
@@ -356,7 +366,7 @@
                 <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الثالث الابتدائي</span></div>
                 <div class="books-list">
                     <p class="folder-desc">تحميل جميع كتب ومناهج الثالث الابتدائي</p>
-                    <a href="https://www.mediafire.com/folder/agaeg4ktd9ybj/الثالث" target="_blank" class="btn-folder-link">
+                    <a href="https://www.mediafire.com/folder/agaeg4ktd9ybj/الثالث" target="_blank" rel="noopener noreferrer" class="btn-folder-link">
                         <i class="fa-solid fa-folder-open"></i> استعراض الكتب وتحميلها
                     </a>
                 </div>
@@ -367,7 +377,7 @@
                 <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الرابع الابتدائي</span></div>
                 <div class="books-list">
                     <p class="folder-desc">تحميل جميع كتب ومناهج الرابع الابتدائي</p>
-                    <a href="https://www.mediafire.com/folder/9yqjmgnrppii7/الرابع" target="_blank" class="btn-folder-link">
+                    <a href="https://www.mediafire.com/folder/9yqjmgnrppii7/الرابع" target="_blank" rel="noopener noreferrer" class="btn-folder-link">
                         <i class="fa-solid fa-folder-open"></i> استعراض الكتب وتحميلها
                     </a>
                 </div>
@@ -378,7 +388,7 @@
                 <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> الخامس الابتدائي</span></div>
                 <div class="books-list">
                     <p class="folder-desc">تحميل جميع كتب ومناهج الخامس الابتدائي</p>
-                    <a href="https://www.mediafire.com/folder/msmfvvbr9rti1/الخامس" target="_blank" class="btn-folder-link">
+                    <a href="https://www.mediafire.com/folder/msmfvvbr9rti1/الخامس" target="_blank" rel="noopener noreferrer" class="btn-folder-link">
                         <i class="fa-solid fa-folder-open"></i> استعراض الكتب وتحميلها
                     </a>
                 </div>
@@ -389,13 +399,13 @@
                 <div class="class-header"><span><i class="fa-solid fa-graduation-cap"></i> السادس الابتدائي</span></div>
                 <div class="books-list">
                     <p class="folder-desc">تحميل جميع كتب ومناهج السادس الابتدائي</p>
-                    <a href="https://www.mediafire.com/folder/q4napmbvtgzb9/السادس" target="_blank" class="btn-folder-link">
+                    <a href="https://www.mediafire.com/folder/q4napmbvtgzb9/السادس" target="_blank" rel="noopener noreferrer" class="btn-folder-link">
                         <i class="fa-solid fa-folder-open"></i> استعراض الكتب وتحميلها
                     </a>
                 </div>
             </div>
 
-            <!-- قسم الترفيه والإبداع (تظهر فيه المواد والملفات المضافة) -->
+            <!-- قسم الترفيه والإبداع (تظهر فيه المواد والملفات المضافة ديناميكياً) -->
             <div class="class-card" data-class="entertainment">
                 <div class="class-header" style="background: linear-gradient(135deg, #ec4899, #10b981);">
                     <span><i class="fa-solid fa-icons"></i> 📖🎨 قسم الترفيه والإبداع</span>
@@ -407,7 +417,7 @@
         </div>
     </main>
 
-    <!-- ربط قاعدة بيانات Firebase -->
+    <!-- ربط قاعدة بيانات Firebase المحدث والمُصلح 100% -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -424,50 +434,55 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let currentUser = null;
-        try {
-            const userString = localStorage.getItem("currentUser");
-            if (userString) currentUser = JSON.parse(userString);
-        } catch(e) {}
+        const addBookForm = document.getElementById('addBookForm');
+        const btnSubmit = document.getElementById('btnSubmit');
 
-        const adminPanel = document.getElementById('adminPanel');
-        const isStaff = currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin' || currentUser.role === 'المدير' || currentUser.role === 'الأستاذ');
+        // 1. تفعيل عملية إضافة مادة / ملف عند الضغط على الزر
+        if (addBookForm) {
+            addBookForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // تغيير حالة الزر أثناء الإرسال لمنع التكرار
+                btnSubmit.disabled = true;
+                btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الإضافة...`;
 
-        // إظهار لوحة الإضافة دائماً للسهولة (أو للمسؤولين فقط حسب اختيارك)
-        adminPanel.style.display = 'block';
+                const title = document.getElementById('bookTitleInput').value.trim();
+                const pdfUrl = document.getElementById('pdfUrlInput').value.trim();
 
-        // 1. عند ضغط زر "إضافة الملف للقسم"
-        document.getElementById('addBookForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const title = document.getElementById('bookTitleInput').value.trim();
-            const pdfUrl = document.getElementById('pdfUrlInput').value.trim();
+                try {
+                    await addDoc(collection(db, "alwaddy_books"), {
+                        title: title,
+                        category: "entertainment",
+                        pdfUrl: pdfUrl,
+                        createdAt: new Date()
+                    });
 
-            try {
-                await addDoc(collection(db, "alwaddy_books"), {
-                    title: title,
-                    category: "entertainment",
-                    pdfUrl: pdfUrl,
-                    createdAt: new Date()
-                });
-                alert("تمت إضافة المادة/الملف بنجاح إلى القسم!");
-                document.getElementById('addBookForm').reset();
-                renderExtra(); // إعادة تحميل القائمة بعد الإضافة
-            } catch (error) {
-                alert("حدث خطأ أثناء الإضافة!");
-            }
-        });
+                    alert("تمت إضافة المادة/الملف بنجاح إلى القسم!");
+                    addBookForm.reset();
+                    await renderExtra(); // إعاده تحديث القائمة لإظهار المادة فوراً
+                } catch (error) {
+                    console.error("Firebase Error:", error);
+                    alert("حدث خطأ أثناء الإضافة: " + error.message);
+                } finally {
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = `<i class="fa-solid fa-paper-plane"></i> إضافة الملف للقسم`;
+                }
+            });
+        }
 
-        // 2. عرض الملفات والمواد داخل القسم
+        // 2. دالة جلب وعرض الملفات من الفايربيس داخل القسم
         async function renderExtra() {
             const listElem = document.getElementById('list-entertainment');
             if (!listElem) return;
 
-            listElem.innerHTML = '<div class="empty-msg" style="text-align:center;">جاري تحميل المواد...</div>';
+            listElem.innerHTML = '<div style="text-align:center; color:#64748b; padding:10px;">جاري تحميل المواد...</div>';
 
             try {
                 const querySnapshot = await getDocs(collection(db, "alwaddy_books"));
                 const books = [];
-                querySnapshot.forEach((docSnap) => books.push({ id: docSnap.id, ...docSnap.data() }));
+                querySnapshot.forEach((docSnap) => {
+                    books.push({ id: docSnap.id, ...docSnap.data() });
+                });
 
                 listElem.innerHTML = '';
 
@@ -480,9 +495,8 @@
 
                 const allItems = [...defaultChannelItems, ...books];
 
-                // إنشاء عنصر زر لكـل مادة/ملف
                 allItems.forEach(book => {
-                    const isTelegram = book.pdfUrl.includes("t.me") || book.pdfUrl.includes("telegram");
+                    const isTelegram = book.pdfUrl && (book.pdfUrl.includes("t.me") || book.pdfUrl.includes("telegram"));
                     const iconClass = isTelegram ? "fa-telegram" : "fa-file-lines";
                     const iconPrefix = isTelegram ? "fa-brands" : "fa-solid";
                     const btnText = isTelegram ? "فتح في التليجرام" : "فتح الرابط";
@@ -495,31 +509,38 @@
                             <span>${book.title}</span>
                         </div>
                         <div style="display:flex; gap:5px;">
-                            <a href="${book.pdfUrl}" target="_blank" class="btn-download">
+                            <a href="${book.pdfUrl}" target="_blank" rel="noopener noreferrer" class="btn-download">
                                 <i class="${iconPrefix} ${iconClass}"></i> ${btnText}
                             </a>
-                            ${(!book.isFixed) ? `<button data-id="${book.id}" class="btn-delete btn-delete-action"><i class="fa-solid fa-trash"></i></button>` : ''}
+                            ${(!book.isFixed) ? `<button data-id="${book.id}" class="btn-delete btn-delete-action" title="حذف الملف"><i class="fa-solid fa-trash"></i></button>` : ''}
                         </div>
                     `;
                     listElem.appendChild(bookItem);
                 });
 
-                // إمكانية حذف العناصر المضافة
+                // تفعيل دالة الحذف للملفات المضافة
                 document.querySelectorAll('.btn-delete-action').forEach(btn => {
-                    btn.addEventListener('click', async () => {
-                        const docId = btn.getAttribute('data-id');
-                        if (confirm("هل تريد حذف هذا الملف؟")) {
-                            await deleteDoc(doc(docId));
-                            renderExtra();
+                    btn.addEventListener('click', async (e) => {
+                        const docId = e.currentTarget.getAttribute('data-id');
+                        if (confirm("هل انت محتدم ورغبت في حذف هذا الملف؟")) {
+                            try {
+                                // التصحيح الصريح لـ deleteDoc مع تمرير db و اسم المجموعة
+                                await deleteDoc(doc(db, "alwaddy_books", docId));
+                                await renderExtra();
+                            } catch (err) {
+                                alert("تعذر الحذف: " + err.message);
+                            }
                         }
                     });
                 });
 
             } catch (err) {
-                listElem.innerHTML = `<div class="empty-msg" style="text-align:center;">فشل تحميل البيانات.</div>`;
+                console.error("Fetch Error:", err);
+                listElem.innerHTML = `<div style="text-align:center; color:#ef4444; padding:10px;">فشل تحميل البيانات.</div>`;
             }
         }
 
+        // تشغيل الجلب التلقائي عند التحميل
         renderExtra();
     </script>
     <script src="https://pl30567936.effectivecpmnetwork.com/75/71/e0/7571e0e12a8e91b91d02f47ecb8b87ea.js"></script>
