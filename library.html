@@ -488,9 +488,8 @@
 
                 // قائمة المواد الافتراضية الثابتة
                 const defaultChannelItems = [
-                    { id: 'main-channel', title: '📢 القناة الرسمية لمنصة الوادي', pdfUrl: 'https://t.me/alwaddyplatform', isFixed: true },
-                    { id: 'stories-item', title: '📖 قصص وحكايات مصورة للأطفال', pdfUrl: 'https://t.me/alwaddyplatform', isFixed: true },
-                    { id: 'drawing-item', title: '🎨 أوراق عمل ورسومات للتلوين', pdfUrl: 'https://t.me/alwaddyplatform', isFixed: true }
+                 
+                    { id: 'drawing-item', title: '🎨 أوراق عمل تعليميةورسومات للتلوين', pdfUrl: 'https://t.me/alwaddyplatform', isFixed: true }
                 ];
 
                 const allItems = [...defaultChannelItems, ...books];
@@ -499,7 +498,7 @@
                     const isTelegram = book.pdfUrl && (book.pdfUrl.includes("t.me") || book.pdfUrl.includes("telegram"));
                     const iconClass = isTelegram ? "fa-telegram" : "fa-file-lines";
                     const iconPrefix = isTelegram ? "fa-brands" : "fa-solid";
-                    const btnText = isTelegram ? "فتح في التليجرام" : "فتح الرابط";
+                    const btnText = isTelegram ? "تنزيل" : "فتح الرابط";
 
                     const bookItem = document.createElement('div');
                     bookItem.className = 'book-item';
