@@ -231,7 +231,6 @@
 </head>
 <body>
 
-    <!-- أزرار أعلى الصفحة: القائمة + زر تبديل المظهر -->
     <div class="top-buttons-container">
         <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="تبديل الوضع">
             <i class="fa-solid fa-moon" id="themeIcon"></i>
@@ -272,7 +271,6 @@
                 </div>
             </div>
 
-            <!-- 🎯 وحدة الإعلان (300x250 Banner) مع حماية ضد الحجب -->
             <div class="ad-container-box" id="adBoxContainer">
                 <script type="text/javascript">
                     atOptions = {
@@ -302,31 +300,25 @@
                 </div>
             </div>
 
-            <!-- 📢 التبليغات والتنبيهات المدرسية -->
             <div class="alerts-dashboard-card">
                 <h3><i class="fa-solid fa-bullhorn"></i> التبليغات والتنبيهات المدرسية الهامة</h3>
                 <div id="alertsContainer">
-                    <!-- يتم جلب التبليغات ديناميكياً بواسطة JavaScript -->
-                </div>
+                    </div>
             </div>
 
-            <!-- 📰 آخر الأخبار والنشاطات المدرسية -->
             <div class="news-dashboard-card">
                 <h3><i class="fa-solid fa-newspaper"></i> آخر الأخبار والنشاطات المدرسية</h3>
                 <div class="news-slider-wrapper">
                     <button class="slider-btn prev-btn" onclick="moveNews(1)"><i class="fa-solid fa-chevron-right"></i></button>
                     <div class="news-cards-grid" id="newsContainer">
-                        <!-- يتم جلب الأخبار ديناميكياً بواسطة JavaScript -->
-                    </div>
+                        </div>
                     <button class="slider-btn next-btn" onclick="moveNews(-1)"><i class="fa-solid fa-chevron-left"></i></button>
                 </div>
             </div>
 
-            <!-- 🔐 لوحة تحكم الإدارة (تظهر فقط للأدمن/المدير) -->
             <div id="adminPanel" class="admin-panel-card" style="display: none;">
                 <h3><i class="fa-solid fa-user-shield"></i> لوحة إدارة المحتوى (خاصة بالإدارة)</h3>
                 
-                <!-- نموذج إضافة/تعديل تبليغ -->
                 <div class="admin-section">
                     <h4>📢 إضافة / تعديل تبليغ</h4>
                     <input type="hidden" id="alertEditId">
@@ -337,7 +329,6 @@
 
                 <hr style="border: 0; border-top: 1px dashed rgba(246, 173, 85, 0.3); margin: 20px 0;">
 
-                <!-- نموذج إضافة/تعديل خبر -->
                 <div class="admin-section">
                     <h4>📰 إضافة / تعديل خبر أو نشاط</h4>
                     <input type="hidden" id="newsEditId">
@@ -390,11 +381,22 @@
         let alertsData = JSON.parse(localStorage.getItem('platformAlerts')) || defaultAlerts;
         let newsData = JSON.parse(localStorage.getItem('platformNews')) || defaultNews;
 
+        // دالة فحص المدير المطورة والمرنة
         function checkIsAdmin() {
             try {
                 const activeUser = JSON.parse(localStorage.getItem("currentUser"));
-                return activeUser && (activeUser.role === 'admin' || activeUser.role === 'مدير' || activeUser.role === 'أدمن');
-            } catch(e) { return false; }
+                if (!activeUser) return false;
+
+                // جلب الرتبة وسحبها بغض النظر عن اسم الحقل أو حالة الأحرف
+                const role = (activeUser.role || activeUser.userRole || activeUser.type || '').toString().toLowerCase().trim();
+                
+                // قائمة الرتب المسموح لها بالإدارة
+                const allowedRoles = ['admin', 'مدير', 'أدمن', 'administrator', 'manager'];
+                
+                return allowedRoles.includes(role);
+            } catch(e) { 
+                return false; 
+            }
         }
 
         function renderAlerts() {
@@ -509,7 +511,8 @@
                 if (activeUser) {
                     const userObj = JSON.parse(activeUser);
                     if (userObj && userObj.name) {
-                        document.getElementById('welcomeUserTitle').innerText = `أهلاً بك يا ${userObj.name} (${userObj.role || 'مستخدم'}) في منصة الوادي 🌟`;
+                        const userRole = userObj.role || userObj.userRole || userObj.type || 'مستخدم';
+                        document.getElementById('welcomeUserTitle').innerText = `أهلاً بك يا ${userObj.name} (${userRole}) في منصة الوادي 🌟`;
                     }
                 }
             } catch(e) {}
@@ -561,7 +564,6 @@
         }
     </script>
 
-    <!-- أكواد البوب أندر Popunder للإعلانات الجانبية -->
     <script src="https://pl30567680.effectivecpmnetwork.com/0c/63/61/0c63614dfd4b8d6396d805d790b93258.js" onerror="this.remove();"></script>
 
 </body>
