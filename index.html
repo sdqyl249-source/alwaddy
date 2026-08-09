@@ -132,10 +132,7 @@
         #installAppBtn i { color: #34d399; }
         #installAppBtn:hover { background: #10b981; color: white; border-color: #10b981; }
 
-        .admin-force-btn { margin-top: auto; padding: 10px; background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px dashed #f59e0b; border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: bold; width: 85%; margin: 10px auto; font-size: 13px; }
-        .admin-force-btn:hover { background: #f59e0b; color: #000; }
-
-        .logout-btn { padding: 10px; background: rgba(229, 62, 62, 0.1); color: #ef4444; border: 1px solid rgba(229, 62, 62, 0.3); border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: bold; width: 85%; margin: 5px auto 15px auto; font-size: 13px; }
+        .logout-btn { margin-top: auto; padding: 12px; background: rgba(229, 62, 62, 0.1); color: #ef4444; border: 1px solid rgba(229, 62, 62, 0.3); border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: bold; width: 80%; margin: 20px auto; }
         .logout-btn:hover { background: #e53e3e; color: white; }
         
         /* أزرار أعلى الصفحة */
@@ -195,6 +192,13 @@
         .slider-btn { background: rgba(0, 0, 0, 0.6); color: #fff; border: 1px solid var(--news-border); border-radius: 50%; width: 38px; height: 38px; cursor: pointer; z-index: 10; transition: 0.3s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .slider-btn:hover { background: #14b8a6; color: #000; }
 
+        /* أزرار التعديل والحذف */
+        .admin-controls { display: flex; gap: 6px; }
+        .action-btn { cursor: pointer; font-size: 12px; color: #f6ad55; background: rgba(246, 173, 85, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(246, 173, 85, 0.3); transition: 0.2s; }
+        .action-btn:hover { background: #f6ad55; color: #000; }
+        .delete-btn { color: #f87171; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); }
+        .delete-btn:hover { background: #ef4444; color: #fff; }
+
         /* لوحة التحكم الخاصة بالإدارة */
         .admin-panel-card { background: rgba(15, 23, 42, 0.95); border: 2px dashed #f59e0b; border-radius: 20px; padding: 25px; margin-top: 25px; }
         .admin-panel-card h3 { color: #f59e0b; margin-top: 0; font-size: 20px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
@@ -204,8 +208,6 @@
         .admin-input:focus { outline: none; border-color: #f59e0b; }
         .admin-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .admin-btn:hover { background: #059669; }
-        .action-btn { cursor: pointer; margin-right: 8px; font-size: 13px; color: #f6ad55; background: rgba(246, 173, 85, 0.1); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(246, 173, 85, 0.3); }
-        .action-btn:hover { background: #f6ad55; color: #000; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -238,7 +240,6 @@
             <i class="fa-solid fa-download"></i> تثبيت التطبيق
         </button>
 
-        <button onclick="activateAdminMode()" class="admin-force-btn"><i class="fa-solid fa-key"></i> تفعيل لوحة المدير فوراً</button>
         <button onclick="localStorage.removeItem('currentUser'); window.location.href='login.html';" class="logout-btn">تسجيل الخروج</button>
     </div>
     
@@ -334,11 +335,9 @@
     </footer>
 
     <script>
-        // وظيفة تبديل الوضع الليلي والنهاري
         function toggleTheme() {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             updateThemeIcon(newTheme);
@@ -353,16 +352,6 @@
             }
         }
 
-        // زر تفعيل وضع المدير المباشر
-        function activateAdminMode() {
-            const adminUser = { name: "المدير العام", role: "admin" };
-            localStorage.setItem("currentUser", JSON.stringify(adminUser));
-            localStorage.setItem("isAdminMode", "true");
-            alert("تم تفعيل صلاحيات المدير بنجاح!");
-            location.reload();
-        }
-
-        // البيانات الافتراضية
         const defaultAlerts = [
             { id: 1, title: '📌 تنبيه إداري:', text: 'تم تحديث الجداول الدراسية الأسبوعية لجميع الصفوف ويمكنكم مراجعتها عبر قسم "الحصص والجداول".' },
             { id: 2, title: '🌟 نشاط تفاعلي:', text: 'تم تفعيل الألعاب التعليمية الجديدة لقسم المرحلة الابتدائية في واجهة الألعاب والترفيه.' }
@@ -370,21 +359,21 @@
 
         const defaultNews = [
             { id: 1, date: 'يوليو 2026', title: 'إطلاق النسخة المحدثة للمنصة', desc: 'تم تحديث واجهات المنصة بالستايل الملكي الفاخر لضمان أداء أسرع وتجربة مستخدم متميزة.' },
-            { id: 2, date: 'يوليو 2026', title: 'تفعيل المكتبة الرقمية', desc: 'إتاحة رفع وتحميل الملازم والمناهج الدراسية بشكل مباشر ومرن للطلبة والأساتذة.' },
-            { id: 3, date: 'يوليو 2026', title: 'تطوير مسابقات الألعاب الذكية', desc: 'إضافة ألعاب الذاكرة والتهجي والكلمات المبعثرة لتحفيز التركيز لدى الأطفال.' }
+            { id: 2, date: 'يوليو 2026', title: 'تفعيل المكتبة الرقمية', desc: 'إتاحة رفع وتحميل الملازم والمناهج الدراسية بشكل مباشر ومرن للطلبة والأساتذة.' }
         ];
 
         let alertsData = JSON.parse(localStorage.getItem('platformAlerts')) || defaultAlerts;
         let newsData = JSON.parse(localStorage.getItem('platformNews')) || defaultNews;
 
-        // دالة فحص المدير الشاملة والمباشرة
+        // دالة فحص حازمة وصارمة (للتحقق من حساب المدير المعتمد فقط)
         function checkIsAdmin() {
-            if (localStorage.getItem("isAdminMode") === "true") return true;
             try {
                 const activeUser = JSON.parse(localStorage.getItem("currentUser"));
                 if (!activeUser) return false;
+                
                 const role = (activeUser.role || activeUser.userRole || activeUser.type || '').toString().toLowerCase().trim();
                 const allowedRoles = ['admin', 'مدير', 'أدمن', 'administrator', 'manager'];
+                
                 return allowedRoles.includes(role);
             } catch(e) { 
                 return false; 
@@ -398,7 +387,12 @@
             container.innerHTML = alertsData.map(item => `
                 <div class="alert-row">
                     <div><strong>${item.title}</strong> ${item.text}</div>
-                    ${isAdmin ? `<div><span class="action-btn" onclick="editAlert(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span></div>` : ''}
+                    ${isAdmin ? `
+                        <div class="admin-controls">
+                            <span class="action-btn" onclick="editAlert(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span>
+                            <span class="action-btn delete-btn" onclick="deleteAlert(${item.id})"><i class="fa-solid fa-trash"></i> حذف</span>
+                        </div>
+                    ` : ''}
                 </div>
             `).join('');
         }
@@ -412,7 +406,12 @@
                     <div class="date">${item.date}</div>
                     <div class="title">${item.title}</div>
                     <p class="desc">${item.desc}</p>
-                    ${isAdmin ? `<div style="margin-top:10px;"><span class="action-btn" onclick="editNews(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span></div>` : ''}
+                    ${isAdmin ? `
+                        <div class="admin-controls" style="margin-top:10px;">
+                            <span class="action-btn" onclick="editNews(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span>
+                            <span class="action-btn delete-btn" onclick="deleteNews(${item.id})"><i class="fa-solid fa-trash"></i> حذف</span>
+                        </div>
+                    ` : ''}
                 </div>
             `).join('');
         }
@@ -422,7 +421,9 @@
             container.scrollBy({ left: direction * 300, behavior: 'smooth' });
         }
 
+        /* عمليات الإضافة والتعديل والحذف للتبليغات */
         function saveAlert() {
+            if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
             const id = document.getElementById('alertEditId').value;
             const title = document.getElementById('alertTitleInput').value;
             const text = document.getElementById('alertTextInput').value;
@@ -450,13 +451,24 @@
             }
         }
 
+        function deleteAlert(id) {
+            if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
+            if (confirm("هل أنت تأكد من إرادتك لحذف هذا التبليغ؟")) {
+                alertsData = alertsData.filter(a => a.id !== id);
+                localStorage.setItem('platformAlerts', JSON.stringify(alertsData));
+                renderAlerts();
+            }
+        }
+
         function resetAlertForm() {
             document.getElementById('alertEditId').value = '';
             document.getElementById('alertTitleInput').value = '';
             document.getElementById('alertTextInput').value = '';
         }
 
+        /* عمليات الإضافة والتعديل والحذف للأخبار */
         function saveNews() {
+            if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
             const id = document.getElementById('newsEditId').value;
             const date = document.getElementById('newsDateInput').value;
             const title = document.getElementById('newsTitleInput').value;
@@ -483,6 +495,15 @@
                 document.getElementById('newsTitleInput').value = item.title;
                 document.getElementById('newsDescInput').value = item.desc;
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
+        function deleteNews(id) {
+            if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
+            if (confirm("هل أنت تأكد من حذف هذا الخبر؟")) {
+                newsData = newsData.filter(n => n.id !== id);
+                localStorage.setItem('platformNews', JSON.stringify(newsData));
+                renderNews();
             }
         }
 
@@ -521,43 +542,12 @@
             renderAlerts();
             renderNews();
 
-            // فحص الصلاحية وإظهار لوحة التحكم مباشرة
+            // إظهار لوحة التحكم والخيارات حصرياً للمدير
             if (checkIsAdmin()) {
                 const adminPanel = document.getElementById('adminPanel');
                 if(adminPanel) adminPanel.style.display = 'block';
             }
         });
-
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-            .then(() => console.log('Service Worker Registered Successfully'))
-            .catch((err) => console.log('Service Worker Registration Failed', err));
-        }
-
-        let deferredPrompt;
-        const installBtn = document.getElementById('installAppBtn');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            if (installBtn) {
-                installBtn.style.display = 'flex';
-            }
-        });
-
-        if (installBtn) {
-            installBtn.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    deferredPrompt = null;
-                    installBtn.style.display = 'none';
-                }
-            });
-        }
     </script>
-
-    <script src="https://pl30567680.effectivecpmnetwork.com/0c/63/61/0c63614dfd4b8d6396d805d790b93258.js" onerror="this.remove();"></script>
-
 </body>
 </html>
