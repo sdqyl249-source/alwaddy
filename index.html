@@ -173,8 +173,10 @@
 
         .alerts-dashboard-card { background: var(--alerts-bg); border: 1px solid var(--alerts-border); border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
         .alerts-dashboard-card h3 { color: var(--alerts-title); margin-top: 0; font-size: 19px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .alert-row { background: var(--alert-row-bg); border-right: 4px solid var(--alerts-title); padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; font-size: 14px; color: var(--alert-row-text); line-height: 1.6; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.4s ease-in-out; }
+        .alert-row { background: var(--alert-row-bg); border-right: 4px solid var(--alerts-title); padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; font-size: 14px; color: var(--alert-row-text); line-height: 1.6; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.4s ease-in-out; flex-wrap: wrap; gap: 10px; }
         .alert-row:last-child { margin-bottom: 0; }
+        
+        .alert-img { max-width: 100%; max-height: 180px; border-radius: 8px; margin-top: 8px; display: block; object-fit: cover; }
 
         .news-dashboard-card { background: var(--news-bg); border: 1px solid var(--news-border); border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
         .news-dashboard-card h3 { color: var(--news-title); margin-top: 0; font-size: 19px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
@@ -183,11 +185,16 @@
         .news-slider-wrapper { position: relative; display: flex; align-items: center; gap: 8px; }
         .news-cards-grid { display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; padding: 10px 0; width: 100%; }
         .news-cards-grid::-webkit-scrollbar { display: none; }
-        .news-sub-card { min-width: 280px; max-width: 320px; flex-shrink: 0; background: var(--news-card-bg); border: 1px solid var(--news-card-border); border-radius: 12px; padding: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .news-sub-card { min-width: 280px; max-width: 320px; flex-shrink: 0; background: var(--news-card-bg); border: 1px solid var(--news-card-border); border-radius: 12px; padding: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
         .news-sub-card:hover { transform: translateY(-5px); }
+        
+        /* تنسيق صورة الخبر */
+        .news-img-wrapper { width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 10px; background: rgba(0,0,0,0.2); }
+        .news-card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
         .news-sub-card .date { font-size: 12px; color: var(--news-card-date); font-weight: bold; margin-bottom: 5px; }
         .news-sub-card .title { font-size: 15px; font-weight: bold; color: var(--news-card-title); margin-bottom: 6px; }
-        .news-sub-card .desc { font-size: 13px; color: var(--news-card-desc); margin: 0; line-height: 1.5; }
+        .news-sub-card .desc { font-size: 13px; color: var(--news-card-desc); margin: 0; line-height: 1.5; word-break: break-word; }
         
         .slider-btn { background: rgba(0, 0, 0, 0.6); color: #fff; border: 1px solid var(--news-border); border-radius: 50%; width: 38px; height: 38px; cursor: pointer; z-index: 10; transition: 0.3s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .slider-btn:hover { background: #14b8a6; color: #000; }
@@ -209,6 +216,9 @@
         .admin-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .admin-btn:hover { background: #059669; }
 
+        /* حقول إضافة وإرفاق الصور */
+        .file-label { color: #f6ad55; font-size: 13px; display: block; margin-top: 4px; margin-bottom: 4px; font-weight: 500; }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -291,7 +301,7 @@
             <div class="alerts-dashboard-card">
                 <h3><i class="fa-solid fa-bullhorn"></i> التبليغات والتنبيهات المدرسية الهامة</h3>
                 <div id="alertsContainer">
-                    </div>
+                </div>
             </div>
 
             <div class="news-dashboard-card">
@@ -299,7 +309,7 @@
                 <div class="news-slider-wrapper">
                     <button class="slider-btn prev-btn" onclick="moveNews(1)"><i class="fa-solid fa-chevron-right"></i></button>
                     <div class="news-cards-grid" id="newsContainer">
-                        </div>
+                    </div>
                     <button class="slider-btn next-btn" onclick="moveNews(-1)"><i class="fa-solid fa-chevron-left"></i></button>
                 </div>
             </div>
@@ -312,6 +322,10 @@
                     <input type="hidden" id="alertEditId">
                     <input type="text" id="alertTitleInput" placeholder="نوع أو عنوان التنبيه (مثال: 📌 تنبيه إداري:)" class="admin-input">
                     <textarea id="alertTextInput" placeholder="نص التبليغ..." class="admin-input" rows="3"></textarea>
+                    
+                    <label class="file-label"><i class="fa-solid fa-image"></i> إرفاق صورة مع التبليغ (اختياري):</label>
+                    <input type="file" id="alertImageFileInput" accept="image/*" class="admin-input" style="padding: 8px;">
+                    
                     <button onclick="saveAlert()" class="admin-btn">حفظ التبليغ</button>
                 </div>
 
@@ -323,6 +337,10 @@
                     <input type="text" id="newsDateInput" placeholder="التاريخ (مثال: أغسطس 2026)" class="admin-input">
                     <input type="text" id="newsTitleInput" placeholder="عنوان الخبر" class="admin-input">
                     <textarea id="newsDescInput" placeholder="تفاصيل الخبر..." class="admin-input" rows="3"></textarea>
+                    
+                    <label class="file-label"><i class="fa-solid fa-image"></i> إرفاق صورة الخبر من الجهاز (اختياري):</label>
+                    <input type="file" id="newsImageFileInput" accept="image/*" class="admin-input" style="padding: 8px;">
+
                     <button onclick="saveNews()" class="admin-btn">حفظ الخبر</button>
                 </div>
             </div>
@@ -353,19 +371,29 @@
         }
 
         const defaultAlerts = [
-            { id: 1, title: '📌 تنبيه إداري:', text: 'تم تحديث الجداول الدراسية الأسبوعية لجميع الصفوف ويمكنكم مراجعتها عبر قسم "الحصص والجداول".' },
-            { id: 2, title: '🌟 نشاط تفاعلي:', text: 'تم تفعيل الألعاب التعليمية الجديدة لقسم المرحلة الابتدائية في واجهة الألعاب والترفيه.' }
+            { id: 1, title: '📌 تنبيه إداري:', text: 'تم تحديث الجداول الدراسية الأسبوعية لجميع الصفوف ويمكنكم مراجعتها عبر قسم "الحصص والجداول".', image: '' },
+            { id: 2, title: '🌟 نشاط تفاعلي:', text: 'تم تفعيل الألعاب التعليمية الجديدة لقسم المرحلة الابتدائية في واجهة الألعاب والترفيه.', image: '' }
         ];
 
         const defaultNews = [
-            { id: 1, date: 'يوليو 2026', title: 'إطلاق النسخة المحدثة للمنصة', desc: 'تم تحديث واجهات المنصة بالستايل الملكي الفاخر لضمان أداء أسرع وتجربة مستخدم متميزة.' },
-            { id: 2, date: 'يوليو 2026', title: 'تفعيل المكتبة الرقمية', desc: 'إتاحة رفع وتحميل الملازم والمناهج الدراسية بشكل مباشر ومرن للطلبة والأساتذة.' }
+            { id: 1, date: 'يوليو 2026', title: 'إطلاق النسخة المحدثة للمنصة', desc: 'تم تحديث واجهات المنصة بالستايل الملكي الفاخر لضمان أداء أسرع وتجربة مستخدم متميزة.', image: '' },
+            { id: 2, date: 'يوليو 2026', title: 'تفعيل المكتبة الرقمية', desc: 'إتاحة رفع وتحميل الملازم والمناهج الدراسية بشكل مباشر ومرن للطلبة والأساتذة.', image: '' }
         ];
 
         let alertsData = JSON.parse(localStorage.getItem('platformAlerts')) || defaultAlerts;
         let newsData = JSON.parse(localStorage.getItem('platformNews')) || defaultNews;
 
-        // دالة فحص حازمة وصارمة (للتحقق من حساب المدير المعتمد فقط)
+        // دالة تحويل ملف الصورة لـ Base64
+        function convertFileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // دالة فحص حساب المدير
         function checkIsAdmin() {
             try {
                 const activeUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -386,7 +414,10 @@
             
             container.innerHTML = alertsData.map(item => `
                 <div class="alert-row">
-                    <div><strong>${item.title}</strong> ${item.text}</div>
+                    <div>
+                        <strong>${item.title}</strong> ${item.text}
+                        ${item.image ? `<br><img src="${item.image}" alt="صورة التبليغ" class="alert-img">` : ''}
+                    </div>
                     ${isAdmin ? `
                         <div class="admin-controls">
                             <span class="action-btn" onclick="editAlert(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span>
@@ -403,12 +434,19 @@
 
             container.innerHTML = newsData.map(item => `
                 <div class="news-sub-card">
-                    <div class="date">${item.date}</div>
-                    <div class="title">${item.title}</div>
-                    <p class="desc">${item.desc}</p>
+                    <div>
+                        ${item.image ? `
+                            <div class="news-img-wrapper">
+                                <img src="${item.image}" alt="صورة الخبر" class="news-card-img">
+                            </div>
+                        ` : ''}
+                        <div class="date">${item.date}</div>
+                        <div class="title">${item.title}</div>
+                        <p class="desc">${item.desc}</p>
+                    </div>
                     ${isAdmin ? `
                         <div class="admin-controls" style="margin-top:10px;">
-                            <span class="action-btn" onclick="editNews(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span>
+                            <span class="action-btn" onclick="editAlert(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span>
                             <span class="action-btn delete-btn" onclick="deleteNews(${item.id})"><i class="fa-solid fa-trash"></i> حذف</span>
                         </div>
                     ` : ''}
@@ -421,19 +459,30 @@
             container.scrollBy({ left: direction * 300, behavior: 'smooth' });
         }
 
-        /* عمليات الإضافة والتعديل والحذف للتبليغات */
-        function saveAlert() {
+        /* عمليات الإضافة والتعديل والحذف للتبليغات مع الصور */
+        async function saveAlert() {
             if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
             const id = document.getElementById('alertEditId').value;
             const title = document.getElementById('alertTitleInput').value;
             const text = document.getElementById('alertTextInput').value;
+            const imageFileInput = document.getElementById('alertImageFileInput');
 
             if(!title || !text) return alert("يرجى ملء جميع الحقول المطلوبة!");
 
+            let base64Image = '';
+            if (imageFileInput.files && imageFileInput.files[0]) {
+                const file = imageFileInput.files[0];
+                if (file.size > 2 * 1024 * 1024) return alert('حجم الصورة كبير، يفضل اختيار صورة أقل من 2 ميجابايت.');
+                base64Image = await convertFileToBase64(file);
+            } else if (id) {
+                const existingItem = alertsData.find(a => a.id == id);
+                if (existingItem) base64Image = existingItem.image || '';
+            }
+
             if (id) {
-                alertsData = alertsData.map(a => a.id == id ? { id: Number(id), title, text } : a);
+                alertsData = alertsData.map(a => a.id == id ? { id: Number(id), title, text, image: base64Image } : a);
             } else {
-                alertsData.unshift({ id: Date.now(), title, text });
+                alertsData.unshift({ id: Date.now(), title, text, image: base64Image });
             }
 
             localStorage.setItem('platformAlerts', JSON.stringify(alertsData));
@@ -464,22 +513,34 @@
             document.getElementById('alertEditId').value = '';
             document.getElementById('alertTitleInput').value = '';
             document.getElementById('alertTextInput').value = '';
+            document.getElementById('alertImageFileInput').value = '';
         }
 
-        /* عمليات الإضافة والتعديل والحذف للأخبار */
-        function saveNews() {
+        /* عمليات الإضافة والتعديل والحذف للأخبار مع الصور */
+        async function saveNews() {
             if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
             const id = document.getElementById('newsEditId').value;
             const date = document.getElementById('newsDateInput').value;
             const title = document.getElementById('newsTitleInput').value;
             const desc = document.getElementById('newsDescInput').value;
+            const imageFileInput = document.getElementById('newsImageFileInput');
 
             if(!title || !desc) return alert("يرجى ملء جميع الحقول المطلوبة!");
 
+            let base64Image = '';
+            if (imageFileInput.files && imageFileInput.files[0]) {
+                const file = imageFileInput.files[0];
+                if (file.size > 2 * 1024 * 1024) return alert('حجم الصورة كبير، يفضل اختيار صورة أقل من 2 ميجابايت.');
+                base64Image = await convertFileToBase64(file);
+            } else if (id) {
+                const existingItem = newsData.find(n => n.id == id);
+                if (existingItem) base64Image = existingItem.image || '';
+            }
+
             if (id) {
-                newsData = newsData.map(n => n.id == id ? { id: Number(id), date, title, desc } : n);
+                newsData = newsData.map(n => n.id == id ? { id: Number(id), date, title, desc, image: base64Image } : n);
             } else {
-                newsData.unshift({ id: Date.now(), date: date || 'الآن', title, desc });
+                newsData.unshift({ id: Date.now(), date: date || 'الآن', title, desc, image: base64Image });
             }
 
             localStorage.setItem('platformNews', JSON.stringify(newsData));
@@ -512,6 +573,7 @@
             document.getElementById('newsDateInput').value = '';
             document.getElementById('newsTitleInput').value = '';
             document.getElementById('newsDescInput').value = '';
+            document.getElementById('newsImageFileInput').value = '';
         }
 
         document.addEventListener('DOMContentLoaded', () => {
