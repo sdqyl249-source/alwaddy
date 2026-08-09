@@ -132,7 +132,10 @@
         #installAppBtn i { color: #34d399; }
         #installAppBtn:hover { background: #10b981; color: white; border-color: #10b981; }
 
-        .logout-btn { margin-top: auto; padding: 12px; background: rgba(229, 62, 62, 0.1); color: #ef4444; border: 1px solid rgba(229, 62, 62, 0.3); border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: bold; width: 80%; margin: 20px auto; }
+        .admin-force-btn { margin-top: auto; padding: 10px; background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px dashed #f59e0b; border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: bold; width: 85%; margin: 10px auto; font-size: 13px; }
+        .admin-force-btn:hover { background: #f59e0b; color: #000; }
+
+        .logout-btn { padding: 10px; background: rgba(229, 62, 62, 0.1); color: #ef4444; border: 1px solid rgba(229, 62, 62, 0.3); border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: bold; width: 85%; margin: 5px auto 15px auto; font-size: 13px; }
         .logout-btn:hover { background: #e53e3e; color: white; }
         
         /* أزرار أعلى الصفحة */
@@ -176,23 +179,6 @@
         .alert-row { background: var(--alert-row-bg); border-right: 4px solid var(--alerts-title); padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; font-size: 14px; color: var(--alert-row-text); line-height: 1.6; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.4s ease-in-out; }
         .alert-row:last-child { margin-bottom: 0; }
 
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-        .service-card { background: var(--service-card-bg); border-radius: 20px; padding: 25px; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.1); transition: 0.3s; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; border: 1px solid var(--service-card-border); }
-        .service-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
-        .service-card.c1 { border-top: 4px solid #f59e0b; }
-        .service-card.c2 { border-top: 4px solid #3b82f6; }
-        .service-card.c3 { border-top: 4px solid #10b981; }
-        .service-card.c4 { border-top: 4px solid #ec4899; }
-        
-        .service-card i { font-size: 45px; margin-bottom: 15px; }
-        .service-card.c1 i { color: #f59e0b; }
-        .service-card.c2 i { color: #3b82f6; }
-        .service-card.c3 i { color: #10b981; }
-        .service-card.c4 i { color: #ec4899; }
-        
-        .service-card h3 { color: var(--service-card-title); margin: 0 0 10px 0; font-size: 18px; }
-        .service-card p { color: var(--service-card-desc); font-size: 13px; margin: 0; line-height: 1.5; }
-
         .news-dashboard-card { background: var(--news-bg); border: 1px solid var(--news-border); border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
         .news-dashboard-card h3 { color: var(--news-title); margin-top: 0; font-size: 19px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
         
@@ -210,7 +196,7 @@
         .slider-btn:hover { background: #14b8a6; color: #000; }
 
         /* لوحة التحكم الخاصة بالإدارة */
-        .admin-panel-card { background: rgba(15, 23, 42, 0.9); border: 2px dashed #f59e0b; border-radius: 20px; padding: 25px; margin-top: 25px; }
+        .admin-panel-card { background: rgba(15, 23, 42, 0.95); border: 2px dashed #f59e0b; border-radius: 20px; padding: 25px; margin-top: 25px; }
         .admin-panel-card h3 { color: #f59e0b; margin-top: 0; font-size: 20px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
         .admin-section { margin-bottom: 20px; }
         .admin-section h4 { color: #e2e8f0; margin: 0 0 10px 0; font-size: 16px; }
@@ -252,6 +238,7 @@
             <i class="fa-solid fa-download"></i> تثبيت التطبيق
         </button>
 
+        <button onclick="activateAdminMode()" class="admin-force-btn"><i class="fa-solid fa-key"></i> تفعيل لوحة المدير فوراً</button>
         <button onclick="localStorage.removeItem('currentUser'); window.location.href='login.html';" class="logout-btn">تسجيل الخروج</button>
     </div>
     
@@ -366,6 +353,15 @@
             }
         }
 
+        // زر تفعيل وضع المدير المباشر
+        function activateAdminMode() {
+            const adminUser = { name: "المدير العام", role: "admin" };
+            localStorage.setItem("currentUser", JSON.stringify(adminUser));
+            localStorage.setItem("isAdminMode", "true");
+            alert("تم تفعيل صلاحيات المدير بنجاح!");
+            location.reload();
+        }
+
         // البيانات الافتراضية
         const defaultAlerts = [
             { id: 1, title: '📌 تنبيه إداري:', text: 'تم تحديث الجداول الدراسية الأسبوعية لجميع الصفوف ويمكنكم مراجعتها عبر قسم "الحصص والجداول".' },
@@ -381,18 +377,14 @@
         let alertsData = JSON.parse(localStorage.getItem('platformAlerts')) || defaultAlerts;
         let newsData = JSON.parse(localStorage.getItem('platformNews')) || defaultNews;
 
-        // دالة فحص المدير المطورة والمرنة
+        // دالة فحص المدير الشاملة والمباشرة
         function checkIsAdmin() {
+            if (localStorage.getItem("isAdminMode") === "true") return true;
             try {
                 const activeUser = JSON.parse(localStorage.getItem("currentUser"));
                 if (!activeUser) return false;
-
-                // جلب الرتبة وسحبها بغض النظر عن اسم الحقل أو حالة الأحرف
                 const role = (activeUser.role || activeUser.userRole || activeUser.type || '').toString().toLowerCase().trim();
-                
-                // قائمة الرتب المسموح لها بالإدارة
                 const allowedRoles = ['admin', 'مدير', 'أدمن', 'administrator', 'manager'];
-                
                 return allowedRoles.includes(role);
             } catch(e) { 
                 return false; 
@@ -529,6 +521,7 @@
             renderAlerts();
             renderNews();
 
+            // فحص الصلاحية وإظهار لوحة التحكم مباشرة
             if (checkIsAdmin()) {
                 const adminPanel = document.getElementById('adminPanel');
                 if(adminPanel) adminPanel.style.display = 'block';
