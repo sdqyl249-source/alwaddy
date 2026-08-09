@@ -71,14 +71,14 @@
 
                 <div class="input-group">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="text" id="identifier" class="input-field" placeholder="الاسم الثلاثي " required>
+                    <input type="text" id="identifier" class="input-field" placeholder="اسم المستخدم أو البريد الإلكتروني" required>
                 </div>
 
                 <div id="roleGroup" style="display:none;">
                     <select id="userRole" class="select-field">
                         <option value="طالب">طالب</option>
-                        <option value="الأستاذ">أستاذ / معلم</option>
-                        <option value="المدير">مدير المنصة</option>
+                        <option value="أستاذ">أستاذ / معلم</option>
+                        <option value="admin">مدير المنصة</option>
                     </select>
                 </div>
 
@@ -108,6 +108,9 @@
             const submitBtn = document.getElementById('submitBtn');
             const toggleTextInfo = document.getElementById('toggleTextInfo');
             const toggleLink = document.getElementById('toggleLink');
+            const errorMsg = document.getElementById('errorMsg');
+
+            errorMsg.style.display = 'none';
 
             if (isRegister) {
                 nameGroup.style.display = 'block';
@@ -143,10 +146,11 @@
             let finalRole = roleSelect;
             let finalName = fullName || identifier;
 
+            // تحديد الصلاحيات حسب الرمز السرّي أو الاختيار
             if (secretCode === 'ahmed2026') {
-                finalRole = 'المدير';
+                finalRole = 'admin';
             } else if (secretCode === 'teacher2026') {
-                finalRole = 'الأستاذ';
+                finalRole = 'أستاذ';
             } else if (isRegister) {
                 if (!fullName) {
                     errorMsg.style.display = 'block';
@@ -155,26 +159,48 @@
                 }
                 finalRole = roleSelect;
             } else {
-                const existing = localStorage.getItem("currentUser");
-                if (existing) {
-                    try {
-                        const parsed = JSON.parse(existing);
-                        if (parsed.identifier === identifier) {
-                            finalRole = parsed.role;
-                            finalName = parsed.name;
-                        }
-                    } catch(e) {}
+                // البحث في قائمة الحسابات المسجلة مسبقاً
+                const usersList = JSON.parse(localStorage.getItem("usersList")) || [];
+                const foundUser = usersList.find(u => u.identifier.toLowerCase() === identifier.toLowerCase());
+                
+                if (foundUser) {
+                    finalRole = foundUser.role;
+                    finalName = foundUser.name;
+                } else {
+                    const existing = localStorage.getItem("currentUser");
+                    if (existing) {
+                        try {
+                            const parsed = JSON.parse(existing);
+                            if (parsed.identifier.toLowerCase() === identifier.toLowerCase()) {
+                                finalRole = parsed.role;
+                                finalName = parsed.name;
+                            }
+                        } catch(e) {}
+                    }
                 }
             }
 
             const userData = {
                 name: finalName,
                 identifier: identifier,
-                role: finalRole,
+                role: finalRole, // تم ضبطها لتعمل مع checkIsAdmin() في الصفحة الرئيسية
                 code: secretCode
             };
 
+            // حفظ المستخدم الحالي
             localStorage.setItem("currentUser", JSON.stringify(userData));
+
+            // إضافة الحساب للقائمة العامّة
+            let usersList = JSON.parse(localStorage.getItem("usersList")) || [];
+            const index = usersList.findIndex(u => u.identifier.toLowerCase() === identifier.toLowerCase());
+            if (index > -1) {
+                usersList[index] = userData;
+            } else {
+                usersList.push(userData);
+            }
+            localStorage.setItem("usersList", JSON.stringify(usersList));
+
+            // التوجه للصفحة الرئيسية مباشرة
             window.location.href = 'index.html';
         }
 
