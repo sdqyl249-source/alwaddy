@@ -173,7 +173,7 @@
 
         .alerts-dashboard-card { background: var(--alerts-bg); border: 1px solid var(--alerts-border); border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
         .alerts-dashboard-card h3 { color: var(--alerts-title); margin-top: 0; font-size: 19px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .alert-row { background: var(--alert-row-bg); border-right: 4px solid var(--alerts-title); padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; font-size: 14px; color: var(--alert-row-text); line-height: 1.6; }
+        .alert-row { background: var(--alert-row-bg); border-right: 4px solid var(--alerts-title); padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; font-size: 14px; color: var(--alert-row-text); line-height: 1.6; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.4s ease-in-out; }
         .alert-row:last-child { margin-bottom: 0; }
 
         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
@@ -195,11 +195,36 @@
 
         .news-dashboard-card { background: var(--news-bg); border: 1px solid var(--news-border); border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
         .news-dashboard-card h3 { color: var(--news-title); margin-top: 0; font-size: 19px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .news-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; }
-        .news-sub-card { background: var(--news-card-bg); border: 1px solid var(--news-card-border); border-radius: 12px; padding: 15px; }
+        
+        /* سلايدر الأخبار المطور */
+        .news-slider-wrapper { position: relative; display: flex; align-items: center; gap: 8px; }
+        .news-cards-grid { display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; padding: 10px 0; width: 100%; }
+        .news-cards-grid::-webkit-scrollbar { display: none; }
+        .news-sub-card { min-width: 280px; max-width: 320px; flex-shrink: 0; background: var(--news-card-bg); border: 1px solid var(--news-card-border); border-radius: 12px; padding: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .news-sub-card:hover { transform: translateY(-5px); }
         .news-sub-card .date { font-size: 12px; color: var(--news-card-date); font-weight: bold; margin-bottom: 5px; }
         .news-sub-card .title { font-size: 15px; font-weight: bold; color: var(--news-card-title); margin-bottom: 6px; }
         .news-sub-card .desc { font-size: 13px; color: var(--news-card-desc); margin: 0; line-height: 1.5; }
+        
+        .slider-btn { background: rgba(0, 0, 0, 0.6); color: #fff; border: 1px solid var(--news-border); border-radius: 50%; width: 38px; height: 38px; cursor: pointer; z-index: 10; transition: 0.3s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .slider-btn:hover { background: #14b8a6; color: #000; }
+
+        /* لوحة التحكم الخاصة بالإدارة */
+        .admin-panel-card { background: rgba(15, 23, 42, 0.9); border: 2px dashed #f59e0b; border-radius: 20px; padding: 25px; margin-top: 25px; }
+        .admin-panel-card h3 { color: #f59e0b; margin-top: 0; font-size: 20px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .admin-section { margin-bottom: 20px; }
+        .admin-section h4 { color: #e2e8f0; margin: 0 0 10px 0; font-size: 16px; }
+        .admin-input { width: 100%; padding: 12px; margin: 6px 0 12px 0; border-radius: 8px; border: 1px solid rgba(246, 173, 85, 0.3); background: #020617; color: #fff; font-family: inherit; }
+        .admin-input:focus { outline: none; border-color: #f59e0b; }
+        .admin-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .admin-btn:hover { background: #059669; }
+        .action-btn { cursor: pointer; margin-right: 8px; font-size: 13px; color: #f6ad55; background: rgba(246, 173, 85, 0.1); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(246, 173, 85, 0.3); }
+        .action-btn:hover { background: #f6ad55; color: #000; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         footer { text-align: center; padding: 20px; background: var(--footer-bg); border-top: 1px solid var(--footer-border); color: var(--footer-text); font-size: 14px; margin-top: 40px; }
     </style>
@@ -277,30 +302,49 @@
                 </div>
             </div>
 
+            <!-- 📢 التبليغات والتنبيهات المدرسية -->
             <div class="alerts-dashboard-card">
                 <h3><i class="fa-solid fa-bullhorn"></i> التبليغات والتنبيهات المدرسية الهامة</h3>
-                <div class="alert-row">📌 <strong>تنبيه إداري:</strong> تم تحديث الجداول الدراسية الأسبوعية لجميع الصفوف ويمكنكم مراجعتها عبر قسم "الحصص والجداول".</div>
-                <div class="alert-row">🌟 <strong>نشاط تفاعلي:</strong> تم تفعيل الألعاب التعليمية الجديدة لقسم المرحلة الابتدائية في واجهة الألعاب والترفيه.</div>
+                <div id="alertsContainer">
+                    <!-- يتم جلب التبليغات ديناميكياً بواسطة JavaScript -->
+                </div>
             </div>
 
+            <!-- 📰 آخر الأخبار والنشاطات المدرسية -->
             <div class="news-dashboard-card">
                 <h3><i class="fa-solid fa-newspaper"></i> آخر الأخبار والنشاطات المدرسية</h3>
-                <div class="news-cards-grid">
-                    <div class="news-sub-card">
-                        <div class="date">يوليو 2026</div>
-                        <div class="title">إطلاق النسخة المحدثة للمنصة</div>
-                        <p class="desc">تم تحديث واجهات المنصة بالستايل الملكي الفاخر لضمان أداء أسرع وتجربة مستخدم متميزة.</p>
+                <div class="news-slider-wrapper">
+                    <button class="slider-btn prev-btn" onclick="moveNews(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <div class="news-cards-grid" id="newsContainer">
+                        <!-- يتم جلب الأخبار ديناميكياً بواسطة JavaScript -->
                     </div>
-                    <div class="news-sub-card">
-                        <div class="date">يوليو 2026</div>
-                        <div class="title">تفعيل المكتبة الرقمية</div>
-                        <p class="desc">إتاحة رفع وتحميل الملازم والمناهج الدراسية بشكل مباشر ومرن للطلبة والأساتذة.</p>
-                    </div>
-                    <div class="news-sub-card">
-                        <div class="date">يوليو 2026</div>
-                        <div class="title">تطوير مسابقات الألعاب الذكية</div>
-                        <p class="desc">إضافة ألعاب الذاكرة والتهجي والكلمات المبعثرة لتحفيز التركيز لدى الأطفال.</p>
-                    </div>
+                    <button class="slider-btn next-btn" onclick="moveNews(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                </div>
+            </div>
+
+            <!-- 🔐 لوحة تحكم الإدارة (تظهر فقط للأدمن/المدير) -->
+            <div id="adminPanel" class="admin-panel-card" style="display: none;">
+                <h3><i class="fa-solid fa-user-shield"></i> لوحة إدارة المحتوى (خاصة بالإدارة)</h3>
+                
+                <!-- نموذج إضافة/تعديل تبليغ -->
+                <div class="admin-section">
+                    <h4>📢 إضافة / تعديل تبليغ</h4>
+                    <input type="hidden" id="alertEditId">
+                    <input type="text" id="alertTitleInput" placeholder="نوع أو عنوان التنبيه (مثال: 📌 تنبيه إداري:)" class="admin-input">
+                    <textarea id="alertTextInput" placeholder="نص التبليغ..." class="admin-input" rows="3"></textarea>
+                    <button onclick="saveAlert()" class="admin-btn">حفظ التبليغ</button>
+                </div>
+
+                <hr style="border: 0; border-top: 1px dashed rgba(246, 173, 85, 0.3); margin: 20px 0;">
+
+                <!-- نموذج إضافة/تعديل خبر -->
+                <div class="admin-section">
+                    <h4>📰 إضافة / تعديل خبر أو نشاط</h4>
+                    <input type="hidden" id="newsEditId">
+                    <input type="text" id="newsDateInput" placeholder="التاريخ (مثال: أغسطس 2026)" class="admin-input">
+                    <input type="text" id="newsTitleInput" placeholder="عنوان الخبر" class="admin-input">
+                    <textarea id="newsDescInput" placeholder="تفاصيل الخبر..." class="admin-input" rows="3"></textarea>
+                    <button onclick="saveNews()" class="admin-btn">حفظ الخبر</button>
                 </div>
             </div>
 
@@ -331,8 +375,131 @@
             }
         }
 
+        // البيانات الافتراضية
+        const defaultAlerts = [
+            { id: 1, title: '📌 تنبيه إداري:', text: 'تم تحديث الجداول الدراسية الأسبوعية لجميع الصفوف ويمكنكم مراجعتها عبر قسم "الحصص والجداول".' },
+            { id: 2, title: '🌟 نشاط تفاعلي:', text: 'تم تفعيل الألعاب التعليمية الجديدة لقسم المرحلة الابتدائية في واجهة الألعاب والترفيه.' }
+        ];
+
+        const defaultNews = [
+            { id: 1, date: 'يوليو 2026', title: 'إطلاق النسخة المحدثة للمنصة', desc: 'تم تحديث واجهات المنصة بالستايل الملكي الفاخر لضمان أداء أسرع وتجربة مستخدم متميزة.' },
+            { id: 2, date: 'يوليو 2026', title: 'تفعيل المكتبة الرقمية', desc: 'إتاحة رفع وتحميل الملازم والمناهج الدراسية بشكل مباشر ومرن للطلبة والأساتذة.' },
+            { id: 3, date: 'يوليو 2026', title: 'تطوير مسابقات الألعاب الذكية', desc: 'إضافة ألعاب الذاكرة والتهجي والكلمات المبعثرة لتحفيز التركيز لدى الأطفال.' }
+        ];
+
+        let alertsData = JSON.parse(localStorage.getItem('platformAlerts')) || defaultAlerts;
+        let newsData = JSON.parse(localStorage.getItem('platformNews')) || defaultNews;
+
+        function checkIsAdmin() {
+            try {
+                const activeUser = JSON.parse(localStorage.getItem("currentUser"));
+                return activeUser && (activeUser.role === 'admin' || activeUser.role === 'مدير' || activeUser.role === 'أدمن');
+            } catch(e) { return false; }
+        }
+
+        function renderAlerts() {
+            const container = document.getElementById('alertsContainer');
+            const isAdmin = checkIsAdmin();
+            
+            container.innerHTML = alertsData.map(item => `
+                <div class="alert-row">
+                    <div><strong>${item.title}</strong> ${item.text}</div>
+                    ${isAdmin ? `<div><span class="action-btn" onclick="editAlert(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span></div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function renderNews() {
+            const container = document.getElementById('newsContainer');
+            const isAdmin = checkIsAdmin();
+
+            container.innerHTML = newsData.map(item => `
+                <div class="news-sub-card">
+                    <div class="date">${item.date}</div>
+                    <div class="title">${item.title}</div>
+                    <p class="desc">${item.desc}</p>
+                    ${isAdmin ? `<div style="margin-top:10px;"><span class="action-btn" onclick="editNews(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span></div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function moveNews(direction) {
+            const container = document.getElementById('newsContainer');
+            container.scrollBy({ left: direction * 300, behavior: 'smooth' });
+        }
+
+        function saveAlert() {
+            const id = document.getElementById('alertEditId').value;
+            const title = document.getElementById('alertTitleInput').value;
+            const text = document.getElementById('alertTextInput').value;
+
+            if(!title || !text) return alert("يرجى ملء جميع الحقول المطلوبة!");
+
+            if (id) {
+                alertsData = alertsData.map(a => a.id == id ? { id: Number(id), title, text } : a);
+            } else {
+                alertsData.unshift({ id: Date.now(), title, text });
+            }
+
+            localStorage.setItem('platformAlerts', JSON.stringify(alertsData));
+            renderAlerts();
+            resetAlertForm();
+        }
+
+        function editAlert(id) {
+            const item = alertsData.find(a => a.id === id);
+            if(item) {
+                document.getElementById('alertEditId').value = item.id;
+                document.getElementById('alertTitleInput').value = item.title;
+                document.getElementById('alertTextInput').value = item.text;
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
+        function resetAlertForm() {
+            document.getElementById('alertEditId').value = '';
+            document.getElementById('alertTitleInput').value = '';
+            document.getElementById('alertTextInput').value = '';
+        }
+
+        function saveNews() {
+            const id = document.getElementById('newsEditId').value;
+            const date = document.getElementById('newsDateInput').value;
+            const title = document.getElementById('newsTitleInput').value;
+            const desc = document.getElementById('newsDescInput').value;
+
+            if(!title || !desc) return alert("يرجى ملء جميع الحقول المطلوبة!");
+
+            if (id) {
+                newsData = newsData.map(n => n.id == id ? { id: Number(id), date, title, desc } : n);
+            } else {
+                newsData.unshift({ id: Date.now(), date: date || 'الآن', title, desc });
+            }
+
+            localStorage.setItem('platformNews', JSON.stringify(newsData));
+            renderNews();
+            resetNewsForm();
+        }
+
+        function editNews(id) {
+            const item = newsData.find(n => n.id === id);
+            if(item) {
+                document.getElementById('newsEditId').value = item.id;
+                document.getElementById('newsDateInput').value = item.date;
+                document.getElementById('newsTitleInput').value = item.title;
+                document.getElementById('newsDescInput').value = item.desc;
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
+        function resetNewsForm() {
+            document.getElementById('newsEditId').value = '';
+            document.getElementById('newsDateInput').value = '';
+            document.getElementById('newsTitleInput').value = '';
+            document.getElementById('newsDescInput').value = '';
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            // استرجاع المظهر المفضل من التخزين المحلي
             const savedTheme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
             updateThemeIcon(savedTheme);
@@ -355,6 +522,14 @@
             }
             updateDateTime();
             setInterval(updateDateTime, 1000);
+
+            renderAlerts();
+            renderNews();
+
+            if (checkIsAdmin()) {
+                const adminPanel = document.getElementById('adminPanel');
+                if(adminPanel) adminPanel.style.display = 'block';
+            }
         });
 
         if ('serviceWorker' in navigator) {
