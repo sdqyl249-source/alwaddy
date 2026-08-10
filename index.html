@@ -166,18 +166,26 @@
             background-color: var(--news-card-hover-bg);
         }
 
+        /* تعديلات احتواء الصورة الكاملة دون اقتطاع */
         .media-card-img-wrapper {
             width: 100%;
-            height: 200px;
+            height: auto;
+            max-height: 380px;
             overflow: hidden;
             background-color: #1a202c;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
         }
 
         .media-card-img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            max-height: 360px;
+            object-fit: contain;
+            border-radius: 10px;
         }
 
         .media-card-content {
@@ -269,6 +277,10 @@
                 <div class="dash-card-header">
                     <img src="icona99.png" alt="شعار المنصة" class="platform-logo-img">
                     <h1>مرحباً بك في منصة رؤيا التعليمية 🌟</h1>
+                    <!-- تم إخفاء شريط المزامنة عن الطلاب وجعله للادمن فقط -->
+                    <div class="status-syncing" id="syncStatus" style="display: none;">
+                        <i class="fa-solid fa-bolt"></i> متصلة بالسحاب تلقائياً (Roya-platform)
+                    </div>
                 </div>
                 <div class="dash-card-time">
                     <div class="time-box" id="currentTimeDisplay">--:--:--</div>
@@ -382,7 +394,7 @@
             defaults.forEach(item => db.collection("posts").add(item));
         }
 
-        // عرض الكروت بنفس تنسيق الصورة بالضبط
+        // عرض الكروت بنفس تنسيق الصورة بالضبط وبدون اقتطاع الصور
         function renderUnifiedPosts() {
             const container = document.getElementById('unifiedNewsContainer');
             const isAdmin = checkIsAdmin();
@@ -497,9 +509,12 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            // إظهار لوحة التحكم وشريط الاتصال للإدارة فقط
             if (checkIsAdmin()) {
                 document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('syncStatus').style.display = 'block';
             }
+
             setInterval(() => {
                 const now = new Date();
                 document.getElementById('currentTimeDisplay').textContent = now.toLocaleTimeString('ar-IQ');
