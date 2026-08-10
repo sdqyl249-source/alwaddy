@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- منع التخزين المؤقت (الكاش) لضمان التحديث التلقائي لدى جميع الأجهزة -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <link rel="icon" type="image/png" href="icona99.png">
     <link rel="apple-touch-icon" href="icona99.png">
     <link rel="manifest" href="manifest.json">
@@ -352,6 +357,8 @@
         جميع الحقوق محفوظة © منصة الوادي التعليمية 2026
     </footer>
 
+    <!-- أضفنا رقم v=1.1 للسكريبت لتفادي الكاش القديم -->
+    <script src="scriot.js?v=1.1"></script>
     <script>
         function toggleTheme() {
             const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -370,20 +377,22 @@
             }
         }
 
+        // تضمين التبليغات الصباحية بشكل افتراضي ليراها الجميع فوراً
         const defaultAlerts = [
+            { id: 101, title: '🗓️ جدول امتحانات الدور الثاني:', text: 'تبدأ امتحانات الدور الثاني للصف السادس الابتدائي للعام الدراسي 2025-2026 اعتباراً من يوم السبت 15 أغسطس وحتى الخميس 20 أغسطس 2026. يرجى الحضور الساعة 8:00 صباحاً والالتزام بالزي المدرسي.', image: '' },
+            { id: 102, title: '📄 تعليمات تسليم الوثائق الرسمية:', text: 'على الطلبة الناجحين في الدور الأول المراجعة يومي الأحد والثلاثاء لاستلام وثائق التقديم للمدارس المتوسطة، مع ضرورة تسليم جميع الكتب المدرسية للإدارة.', image: '' },
             { id: 1, title: '📌 تنبيه إداري:', text: 'تم تحديث الجداول الدراسية الأسبوعية لجميع الصفوف ويمكنكم مراجعتها عبر قسم "الحصص والجداول".', image: '' },
             { id: 2, title: '🌟 نشاط تفاعلي:', text: 'تم تفعيل الألعاب التعليمية الجديدة لقسم المرحلة الابتدائية في واجهة الألعاب والترفيه.', image: '' }
         ];
 
         const defaultNews = [
-            { id: 1, date: 'يوليو 2026', title: 'إطلاق النسخة المحدثة للمنصة', desc: 'تم تحديث واجهات المنصة بالستايل الملكي الفاخر لضمان أداء أسرع وتجربة مستخدم متميزة.', image: '' },
-            { id: 2, date: 'يوليو 2026', title: 'تفعيل المكتبة الرقمية', desc: 'إتاحة رفع وتحميل الملازم والمناهج الدراسية بشكل مباشر ومرن للطلبة والأساتذة.', image: '' }
+            { id: 1, date: 'أغسطس 2026', title: 'إطلاق النسخة المحدثة للمنصة', desc: 'تم تحديث واجهات المنصة بالستايل الملكي الفاخر لضمان أداء أسرع وتجربة مستخدم متميزة.', image: '' },
+            { id: 2, date: 'أغسطس 2026', title: 'تفعيل المكتبة الرقمية', desc: 'إتاحة رفع وتحميل الملازم والمناهج الدراسية بشكل مباشر ومرن للطلبة والأساتذة.', image: '' }
         ];
 
         let alertsData = JSON.parse(localStorage.getItem('platformAlerts')) || defaultAlerts;
         let newsData = JSON.parse(localStorage.getItem('platformNews')) || defaultNews;
 
-        // دالة تحويل ملف الصورة لـ Base64
         function convertFileToBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -393,7 +402,6 @@
             });
         }
 
-        // دالة فحص حساب المدير
         function checkIsAdmin() {
             try {
                 const activeUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -410,6 +418,7 @@
 
         function renderAlerts() {
             const container = document.getElementById('alertsContainer');
+            if(!container) return;
             const isAdmin = checkIsAdmin();
             
             container.innerHTML = alertsData.map(item => `
@@ -430,6 +439,7 @@
 
         function renderNews() {
             const container = document.getElementById('newsContainer');
+            if(!container) return;
             const isAdmin = checkIsAdmin();
 
             container.innerHTML = newsData.map(item => `
@@ -446,7 +456,7 @@
                     </div>
                     ${isAdmin ? `
                         <div class="admin-controls" style="margin-top:10px;">
-                            <span class="action-btn" onclick="editAlert(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span>
+                            <span class="action-btn" onclick="editNews(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span>
                             <span class="action-btn delete-btn" onclick="deleteNews(${item.id})"><i class="fa-solid fa-trash"></i> حذف</span>
                         </div>
                     ` : ''}
@@ -456,10 +466,11 @@
 
         function moveNews(direction) {
             const container = document.getElementById('newsContainer');
-            container.scrollBy({ left: direction * 300, behavior: 'smooth' });
+            if(container) {
+                container.scrollBy({ left: direction * 300, behavior: 'smooth' });
+            }
         }
 
-        /* عمليات الإضافة والتعديل والحذف للتبليغات مع الصور */
         async function saveAlert() {
             if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
             const id = document.getElementById('alertEditId').value;
@@ -516,7 +527,6 @@
             document.getElementById('alertImageFileInput').value = '';
         }
 
-        /* عمليات الإضافة والتعديل والحذف للأخبار مع الصور */
         async function saveNews() {
             if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
             const id = document.getElementById('newsEditId').value;
@@ -561,7 +571,7 @@
 
         function deleteNews(id) {
             if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
-            if (confirm("هل أنت تأكد من حذف هذا الخبر؟")) {
+            if (confirm("هل أنت تأكد من إرادتك لحذف هذا الخبر؟")) {
                 newsData = newsData.filter(n => n.id !== id);
                 localStorage.setItem('platformNews', JSON.stringify(newsData));
                 renderNews();
@@ -576,39 +586,32 @@
             document.getElementById('newsImageFileInput').value = '';
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        // تهيئة الصفحة والساعة والوضع عند التحميل
+        window.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
             updateThemeIcon(savedTheme);
 
-            try {
-                const activeUser = localStorage.getItem("currentUser");
-                if (activeUser) {
-                    const userObj = JSON.parse(activeUser);
-                    if (userObj && userObj.name) {
-                        const userRole = userObj.role || userObj.userRole || userObj.type || 'مستخدم';
-                        document.getElementById('welcomeUserTitle').innerText = `أهلاً بك يا ${userObj.name} (${userRole}) في منصة الوادي 🌟`;
-                    }
-                }
-            } catch(e) {}
-
-            function updateDateTime() {
-                const now = new Date();
-                const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Baghdad' };
-                document.getElementById('currentDateDisplay').innerText = now.toLocaleDateString('ar-IQ', optionsDate);
-                document.getElementById('currentTimeDisplay').innerText = now.toLocaleTimeString('ar-IQ', { timeZone: 'Asia/Baghdad' });
+            if(checkIsAdmin()) {
+                const adminPanel = document.getElementById('adminPanel');
+                if(adminPanel) adminPanel.style.display = 'block';
             }
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
 
             renderAlerts();
             renderNews();
 
-            // إظهار لوحة التحكم والخيارات حصرياً للمدير
-            if (checkIsAdmin()) {
-                const adminPanel = document.getElementById('adminPanel');
-                if(adminPanel) adminPanel.style.display = 'block';
-            }
+            // تحديث الوقت والتاريخ
+            setInterval(() => {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('ar-IQ');
+                const dateStr = now.toLocaleDateString('ar-IQ', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                
+                const timeElem = document.getElementById('currentTimeDisplay');
+                const dateElem = document.getElementById('currentDateDisplay');
+                
+                if(timeElem) timeElem.textContent = timeStr;
+                if(dateElem) dateElem.textContent = dateStr;
+            }, 1000);
         });
     </script>
 </body>
