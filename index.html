@@ -512,11 +512,34 @@
                 document.getElementById('syncStatus').style.display = 'block';
             }
 
-            setInterval(() => {
-                const now = new Date();
-                document.getElementById('currentTimeDisplay').textContent = now.toLocaleTimeString('ar-IQ');
-                document.getElementById('currentDateDisplay').textContent = now.toLocaleDateString('ar-IQ', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            }, 1000);
+            function updateClock() {
+            const now = new Date();
+            const timeElem = document.getElementById('currentTimeDisplay');
+            const dateElem = document.getElementById('currentDateDisplay');
+
+            if (timeElem) {
+                timeElem.textContent = now.toLocaleTimeString('ar-IQ');
+            }
+            if (dateElem) {
+                dateElem.textContent = now.toLocaleDateString('ar-IQ', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // تشغيل الساعة فوراً قبل الانتظار
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            // إظهار لوحة التحكم وشريط الاتصال للإدارة فقط
+            if (checkIsAdmin()) {
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('syncStatus').style.display = 'block';
+            }
         });
     </script>
 </body>
