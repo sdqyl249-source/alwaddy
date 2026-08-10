@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- منع التخزين المؤقت (الكاش) لضمان التحديث التلقائي لدى جميع الأجهزة -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
@@ -11,14 +10,13 @@
     <link rel="icon" type="image/png" href="icona99.png">
     <link rel="apple-touch-icon" href="icona99.png">
     <link rel="manifest" href="manifest.json">
-    <title>الرئيسية - منصة الوادي التعليمية</title>
+    <title>الرئيسية - منصة رؤيا التعليمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta name="google-site-verification" content="dOQcl3mf7YtxWfKcDoNplQM5D-R5io6UfiY07y7sujA" />
 
     <style>
         * { box-sizing: border-box; }
 
-        /* متغيرات الألوان للوضع الليلي (الافتراضي) */
         :root {
             --bg-color: #020617;
             --text-color: #ffffff;
@@ -54,10 +52,6 @@
             --alerts-title: #f472b6;
             --alert-row-bg: rgba(0, 0, 0, 0.3);
             --alert-row-text: #fbcfe8;
-            --service-card-bg: #0f172a;
-            --service-card-border: rgba(246, 173, 85, 0.2);
-            --service-card-title: #ffffff;
-            --service-card-desc: #94a3b8;
             --news-bg: linear-gradient(135deg, #134e4a, #042f2e);
             --news-border: #14b8a6;
             --news-title: #5eead4;
@@ -71,7 +65,6 @@
             --footer-text: #a0aec0;
         }
 
-        /* متغيرات الألوان للوضع النهاري */
         [data-theme="light"] {
             --bg-color: #f1f5f9;
             --text-color: #1e293b;
@@ -107,10 +100,6 @@
             --alerts-title: #9d174d;
             --alert-row-bg: #ffffff;
             --alert-row-text: #831843;
-            --service-card-bg: #ffffff;
-            --service-card-border: #cbd5e1;
-            --service-card-title: #0f172a;
-            --service-card-desc: #64748b;
             --news-bg: linear-gradient(135deg, #ccfbf1, #99f6e4);
             --news-border: #2dd4bf;
             --news-title: #115e59;
@@ -126,108 +115,73 @@
 
         body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; transition: background-color 0.3s, color 0.3s; }
         
-        /* القائمة الجانبية */
-        .sidebar { height: 100vh; width: 0; position: fixed; top: 0; right: 0; background: var(--sidebar-bg); box-shadow: 0 4px 30px rgba(0,0,0,0.3); transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow-x: hidden; z-index: 1000; display: flex; flex-direction: column; padding: 20px 0; border-left: 1px solid var(--sidebar-border); }
-        .sidebar-title { color: #f6ad55; font-size: 21px; font-weight: bold; padding-bottom: 20px; border-bottom: 2px solid var(--sidebar-border); margin-bottom: 15px; text-align: center; white-space: nowrap; text-shadow: 0 2px 10px rgba(246, 173, 85, 0.2); }
-        .menu-item { color: var(--menu-item-text); background: var(--menu-item-bg); border: 1px solid var(--menu-item-border); border-radius: 12px; margin: 8px 15px; padding: 12px 18px; text-align: center; transition: 0.3s; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; white-space: nowrap; font-weight: 500; text-decoration: none; }
+        .sidebar { height: 100vh; width: 0; position: fixed; top: 0; right: 0; background: var(--sidebar-bg); box-shadow: 0 4px 30px rgba(0,0,0,0.3); transition: width 0.4s; overflow-x: hidden; z-index: 1000; display: flex; flex-direction: column; padding: 20px 0; border-left: 1px solid var(--sidebar-border); }
+        .sidebar-title { color: #f6ad55; font-size: 21px; font-weight: bold; padding-bottom: 20px; border-bottom: 2px solid var(--sidebar-border); margin-bottom: 15px; text-align: center; white-space: nowrap; }
+        .menu-item { color: var(--menu-item-text); background: var(--menu-item-bg); border: 1px solid var(--menu-item-border); border-radius: 12px; margin: 8px 15px; padding: 12px 18px; text-align: center; transition: 0.3s; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font-weight: 500; }
         .menu-item i { color: #f6ad55; }
-        .menu-item:hover { background: var(--menu-item-hover-bg); color: #f6ad55; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+        .menu-item:hover { background: var(--menu-item-hover-bg); color: #f6ad55; transform: translateY(-2px); }
         
-        #installAppBtn { background: rgba(52, 211, 153, 0.1); border-color: rgba(52, 211, 153, 0.3); color: #34d399; }
-        #installAppBtn i { color: #34d399; }
-        #installAppBtn:hover { background: #10b981; color: white; border-color: #10b981; }
-
-        .logout-btn { margin-top: auto; padding: 12px; background: rgba(229, 62, 62, 0.1); color: #ef4444; border: 1px solid rgba(229, 62, 62, 0.3); border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: bold; width: 80%; margin: 20px auto; }
-        .logout-btn:hover { background: #e53e3e; color: white; }
+        .logout-btn { margin-top: auto; padding: 12px; background: rgba(229, 62, 62, 0.1); color: #ef4444; border: 1px solid rgba(229, 62, 62, 0.3); border-radius: 12px; cursor: pointer; font-weight: bold; width: 80%; margin: 20px auto; }
         
-        /* أزرار أعلى الصفحة */
         .top-buttons-container { position: fixed; top: 20px; right: 20px; z-index: 1002; display: flex; gap: 10px; }
-        .toggle-btn, .theme-toggle-btn { padding: 12px 20px; cursor: pointer; background: var(--toggle-btn-bg); color: var(--toggle-btn-text); border: 1px solid var(--toggle-btn-border); border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
-        .theme-toggle-btn { padding: 12px 16px; }
+        .toggle-btn, .theme-toggle-btn { padding: 12px 20px; cursor: pointer; background: var(--toggle-btn-bg); color: var(--toggle-btn-text); border: 1px solid var(--toggle-btn-border); border-radius: 50px; font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
 
-        .main-content { margin-right: 0; padding: 20px; max-width: 1300px; margin: 0 auto; width: 100%; flex: 1; transition: 0.4s; }
+        .main-content { padding: 20px; max-width: 1300px; margin: 0 auto; width: 100%; flex: 1; }
         @media (min-width: 768px) { .main-content { padding: 40px; } }
 
         .dashboard-container { display: flex; flex-direction: column; gap: 25px; }
 
         .top-dash-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .dash-card-header { background: var(--card-header-bg); border: 1px solid var(--card-header-border); border-radius: 20px; padding: 25px; text-align: center; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        
-        .platform-logo-img { width: 75px; height: 75px; object-fit: cover; border-radius: 50%; border: 2px solid #a5b4fc; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); margin-bottom: 12px; background: #020617; transition: 0.3s; }
-        .platform-logo-img:hover { transform: scale(1.05); border-color: #ffffff; }
+        .dash-card-header { background: var(--card-header-bg); border: 1px solid var(--card-header-border); border-radius: 20px; padding: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .platform-logo-img { width: 75px; height: 75px; object-fit: cover; border-radius: 50%; border: 2px solid #a5b4fc; margin-bottom: 12px; }
 
         .dash-card-header h1 { color: var(--card-header-title); font-size: 22px; margin: 0 0 6px 0; }
         .dash-card-header p { color: var(--card-header-desc); font-size: 14px; margin: 0; }
 
-        .dash-card-time { background: var(--card-time-bg); border: 1px solid var(--card-time-border); border-radius: 20px; padding: 25px; text-align: center; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+        .dash-card-time { background: var(--card-time-bg); border: 1px solid var(--card-time-border); border-radius: 20px; padding: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
         .dash-card-time .time-box { font-size: 26px; font-weight: bold; color: var(--card-time-text); font-family: monospace; }
         .dash-card-time .date-box { font-size: 14px; color: var(--card-date-text); }
 
-        /* حاوية الإعلان */
-        .ad-container-box { text-align: center; margin: 15px 0; padding: 15px; background: var(--ad-box-bg); border: 1px dashed var(--ad-box-border); border-radius: 16px; min-height: 270px; display: flex; justify-content: center; align-items: center; }
-
         .vision-goals-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .vg-box-1 { background: var(--vg1-bg); border: 1px solid var(--vg1-border); border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
-        .vg-box-1 h3 { color: var(--vg1-title); margin-top: 0; font-size: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(252, 211, 77, 0.3); padding-bottom: 10px; }
+        .vg-box-1 { background: var(--vg1-bg); border: 1px solid var(--vg1-border); border-radius: 20px; padding: 25px; }
+        .vg-box-1 h3 { color: var(--vg1-title); margin-top: 0; font-size: 20px; border-bottom: 1px solid rgba(252, 211, 77, 0.3); padding-bottom: 10px; }
         .vg-box-1 p { color: var(--vg1-text); font-size: 14px; line-height: 1.8; margin: 0; }
 
-        .vg-box-2 { background: var(--vg2-bg); border: 1px solid var(--vg2-border); border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
-        .vg-box-2 h3 { color: var(--vg2-title); margin-top: 0; font-size: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(147, 197, 253, 0.3); padding-bottom: 10px; }
+        .vg-box-2 { background: var(--vg2-bg); border: 1px solid var(--vg2-border); border-radius: 20px; padding: 25px; }
+        .vg-box-2 h3 { color: var(--vg2-title); margin-top: 0; font-size: 20px; border-bottom: 1px solid rgba(147, 197, 253, 0.3); padding-bottom: 10px; }
         .vg-box-2 ul { color: var(--vg2-text); font-size: 14px; line-height: 1.7; margin: 0; padding-right: 15px; }
-        .vg-box-2 li { margin-bottom: 6px; }
 
-        .alerts-dashboard-card { background: var(--alerts-bg); border: 1px solid var(--alerts-border); border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
-        .alerts-dashboard-card h3 { color: var(--alerts-title); margin-top: 0; font-size: 19px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .alert-row { background: var(--alert-row-bg); border-right: 4px solid var(--alerts-title); padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; font-size: 14px; color: var(--alert-row-text); line-height: 1.6; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.4s ease-in-out; flex-wrap: wrap; gap: 10px; }
-        .alert-row:last-child { margin-bottom: 0; }
-        
-        .alert-img { max-width: 100%; max-height: 180px; border-radius: 8px; margin-top: 8px; display: block; object-fit: cover; }
+        .alerts-dashboard-card { background: var(--alerts-bg); border: 1px solid var(--alerts-border); border-radius: 20px; padding: 25px; }
+        .alerts-dashboard-card h3 { color: var(--alerts-title); margin-top: 0; font-size: 19px; margin-bottom: 15px; }
+        .alert-row { background: var(--alert-row-bg); border-right: 4px solid var(--alerts-title); padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; font-size: 14px; color: var(--alert-row-text); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .alert-img { max-width: 100%; max-height: 180px; border-radius: 8px; margin-top: 8px; display: block; }
 
-        .news-dashboard-card { background: var(--news-bg); border: 1px solid var(--news-border); border-radius: 20px; padding: 25px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
-        .news-dashboard-card h3 { color: var(--news-title); margin-top: 0; font-size: 19px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .news-dashboard-card { background: var(--news-bg); border: 1px solid var(--news-border); border-radius: 20px; padding: 25px; }
+        .news-dashboard-card h3 { color: var(--news-title); margin-top: 0; font-size: 19px; margin-bottom: 15px; }
         
-        /* سلايدر الأخبار المطور */
         .news-slider-wrapper { position: relative; display: flex; align-items: center; gap: 8px; }
         .news-cards-grid { display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; padding: 10px 0; width: 100%; }
         .news-cards-grid::-webkit-scrollbar { display: none; }
-        .news-sub-card { min-width: 280px; max-width: 320px; flex-shrink: 0; background: var(--news-card-bg); border: 1px solid var(--news-card-border); border-radius: 12px; padding: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
-        .news-sub-card:hover { transform: translateY(-5px); }
-        
-        /* تنسيق صورة الخبر */
-        .news-img-wrapper { width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 10px; background: rgba(0,0,0,0.2); }
-        .news-card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .news-sub-card { min-width: 280px; max-width: 320px; flex-shrink: 0; background: var(--news-card-bg); border: 1px solid var(--news-card-border); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; }
+        .news-img-wrapper { width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+        .news-card-img { width: 100%; height: 100%; object-fit: cover; }
 
-        .news-sub-card .date { font-size: 12px; color: var(--news-card-date); font-weight: bold; margin-bottom: 5px; }
-        .news-sub-card .title { font-size: 15px; font-weight: bold; color: var(--news-card-title); margin-bottom: 6px; }
-        .news-sub-card .desc { font-size: 13px; color: var(--news-card-desc); margin: 0; line-height: 1.5; word-break: break-word; }
+        .news-sub-card .date { font-size: 12px; color: var(--news-card-date); font-weight: bold; }
+        .news-sub-card .title { font-size: 15px; font-weight: bold; color: var(--news-card-title); margin: 4px 0; }
+        .news-sub-card .desc { font-size: 13px; color: var(--news-card-desc); margin: 0; word-break: break-word; }
         
-        .slider-btn { background: rgba(0, 0, 0, 0.6); color: #fff; border: 1px solid var(--news-border); border-radius: 50%; width: 38px; height: 38px; cursor: pointer; z-index: 10; transition: 0.3s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .slider-btn:hover { background: #14b8a6; color: #000; }
+        .slider-btn { background: rgba(0, 0, 0, 0.6); color: #fff; border: 1px solid var(--news-border); border-radius: 50%; width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-        /* أزرار التعديل والحذف */
         .admin-controls { display: flex; gap: 6px; }
-        .action-btn { cursor: pointer; font-size: 12px; color: #f6ad55; background: rgba(246, 173, 85, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(246, 173, 85, 0.3); transition: 0.2s; }
-        .action-btn:hover { background: #f6ad55; color: #000; }
+        .action-btn { cursor: pointer; font-size: 12px; color: #f6ad55; background: rgba(246, 173, 85, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(246, 173, 85, 0.3); }
         .delete-btn { color: #f87171; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); }
-        .delete-btn:hover { background: #ef4444; color: #fff; }
 
-        /* لوحة التحكم الخاصة بالإدارة */
         .admin-panel-card { background: rgba(15, 23, 42, 0.95); border: 2px dashed #f59e0b; border-radius: 20px; padding: 25px; margin-top: 25px; }
-        .admin-panel-card h3 { color: #f59e0b; margin-top: 0; font-size: 20px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .admin-section { margin-bottom: 20px; }
-        .admin-section h4 { color: #e2e8f0; margin: 0 0 10px 0; font-size: 16px; }
+        .admin-panel-card h3 { color: #f59e0b; margin-top: 0; font-size: 20px; }
         .admin-input { width: 100%; padding: 12px; margin: 6px 0 12px 0; border-radius: 8px; border: 1px solid rgba(246, 173, 85, 0.3); background: #020617; color: #fff; font-family: inherit; }
-        .admin-input:focus { outline: none; border-color: #f59e0b; }
-        .admin-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .admin-btn:hover { background: #059669; }
+        .admin-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        /* حقول إضافة وإرفاق الصور */
-        .file-label { color: #f6ad55; font-size: 13px; display: block; margin-top: 4px; margin-bottom: 4px; font-weight: 500; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .status-syncing { font-size: 12px; color: #34d399; margin-top: 5px; }
 
         footer { text-align: center; padding: 20px; background: var(--footer-bg); border-top: 1px solid var(--footer-border); color: var(--footer-text); font-size: 14px; margin-top: 40px; }
     </style>
@@ -235,38 +189,28 @@
 <body>
 
     <div class="top-buttons-container">
-        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="تبديل الوضع">
-            <i class="fa-solid fa-moon" id="themeIcon"></i>
-        </button>
-        <button class="toggle-btn" onclick="document.getElementById('mySidebar').style.width = '260px'; document.getElementById('sidebarOverlay').style.display = 'block';">
-            <i class="fa-solid fa-bars"></i> القائمة
-        </button>
+        <button class="theme-toggle-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
+        <button class="toggle-btn" onclick="document.getElementById('mySidebar').style.width = '260px';"><i class="fa-solid fa-bars"></i> القائمة</button>
     </div>
 
     <div class="sidebar" id="mySidebar">
-        <div class="sidebar-title">🏞️ منصة الوادي</div>
+        <div class="sidebar-title">👁️ منصة رؤيا</div>
         <a href="index.html" class="menu-item"><i class="fa-solid fa-house"></i> الرئيسية</a>
-        <a href="classes.html" class="menu-item"><i class="fa-solid fa-school"></i> إدارة الصفوف والدردشة</a>
+        <a href="classes.html" class="menu-item"><i class="fa-solid fa-school"></i> إدارة الصفوف</a>
         <a href="schedule.html" class="menu-item"><i class="fa-solid fa-clock"></i> الجدول</a>
         <a href="games.html" class="menu-item"><i class="fa-solid fa-gamepad"></i> الألعاب والترفيه</a>
         <a href="library.html" class="menu-item"><i class="fa-solid fa-book"></i> المكتبة الرقمية</a>
-        
-        <button id="installAppBtn" style="display: none;" class="menu-item">
-            <i class="fa-solid fa-download"></i> تثبيت التطبيق
-        </button>
-
         <button onclick="localStorage.removeItem('currentUser'); window.location.href='login.html';" class="logout-btn">تسجيل الخروج</button>
     </div>
-    
-    <div onclick="document.getElementById('mySidebar').style.width = '0'; document.getElementById('sidebarOverlay').style.display = 'none';" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:999; display:none;" id="sidebarOverlay"></div>
 
     <div class="main-content">
         <div class="dashboard-container">
             
             <div class="top-dash-bar">
                 <div class="dash-card-header">
-                    <img src="icona99.png" alt="شعار منصة الوادي" class="platform-logo-img">
-                    <h1 id="welcomeUserTitle">مرحباً بك في منصة الوادي التعليمية 🌟</h1>
+                    <img src="icona99.png" alt="شعار المنصة" class="platform-logo-img">
+                    <h1>مرحباً بك في منصة رؤيا التعليمية 🌟</h1>
+                    <div class="status-syncing"><i class="fa-solid fa-bolt"></i> متصلة بالسحاب تلقائياً (Roya-platform)</div>
                 </div>
                 <div class="dash-card-time">
                     <div class="time-box" id="currentTimeDisplay">--:--:--</div>
@@ -274,124 +218,257 @@
                 </div>
             </div>
 
-            <div class="ad-container-box" id="adBoxContainer">
-                <script type="text/javascript">
-                    atOptions = {
-                        'key' : 'b40e63adb8399f3b8ff4a00afd91e54c',
-                        'format' : 'iframe',
-                        'height' : 250,
-                        'width' : 300,
-                        'params' : {}
-                    };
-                </script>
-                <script type="text/javascript" src="https://www.highperformanceformat.com/b40e63adb8399f3b8ff4a00afd91e54c/invoke.js" onerror="document.getElementById('adBoxContainer').style.display='none';"></script>
-            </div>
-
             <div class="vision-goals-wrapper">
                 <div class="vg-box-1">
-                    <h3><i class="fa-solid fa-eye"></i> رؤية المنصة الاستراتيجية</h3>
-                    <p>الريادة والتميز في إرساء بيئة تعليمية رقمية متكاملة ومحفزة، تجمع بين جودة التعليم الحديث والتفاعل الذكي بين الكادر التدريسي والطلبة وأولياء الأمور لبناء جيل واعٍ ومبتكر.</p>
+                    <h3><i class="fa-solid fa-eye"></i> رؤية المنصة</h3>
+                    <p>الريادة والتميز في إرساء بيئة تعليمية رقمية متكاملة تضمن جودة التعليم الحديث والتفاعل الذكي.</p>
                 </div>
                 <div class="vg-box-2">
-                    <h3><i class="fa-solid fa-bullseye"></i> أهداف المنصة الأساسية</h3>
+                    <h3><i class="fa-solid fa-bullseye"></i> أهداف المنصة</h3>
                     <ul>
-                        <li>تسهيل إدارة الصفوف والجداول الدراسية بدقة عالية.</li>
-                        <li>توفير مكتبة رقمية مرنة ومتاحة لجميع المراحل.</li>
-                        <li>دمج الترفيه التعليمي والألعاب الذكية لتحسين الاستيعاب.</li>
-                        <li>تعزيز التواصل الفعال والآمن عبر غرف الدردشة.</li>
+                        <li>تسهيل إدارة الصفوف والجداول الدراسية.</li>
+                        <li>توفير مكتبة رقمية مرنة ومتاحة للجميع.</li>
+                        <li>تعزيز التواصل الفعال والآمن.</li>
                     </ul>
                 </div>
             </div>
 
             <div class="alerts-dashboard-card">
-                <h3><i class="fa-solid fa-bullhorn"></i> التبليغات والتنبيهات المدرسية الهامة</h3>
-                <div id="alertsContainer">
-                </div>
+                <h3><i class="fa-solid fa-bullhorn"></i> التبليغات والتنبيهات المدرسية</h3>
+                <div id="alertsContainer">جاري تحميل التبليغات من السحاب...</div>
             </div>
 
             <div class="news-dashboard-card">
-                <h3><i class="fa-solid fa-newspaper"></i> آخر الأخبار والنشاطات المدرسية</h3>
+                <h3><i class="fa-solid fa-newspaper"></i> آخر الأخبار والنشاطات</h3>
                 <div class="news-slider-wrapper">
-                    <button class="slider-btn prev-btn" onclick="moveNews(1)"><i class="fa-solid fa-chevron-right"></i></button>
-                    <div class="news-cards-grid" id="newsContainer">
-                    </div>
-                    <button class="slider-btn next-btn" onclick="moveNews(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="slider-btn" onclick="moveNews(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <div class="news-cards-grid" id="newsContainer">جاري تحميل الأخبار...</div>
+                    <button class="slider-btn" onclick="moveNews(-1)"><i class="fa-solid fa-chevron-left"></i></button>
                 </div>
             </div>
 
             <div id="adminPanel" class="admin-panel-card" style="display: none;">
-                <h3><i class="fa-solid fa-user-shield"></i> لوحة إدارة المحتوى (خاصة بالإدارة)</h3>
+                <h3><i class="fa-solid fa-user-shield"></i> لوحة إدارة المحتوى الفورية (خاص بالإدارة)</h3>
                 
                 <div class="admin-section">
-                    <h4>📢 إضافة / تعديل تبليغ</h4>
-                    <input type="hidden" id="alertEditId">
-                    <input type="text" id="alertTitleInput" placeholder="نوع أو عنوان التنبيه (مثال: 📌 تنبيه إداري:)" class="admin-input">
+                    <h4>📢 نشر تبليغ عام للجميع</h4>
+                    <input type="hidden" id="alertEditDocId">
+                    <input type="text" id="alertTitleInput" placeholder="عنوان التنبيه" class="admin-input">
                     <textarea id="alertTextInput" placeholder="نص التبليغ..." class="admin-input" rows="3"></textarea>
-                    
-                    <label class="file-label"><i class="fa-solid fa-image"></i> إرفاق صورة مع التبليغ (اختياري):</label>
-                    <input type="file" id="alertImageFileInput" accept="image/*" class="admin-input" style="padding: 8px;">
-                    
-                    <button onclick="saveAlert()" class="admin-btn">حفظ التبليغ</button>
+                    <input type="file" id="alertImageFileInput" accept="image/*" class="admin-input">
+                    <button onclick="saveAlertToFirebase()" class="admin-btn" id="saveAlertBtn">نشر التبليغ فوراً</button>
                 </div>
 
-                <hr style="border: 0; border-top: 1px dashed rgba(246, 173, 85, 0.3); margin: 20px 0;">
+                <hr style="border:0; border-top: 1px dashed rgba(246,173,85,0.3); margin: 20px 0;">
 
                 <div class="admin-section">
-                    <h4>📰 إضافة / تعديل خبر أو نشاط</h4>
-                    <input type="hidden" id="newsEditId">
-                    <input type="text" id="newsDateInput" placeholder="التاريخ (مثال: أغسطس 2026)" class="admin-input">
+                    <h4>📰 نشر خبر أو نشاط للجميع</h4>
+                    <input type="hidden" id="newsEditDocId">
+                    <input type="text" id="newsDateInput" placeholder="التاريخ" class="admin-input">
                     <input type="text" id="newsTitleInput" placeholder="عنوان الخبر" class="admin-input">
                     <textarea id="newsDescInput" placeholder="تفاصيل الخبر..." class="admin-input" rows="3"></textarea>
-                    
-                    <label class="file-label"><i class="fa-solid fa-image"></i> إرفاق صورة الخبر من الجهاز (اختياري):</label>
-                    <input type="file" id="newsImageFileInput" accept="image/*" class="admin-input" style="padding: 8px;">
-
-                    <button onclick="saveNews()" class="admin-btn">حفظ الخبر</button>
+                    <input type="file" id="newsImageFileInput" accept="image/*" class="admin-input">
+                    <button onclick="saveNewsToFirebase()" class="admin-btn" id="saveNewsBtn">نشر الخبر فوراً</button>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <footer>
-        جميع الحقوق محفوظة © منصة الوادي التعليمية 2026
-    </footer>
+    <footer>جميع الحقوق محفوظة © منصة رؤيا التعليمية 2026</footer>
 
-    <!-- أضفنا رقم v=1.1 للسكريبت لتفادي الكاش القديم -->
-    <script src="scriot.js?v=1.1"></script>
+    <!-- مكتبات Firebase الرسمية -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <script>
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
+        // إعدادات Firebase الخاصة بـ Roya-platform
+        const firebaseConfig = {
+            apiKey: "AIzaSyAuWDpBoR31ZjPzaUrAe4lppufSHuMLFyI",
+            authDomain: "roya-platform-26860.firebaseapp.com",
+            databaseURL: "https://roya-platform-26860-default-rtdb.firebaseio.com",
+            projectId: "roya-platform-26860",
+            storageBucket: "roya-platform-26860.firebasestorage.app",
+            messagingSenderId: "897544406776",
+            appId: "1:897544406776:web:aa112013dea672fb141d0d",
+            measurementId: "G-Y88LCNKED2"
+        };
+
+        // تهيئة السحاب
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let alertsList = [];
+        let newsList = [];
+
+        // المزامنة الفورية للتبليغات من Firebase
+        db.collection("alerts").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+            alertsList = snapshot.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
+            
+            if (alertsList.length === 0) {
+                seedInitialData();
+            } else {
+                renderAlerts();
+            }
+        }, error => console.error("Error loading alerts:", error));
+
+        // المزامنة الفورية للأخبار من Firebase
+        db.collection("news").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+            newsList = snapshot.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
+            if (newsList.length > 0) renderNews();
+        }, error => console.error("Error loading news:", error));
+
+        function seedInitialData() {
+            db.collection("alerts").add({
+                title: '🗓️ جدول امتحانات الدور الثاني:',
+                text: 'تبدأ امتحانات الدور الثاني للصف السادس الابتدائي للعام الدراسي 2025-2026 اعتباراً من يوم السبت 15 أغسطس وحتى الخميس 20 أغسطس 2026.',
+                image: '',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            db.collection("alerts").add({
+                title: '📄 تعليمات تسليم الوثائق الرسمية:',
+                text: 'على الطلبة الناجحين في الدور الأول المراجعة يومي الأحد والثلاثاء لاستلام وثائق التقديم.',
+                image: '',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
         }
 
-        function updateThemeIcon(theme) {
-            const icon = document.getElementById('themeIcon');
-            if (theme === 'light') {
-                icon.className = 'fa-solid fa-sun';
+        function renderAlerts() {
+            const container = document.getElementById('alertsContainer');
+            const isAdmin = checkIsAdmin();
+
+            container.innerHTML = alertsList.map(item => `
+                <div class="alert-row">
+                    <div>
+                        <strong>${item.title}</strong> ${item.text}
+                        ${item.image ? `<br><img src="${item.image}" class="alert-img">` : ''}
+                    </div>
+                    ${isAdmin ? `
+                        <div class="admin-controls">
+                            <span class="action-btn" onclick="editAlert('${item.docId}')"><i class="fa-solid fa-pen"></i></span>
+                            <span class="action-btn delete-btn" onclick="deleteAlert('${item.docId}')"><i class="fa-solid fa-trash"></i></span>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function renderNews() {
+            const container = document.getElementById('newsContainer');
+            const isAdmin = checkIsAdmin();
+
+            container.innerHTML = newsList.map(item => `
+                <div class="news-sub-card">
+                    <div>
+                        ${item.image ? `<div class="news-img-wrapper"><img src="${item.image}" class="news-card-img"></div>` : ''}
+                        <div class="date">${item.date || 'الآن'}</div>
+                        <div class="title">${item.title}</div>
+                        <p class="desc">${item.desc}</p>
+                    </div>
+                    ${isAdmin ? `
+                        <div class="admin-controls" style="margin-top:10px;">
+                            <span class="action-btn" onclick="editNews('${item.docId}')"><i class="fa-solid fa-pen"></i></span>
+                            <span class="action-btn delete-btn" onclick="deleteNews('${item.docId}')"><i class="fa-solid fa-trash"></i></span>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        async function saveAlertToFirebase() {
+            if (!checkIsAdmin()) return alert("خاص بالإدارة فقط");
+            const docId = document.getElementById('alertEditDocId').value;
+            const title = document.getElementById('alertTitleInput').value;
+            const text = document.getElementById('alertTextInput').value;
+            const imageFileInput = document.getElementById('alertImageFileInput');
+
+            if (!title || !text) return alert("يرجى ملء الحقول");
+
+            let image = '';
+            if (imageFileInput.files && imageFileInput.files[0]) {
+                image = await convertFileToBase64(imageFileInput.files[0]);
+            } else if (docId) {
+                const old = alertsList.find(a => a.docId === docId);
+                if (old) image = old.image || '';
+            }
+
+            const payload = { title, text, image, createdAt: firebase.firestore.FieldValue.serverTimestamp() };
+
+            if (docId) {
+                await db.collection("alerts").doc(docId).update({ title, text, image });
             } else {
-                icon.className = 'fa-solid fa-moon';
+                await db.collection("alerts").add(payload);
+            }
+
+            resetForm('alertEditDocId', 'alertTitleInput', 'alertTextInput', 'alertImageFileInput');
+            alert("تم نشر التبليغ لجميع المستعملين بنجاح! 🚀");
+        }
+
+        async function saveNewsToFirebase() {
+            if (!checkIsAdmin()) return alert("خاص بالإدارة فقط");
+            const docId = document.getElementById('newsEditDocId').value;
+            const date = document.getElementById('newsDateInput').value;
+            const title = document.getElementById('newsTitleInput').value;
+            const desc = document.getElementById('newsDescInput').value;
+            const imageFileInput = document.getElementById('newsImageFileInput');
+
+            if (!title || !desc) return alert("يرجى ملء الحقول");
+
+            let image = '';
+            if (imageFileInput.files && imageFileInput.files[0]) {
+                image = await convertFileToBase64(imageFileInput.files[0]);
+            } else if (docId) {
+                const old = newsList.find(n => n.docId === docId);
+                if (old) image = old.image || '';
+            }
+
+            if (docId) {
+                await db.collection("news").doc(docId).update({ date, title, desc, image });
+            } else {
+                await db.collection("news").add({ date, title, desc, image, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+            }
+
+            resetForm('newsEditDocId', 'newsDateInput', 'newsTitleInput', 'newsDescInput', 'newsImageFileInput');
+            alert("تم نشر الخبر لجميع المستعملين بنجاح! 🚀");
+        }
+
+        function deleteAlert(docId) {
+            if (confirm("هل تريد حذف التبليغ نهائياً؟")) db.collection("alerts").doc(docId).delete();
+        }
+
+        function deleteNews(docId) {
+            if (confirm("هل تريد حذف الخبر نهائياً؟")) db.collection("news").doc(docId).delete();
+        }
+
+        function editAlert(docId) {
+            const item = alertsList.find(a => a.docId === docId);
+            if (item) {
+                document.getElementById('alertEditDocId').value = docId;
+                document.getElementById('alertTitleInput').value = item.title;
+                document.getElementById('alertTextInput').value = item.text;
             }
         }
 
-        // تضمين التبليغات الصباحية بشكل افتراضي ليراها الجميع فوراً
-        const defaultAlerts = [
-            { id: 101, title: '🗓️ جدول امتحانات الدور الثاني:', text: 'تبدأ امتحانات الدور الثاني للصف السادس الابتدائي للعام الدراسي 2025-2026 اعتباراً من يوم السبت 15 أغسطس وحتى الخميس 20 أغسطس 2026. يرجى الحضور الساعة 8:00 صباحاً والالتزام بالزي المدرسي.', image: '' },
-            { id: 102, title: '📄 تعليمات تسليم الوثائق الرسمية:', text: 'على الطلبة الناجحين في الدور الأول المراجعة يومي الأحد والثلاثاء لاستلام وثائق التقديم للمدارس المتوسطة، مع ضرورة تسليم جميع الكتب المدرسية للإدارة.', image: '' },
-            { id: 1, title: '📌 تنبيه إداري:', text: 'تم تحديث الجداول الدراسية الأسبوعية لجميع الصفوف ويمكنكم مراجعتها عبر قسم "الحصص والجداول".', image: '' },
-            { id: 2, title: '🌟 نشاط تفاعلي:', text: 'تم تفعيل الألعاب التعليمية الجديدة لقسم المرحلة الابتدائية في واجهة الألعاب والترفيه.', image: '' }
-        ];
+        function editNews(docId) {
+            const item = newsList.find(n => n.docId === docId);
+            if (item) {
+                document.getElementById('newsEditDocId').value = docId;
+                document.getElementById('newsDateInput').value = item.date || '';
+                document.getElementById('newsTitleInput').value = item.title;
+                document.getElementById('newsDescInput').value = item.desc;
+            }
+        }
 
-        const defaultNews = [
-            { id: 1, date: 'أغسطس 2026', title: 'إطلاق النسخة المحدثة للمنصة', desc: 'تم تحديث واجهات المنصة بالستايل الملكي الفاخر لضمان أداء أسرع وتجربة مستخدم متميزة.', image: '' },
-            { id: 2, date: 'أغسطس 2026', title: 'تفعيل المكتبة الرقمية', desc: 'إتاحة رفع وتحميل الملازم والمناهج الدراسية بشكل مباشر ومرن للطلبة والأساتذة.', image: '' }
-        ];
+        function resetForm(...ids) { ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; }); }
 
-        let alertsData = JSON.parse(localStorage.getItem('platformAlerts')) || defaultAlerts;
-        let newsData = JSON.parse(localStorage.getItem('platformNews')) || defaultNews;
+        function checkIsAdmin() {
+            try {
+                const activeUser = JSON.parse(localStorage.getItem("currentUser"));
+                if (!activeUser) return false;
+                const role = (activeUser.role || activeUser.userRole || activeUser.type || '').toString().toLowerCase().trim();
+                return ['admin', 'مدير', 'أدمن', 'administrator', 'manager'].includes(role);
+            } catch(e) { return false; }
+        }
 
         function convertFileToBase64(file) {
             return new Promise((resolve, reject) => {
@@ -402,215 +479,26 @@
             });
         }
 
-        function checkIsAdmin() {
-            try {
-                const activeUser = JSON.parse(localStorage.getItem("currentUser"));
-                if (!activeUser) return false;
-                
-                const role = (activeUser.role || activeUser.userRole || activeUser.type || '').toString().toLowerCase().trim();
-                const allowedRoles = ['admin', 'مدير', 'أدمن', 'administrator', 'manager'];
-                
-                return allowedRoles.includes(role);
-            } catch(e) { 
-                return false; 
-            }
-        }
-
-        function renderAlerts() {
-            const container = document.getElementById('alertsContainer');
-            if(!container) return;
-            const isAdmin = checkIsAdmin();
-            
-            container.innerHTML = alertsData.map(item => `
-                <div class="alert-row">
-                    <div>
-                        <strong>${item.title}</strong> ${item.text}
-                        ${item.image ? `<br><img src="${item.image}" alt="صورة التبليغ" class="alert-img">` : ''}
-                    </div>
-                    ${isAdmin ? `
-                        <div class="admin-controls">
-                            <span class="action-btn" onclick="editAlert(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span>
-                            <span class="action-btn delete-btn" onclick="deleteAlert(${item.id})"><i class="fa-solid fa-trash"></i> حذف</span>
-                        </div>
-                    ` : ''}
-                </div>
-            `).join('');
-        }
-
-        function renderNews() {
-            const container = document.getElementById('newsContainer');
-            if(!container) return;
-            const isAdmin = checkIsAdmin();
-
-            container.innerHTML = newsData.map(item => `
-                <div class="news-sub-card">
-                    <div>
-                        ${item.image ? `
-                            <div class="news-img-wrapper">
-                                <img src="${item.image}" alt="صورة الخبر" class="news-card-img">
-                            </div>
-                        ` : ''}
-                        <div class="date">${item.date}</div>
-                        <div class="title">${item.title}</div>
-                        <p class="desc">${item.desc}</p>
-                    </div>
-                    ${isAdmin ? `
-                        <div class="admin-controls" style="margin-top:10px;">
-                            <span class="action-btn" onclick="editNews(${item.id})"><i class="fa-solid fa-pen"></i> تعديل</span>
-                            <span class="action-btn delete-btn" onclick="deleteNews(${item.id})"><i class="fa-solid fa-trash"></i> حذف</span>
-                        </div>
-                    ` : ''}
-                </div>
-            `).join('');
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
         }
 
         function moveNews(direction) {
             const container = document.getElementById('newsContainer');
-            if(container) {
-                container.scrollBy({ left: direction * 300, behavior: 'smooth' });
-            }
+            if (container) container.scrollBy({ left: direction * 300, behavior: 'smooth' });
         }
 
-        async function saveAlert() {
-            if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
-            const id = document.getElementById('alertEditId').value;
-            const title = document.getElementById('alertTitleInput').value;
-            const text = document.getElementById('alertTextInput').value;
-            const imageFileInput = document.getElementById('alertImageFileInput');
-
-            if(!title || !text) return alert("يرجى ملء جميع الحقول المطلوبة!");
-
-            let base64Image = '';
-            if (imageFileInput.files && imageFileInput.files[0]) {
-                const file = imageFileInput.files[0];
-                if (file.size > 2 * 1024 * 1024) return alert('حجم الصورة كبير، يفضل اختيار صورة أقل من 2 ميجابايت.');
-                base64Image = await convertFileToBase64(file);
-            } else if (id) {
-                const existingItem = alertsData.find(a => a.id == id);
-                if (existingItem) base64Image = existingItem.image || '';
-            }
-
-            if (id) {
-                alertsData = alertsData.map(a => a.id == id ? { id: Number(id), title, text, image: base64Image } : a);
-            } else {
-                alertsData.unshift({ id: Date.now(), title, text, image: base64Image });
-            }
-
-            localStorage.setItem('platformAlerts', JSON.stringify(alertsData));
-            renderAlerts();
-            resetAlertForm();
-        }
-
-        function editAlert(id) {
-            const item = alertsData.find(a => a.id === id);
-            if(item) {
-                document.getElementById('alertEditId').value = item.id;
-                document.getElementById('alertTitleInput').value = item.title;
-                document.getElementById('alertTextInput').value = item.text;
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            }
-        }
-
-        function deleteAlert(id) {
-            if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
-            if (confirm("هل أنت تأكد من إرادتك لحذف هذا التبليغ؟")) {
-                alertsData = alertsData.filter(a => a.id !== id);
-                localStorage.setItem('platformAlerts', JSON.stringify(alertsData));
-                renderAlerts();
-            }
-        }
-
-        function resetAlertForm() {
-            document.getElementById('alertEditId').value = '';
-            document.getElementById('alertTitleInput').value = '';
-            document.getElementById('alertTextInput').value = '';
-            document.getElementById('alertImageFileInput').value = '';
-        }
-
-        async function saveNews() {
-            if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
-            const id = document.getElementById('newsEditId').value;
-            const date = document.getElementById('newsDateInput').value;
-            const title = document.getElementById('newsTitleInput').value;
-            const desc = document.getElementById('newsDescInput').value;
-            const imageFileInput = document.getElementById('newsImageFileInput');
-
-            if(!title || !desc) return alert("يرجى ملء جميع الحقول المطلوبة!");
-
-            let base64Image = '';
-            if (imageFileInput.files && imageFileInput.files[0]) {
-                const file = imageFileInput.files[0];
-                if (file.size > 2 * 1024 * 1024) return alert('حجم الصورة كبير، يفضل اختيار صورة أقل من 2 ميجابايت.');
-                base64Image = await convertFileToBase64(file);
-            } else if (id) {
-                const existingItem = newsData.find(n => n.id == id);
-                if (existingItem) base64Image = existingItem.image || '';
-            }
-
-            if (id) {
-                newsData = newsData.map(n => n.id == id ? { id: Number(id), date, title, desc, image: base64Image } : n);
-            } else {
-                newsData.unshift({ id: Date.now(), date: date || 'الآن', title, desc, image: base64Image });
-            }
-
-            localStorage.setItem('platformNews', JSON.stringify(newsData));
-            renderNews();
-            resetNewsForm();
-        }
-
-        function editNews(id) {
-            const item = newsData.find(n => n.id === id);
-            if(item) {
-                document.getElementById('newsEditId').value = item.id;
-                document.getElementById('newsDateInput').value = item.date;
-                document.getElementById('newsTitleInput').value = item.title;
-                document.getElementById('newsDescInput').value = item.desc;
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            }
-        }
-
-        function deleteNews(id) {
-            if (!checkIsAdmin()) return alert("عذراً، هذه الخاصية متاحة للمدير فقط!");
-            if (confirm("هل أنت تأكد من إرادتك لحذف هذا الخبر؟")) {
-                newsData = newsData.filter(n => n.id !== id);
-                localStorage.setItem('platformNews', JSON.stringify(newsData));
-                renderNews();
-            }
-        }
-
-        function resetNewsForm() {
-            document.getElementById('newsEditId').value = '';
-            document.getElementById('newsDateInput').value = '';
-            document.getElementById('newsTitleInput').value = '';
-            document.getElementById('newsDescInput').value = '';
-            document.getElementById('newsImageFileInput').value = '';
-        }
-
-        // تهيئة الصفحة والساعة والوضع عند التحميل
         window.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeIcon(savedTheme);
-
-            if(checkIsAdmin()) {
-                const adminPanel = document.getElementById('adminPanel');
-                if(adminPanel) adminPanel.style.display = 'block';
+            if (checkIsAdmin()) {
+                document.getElementById('adminPanel').style.display = 'block';
             }
-
-            renderAlerts();
-            renderNews();
-
-            // تحديث الوقت والتاريخ
             setInterval(() => {
                 const now = new Date();
-                const timeStr = now.toLocaleTimeString('ar-IQ');
-                const dateStr = now.toLocaleDateString('ar-IQ', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                
-                const timeElem = document.getElementById('currentTimeDisplay');
-                const dateElem = document.getElementById('currentDateDisplay');
-                
-                if(timeElem) timeElem.textContent = timeStr;
-                if(dateElem) dateElem.textContent = dateStr;
+                document.getElementById('currentTimeDisplay').textContent = now.toLocaleTimeString('ar-IQ');
+                document.getElementById('currentDateDisplay').textContent = now.toLocaleDateString('ar-IQ', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             }, 1000);
         });
     </script>
