@@ -277,7 +277,9 @@
                 <div class="dash-card-header">
                     <img src="icona99.png" alt="شعار المنصة" class="platform-logo-img">
                     <h1>مرحباً بك في منصة رؤيا التعليمية 🌟</h1>
-                    <!-- تم إخفاء شريط المزامنة عن الطلاب وجعله للادمن فقط -->
+                    <div class="status-syncing" id="syncStatus" style="display: none;">
+                        <i class="fa-solid fa-bolt"></i> متصلة بالسحاب تلقائياً (Roya-platform)
+                    </div>
                 </div>
                 <div class="dash-card-time">
                     <div class="time-box" id="currentTimeDisplay">--:--:--</div>
@@ -300,7 +302,7 @@
                 </div>
             </div>
 
-            <!-- 🌟 القسم المدمج للأخبار والتبليغات بالتنسيق المطابق للصورة 🌟 -->
+            <!-- 🌟 القسم المدمج للأخبار والتبليغات 🌟 -->
             <div class="news-section-wrapper">
                 <div class="section-header-title">
                     <i class="fa-solid fa-newspaper" style="color: #f6ad55;"></i> آخر الأخبار والتبليغات المدرسية
@@ -391,7 +393,6 @@
             defaults.forEach(item => db.collection("posts").add(item));
         }
 
-        // عرض الكروت بنفس تنسيق الصورة بالضبط وبدون اقتطاع الصور
         function renderUnifiedPosts() {
             const container = document.getElementById('unifiedNewsContainer');
             const isAdmin = checkIsAdmin();
@@ -505,14 +506,7 @@
             localStorage.setItem('theme', newTheme);
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            // إظهار لوحة التحكم وشريط الاتصال للإدارة فقط
-            if (checkIsAdmin()) {
-                document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('syncStatus').style.display = 'block';
-            }
-
-            function updateClock() {
+        function updateClock() {
             const now = new Date();
             const timeElem = document.getElementById('currentTimeDisplay');
             const dateElem = document.getElementById('currentDateDisplay');
