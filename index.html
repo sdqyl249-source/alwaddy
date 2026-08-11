@@ -200,23 +200,19 @@
 
         .media-card-img-wrapper {
             width: 100%;
-            height: auto;
-            max-height: 380px;
+            height: 240px;
             overflow: hidden;
             background-color: #1a202c;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8px;
         }
 
         .media-card-img {
             width: 100%;
-            height: auto;
-            max-height: 360px;
-            object-fit: contain;
-            border-radius: 10px;
+            height: 100%;
+            object-fit: cover;
         }
 
         .media-card-content {
@@ -389,8 +385,9 @@
                     <input type="text" id="postTitleInput" placeholder="عنوان الخبر أو التبليغ..." class="admin-input">
                     <textarea id="postDescInput" placeholder="تفاصيل الخبر أو التنبيه الهام..." class="admin-input" rows="4"></textarea>
                     <input type="text" id="postDateInput" placeholder="التاريخ (مثال: 2026/08/11)" class="admin-input">
+                    <label style="color: #f59e0b; font-size: 13px; font-weight: bold;">اختر الصورة من جهازك (ستُحفظ سحابياً فوراً):</label>
                     <input type="file" id="postImageFileInput" accept="image/*" class="admin-input">
-                    <button onclick="savePostToFirebase()" class="admin-btn" id="savePostBtn"><i class="fa-solid fa-paper-plane"></i> نشر جديد فوراً</button>
+                    <button onclick="savePostToFirebase()" class="admin-btn" id="savePostBtn"><i class="fa-solid fa-paper-plane"></i> نشر دائم فوراً</button>
                 </div>
             </div>
 
@@ -423,52 +420,11 @@
         let currentPage = 1;
         const postsPerPage = 6;
 
-        // المزامنة الفورية مع السحاب Firestore
+        // المزامنة الفورية المباشرة مع قاعدة البيانات السحابية
         db.collection("posts").orderBy("createdAt", "desc").onSnapshot(snapshot => {
             allPostsList = snapshot.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
-            
-            if (allPostsList.length === 0) {
-                seedInitialData();
-            } else {
-                handleSearch();
-            }
+            handleSearch();
         }, error => console.error("Error loading posts:", error));
-
-        // إدراج كافة الأخبار مع الصور المرفقة
-        function seedInitialData() {
-            const defaults = [
-                {
-                    title: '1 أيلول للملاكات.. و20 ايلول للطلبة .. التربية تحدد موعد العام الدراسي 2026-2027',
-                    desc: 'وجه معالي وزير التربية عبد الكريم عبطان الجبوري باعتماد مواعيد مباشرة الهيئات التعليمية والتدريسية وانطلاق العام الدراسي 2026/2027، وتبدأ مباشرتها يوم الثلاثاء 1 أيلول 2026، فيما ينطلق العام الدراسي للطلبة يوم الأحد 20 أيلول 2026.\n\nودعت وزارة التربية المديريات العامة للتربية في المحافظات كافة إلى استكمال استعداداتها وفق التوقيتات المحددة، وتهيئة المدارس والملاكات لاستقبال العام الدراسي الجديد.',
-                    date: '2026/08/11',
-                    image: 'وزارة التربية.jpeg',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                },
-                {
-                    title: '📢 تنبيه هام: جدول امتحانات نهاية السنة (الدور الثاني) 2025-2026',
-                    desc: 'أعزائنا الطلبة وأولياء الأمور الكرام، نرفق لكم جدول امتحانات الدور الثاني للصف السادس الابتدائي للعام الدراسي 2025-2026.',
-                    date: '2026/08/11',
-                    image: 'جدول الدور الثاني.jpg',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                },
-                {
-                    title: '📢 تنبيه هام | استلام وثائق السادس الابتدائي 🎓',
-                    desc: 'تعلن إدارة المدرسة عن بدء تسليم الوثائق الرسمية للطلبة الناجحين في "الدور الأول" للتقديم على المدارس المتوسطة.\n\n🗓 أيام المراجعة: الأحد والثلاثاء (خلال الدوام الرسمي)\n⚠️ ملاحظة مهمة: يُرجى تسليم كافة الكتب المدرسية عند الحضور.',
-                    date: '2026/08/11',
-                    image: 'اعلان.jpg',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                },
-                {
-                    title: 'مواعيد امتحانات الدور الثاني للابتدائية (الصفوف غير المنتهية) 2025-2026',
-                    desc: 'تنبيه هام للطلبة وأولياء الأمور:\nاستناداً لتعليمات وزارة التربية، تكون مواعيد امتحانات الدور الثاني للصفوف غير المنتهية للمرحلة الابتدائية (من الأول إلى الخامس الابتدائي) للعام الدراسي 2025 / 2026 كالتالي:\n\n🔹 تاريخ الانطلاق: الثلاثاء 15 / 9 / 2026\n🔹 تاريخ الانتهاء: الإثنين 21 / 9 / 2026\n\n⏱️ تنبيه: يرجى الالتزام بالحضور المبكر والتعليمات الامتحانية داخل المدرسة. تمنياتنا للتلاميذ جميعاً بالنجاح والتوفيق! 🌟',
-                    date: '2026/08/11',
-                    image: 'هام.jpeg',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                }
-            ];
-
-            defaults.forEach(item => db.collection("posts").add(item));
-        }
 
         function handleSearch() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -490,7 +446,7 @@
             const isAdmin = checkIsAdmin();
 
             if (filteredPostsList.length === 0) {
-                container.innerHTML = `<div style="color: #a0aec0; padding: 20px; grid-column: 1/-1; text-align: center;">لا توجد أخبار أو نتائج مطابقة حالياً.</div>`;
+                container.innerHTML = `<div style="color: #a0aec0; padding: 20px; grid-column: 1/-1; text-align: center;">لا توجد أخبار حالياً. يمكنك إضافة خبر جديد مع الصورة من لوحة التحكم بالأسفل.</div>`;
                 document.getElementById('paginationWrapper').style.display = 'none';
                 return;
             }
@@ -508,13 +464,13 @@
                         </div>
                     ` : ''}
                     <div class="media-card-img-wrapper">
-                        <img src="${item.image || 'icona99.png'}" class="media-card-img" alt="صورة الخبر" onerror="this.src='icona99.png'">
+                        ${item.image ? `<img src="${item.image}" class="media-card-img" alt="صورة الخبر">` : `<div style="color: #64748b; font-size: 13px;">بدون صورة</div>`}
                     </div>
                     <div class="media-card-content">
                         <h3 class="media-card-title">${item.title}</h3>
                         ${item.desc ? `<p class="media-card-desc">${item.desc}</p>` : ''}
                         <div class="media-card-footer">
-                            <span>${item.date || '2026/08/11'}</span>
+                            <span>${item.date || ''}</span>
                             <i class="fa-regular fa-clock"></i>
                         </div>
                     </div>
@@ -545,8 +501,8 @@
             window.scrollTo({ top: document.querySelector('.news-section-wrapper').offsetTop - 20, behavior: 'smooth' });
         }
 
-        // دالة تصغير وضغط الصورة تلقائياً من جهاز المستخدم
-        function processAndCompressImage(file, maxWidth = 1000, quality = 0.75) {
+        // تحويل الصورة لـ Base64 وضغطها تلقائياً قبل حفظها في السحاب
+        function processAndCompressImage(file, maxWidth = 800, quality = 0.7) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -597,15 +553,11 @@
             let image = '';
             try {
                 if (imageFileInput.files && imageFileInput.files[0]) {
-                    // معالجة وضغط الصورة فور رفعها من الجهاز
+                    // تحويل الصورة وضغطها وتجهيزها للحفظ السحابي
                     image = await processAndCompressImage(imageFileInput.files[0]);
                 } else if (docId) {
                     const old = allPostsList.find(p => p.docId === docId);
                     if (old) image = old.image || '';
-                }
-
-                if (!image) {
-                    image = 'icona99.png';
                 }
 
                 if (docId) {
@@ -621,15 +573,15 @@
                 }
 
                 resetForm('editDocId', 'postTitleInput', 'postDescInput', 'postDateInput', 'postImageFileInput');
-                alert("تم رفع وضغط الصورة ونشر الخبر بنجاح! 🚀");
+                alert("تم رفع الصورة ونشر الخبر بنجاح! ستظهر الصورة الآن لجميع المستخدمين ولن تتغير.");
             } catch (error) {
-                console.error("خطأ أثناء معالجة وحفظ البيانات:", error);
-                alert("حدث خطأ أثناء الحفظ:\n" + error);
+                console.error("خطأ أثناء الحفظ:", error);
+                alert("حدث خطأ أثناء الحفظ: " + error);
             }
         }
 
         function deletePost(docId) {
-            if (confirm("هل أنت متأكد من حذف هذا التبليغ/الخبر؟")) {
+            if (confirm("هل أنت متأكد من حذف هذا الخبر؟")) {
                 db.collection("posts").doc(docId).delete();
             }
         }
