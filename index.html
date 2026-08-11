@@ -48,7 +48,6 @@
             --vg2-title: #93c5fd;
             --vg2-text: #dbeafe;
 
-            /* تصميم الكروت المطابق للصورة */
             --news-card-bg: #333d4e;
             --news-card-hover-bg: #3d495d;
             --news-card-border: rgba(255, 255, 255, 0.05);
@@ -140,9 +139,42 @@
         .vg-box-2 h3 { color: var(--vg2-title); margin-top: 0; font-size: 20px; border-bottom: 1px solid rgba(147, 197, 253, 0.3); padding-bottom: 10px; }
         .vg-box-2 ul { color: var(--vg2-text); font-size: 14px; line-height: 1.7; margin: 0; padding-right: 15px; }
 
-        /* --- قسم الأخبار والتبليغات الموحد بنفس تنسيق الصورة --- */
-        .section-header-title { font-size: 22px; font-weight: bold; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+        /* --- قسم الأخبار والتبليغات --- */
+        .news-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .section-header-title { font-size: 22px; font-weight: bold; display: flex; align-items: center; gap: 10px; margin: 0; }
         
+        .search-box-wrapper {
+            position: relative;
+            min-width: 260px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border-radius: 50px;
+            border: 1px solid var(--sidebar-border);
+            background: var(--news-card-bg);
+            color: var(--text-color);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #f6ad55;
+        }
+
         .news-grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -166,7 +198,6 @@
             background-color: var(--news-card-hover-bg);
         }
 
-        /* تعديلات احتواء الصورة الكاملة دون اقتطاع */
         .media-card-img-wrapper {
             width: 100%;
             height: auto;
@@ -203,17 +234,15 @@
             font-weight: 700;
             line-height: 1.5;
             margin: 0;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            white-space: pre-wrap;
         }
 
         .media-card-desc {
             color: var(--news-card-date);
             font-size: 13.5px;
-            line-height: 1.5;
+            line-height: 1.6;
             margin: 0;
+            white-space: pre-wrap;
         }
 
         .media-card-footer {
@@ -227,8 +256,33 @@
             direction: ltr;
         }
 
-        .media-card-footer i {
-            font-size: 13px;
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .page-btn {
+            background: var(--news-card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--sidebar-border);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: #f6ad55;
+            color: #000;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
         }
 
         .admin-controls-overlay {
@@ -302,14 +356,27 @@
                 </div>
             </div>
 
-            <!-- 🌟 القسم المدمج للأخبار والتبليغات 🌟 -->
+            <!-- قسم الأخبار والتبليغات الشامل -->
             <div class="news-section-wrapper">
-                <div class="section-header-title">
-                    <i class="fa-solid fa-newspaper" style="color: #f6ad55;"></i> آخر الأخبار والتبليغات المدرسية
+                <div class="news-header-bar">
+                    <div class="section-header-title">
+                        <i class="fa-solid fa-newspaper" style="color: #f6ad55;"></i> الأخبار والتبليغات المدرسية
+                    </div>
+                    <div class="search-box-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="searchInput" class="search-input" placeholder="ابحث في الأخبار والتبليغات..." oninput="handleSearch()">
+                    </div>
                 </div>
 
                 <div class="news-grid-container" id="unifiedNewsContainer">
-                    <div style="color: #a0aec0; padding: 20px;">جاري تحميل الأخبار والتبليغات من السحاب...</div>
+                    <div style="color: #a0aec0; padding: 20px;">جاري تحميل الأخبار والتبليغات...</div>
+                </div>
+
+                <!-- شريط الصفحات -->
+                <div class="pagination-container" id="paginationWrapper" style="display: none;">
+                    <button class="page-btn" id="prevPageBtn" onclick="changePage(-1)"><i class="fa-solid fa-arrow-right"></i> السابق</button>
+                    <span id="pageIndicator" style="font-size: 14px; font-weight: bold;">صفحة 1 من 1</span>
+                    <button class="page-btn" id="nextPageBtn" onclick="changePage(1)">التالي <i class="fa-solid fa-arrow-left"></i></button>
                 </div>
             </div>
 
@@ -320,10 +387,10 @@
                 <div class="admin-section">
                     <input type="hidden" id="editDocId">
                     <input type="text" id="postTitleInput" placeholder="عنوان الخبر أو التبليغ..." class="admin-input">
-                    <textarea id="postDescInput" placeholder="تفاصيل الخبر أو التنبيه الهام..." class="admin-input" rows="3"></textarea>
-                    <input type="text" id="postDateInput" placeholder="التاريخ (مثال: 2026/08/10)" class="admin-input">
+                    <textarea id="postDescInput" placeholder="تفاصيل الخبر أو التنبيه الهام..." class="admin-input" rows="4"></textarea>
+                    <input type="text" id="postDateInput" placeholder="التاريخ (مثال: 2026/08/11)" class="admin-input">
                     <input type="file" id="postImageFileInput" accept="image/*" class="admin-input">
-                    <button onclick="savePostToFirebase()" class="admin-btn" id="savePostBtn"><i class="fa-solid fa-paper-plane"></i> نشر فوراً للجميع</button>
+                    <button onclick="savePostToFirebase()" class="admin-btn" id="savePostBtn"><i class="fa-solid fa-paper-plane"></i> نشر جديد فوراً</button>
                 </div>
             </div>
 
@@ -337,7 +404,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // إعدادات Firebase الخاص بـ Roya-platform
         const firebaseConfig = {
             apiKey: "AIzaSyAuWDpBoR31ZjPzaUrAe4lppufSHuMLFyI",
             authDomain: "roya-platform-26860.firebaseapp.com",
@@ -352,39 +418,50 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let postsList = [];
+        let allPostsList = [];
+        let filteredPostsList = [];
+        let currentPage = 1;
+        const postsPerPage = 6;
 
         // المزامنة الفورية مع السحاب Firestore
         db.collection("posts").orderBy("createdAt", "desc").onSnapshot(snapshot => {
-            postsList = snapshot.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
+            allPostsList = snapshot.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
             
-            if (postsList.length === 0) {
+            if (allPostsList.length === 0) {
                 seedInitialData();
             } else {
-                renderUnifiedPosts();
+                handleSearch();
             }
         }, error => console.error("Error loading posts:", error));
 
+        // إدراج كافة الأخبار الـ 4 المطلوبة افتراضياً
         function seedInitialData() {
             const defaults = [
                 {
-                    title: 'مجلس أمناء المنصة التعليمية يلتقي كادر الإدارة لبحث الخطة الدراسية',
-                    desc: 'عقد مجلس الإدارة اجتماعاً موسعاً لتنسيق المناهج والأنشطة للفصل الدراسي القادم.',
-                    date: '2026/08/29',
+                    title: '1 أيلول للملاكات.. و20 ايلول للطلبة .. التربية تحدد موعد العام الدراسي 2026-2027',
+                    desc: 'وجه معالي وزير التربية عبد الكريم عبطان الجبوري باعتماد مواعيد مباشرة الهيئات التعليمية والتدريسية وانطلاق العام الدراسي 2026/2027، وتبدأ مباشرتها يوم الثلاثاء 1 أيلول 2026، فيما ينطلق العام الدراسي للطلبة يوم الأحد 20 أيلول 2026.\n\nودعت وزارة التربية المديريات العامة للتربية في المحافظات كافة إلى استكمال استعداداتها وفق التوقيتات المحددة، وتهيئة المدارس والملاكات لاستقبال العام الدراسي الجديد.',
+                    date: '2026/08/11',
                     image: 'icona99.png',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 },
                 {
-                    title: 'رئيس مجلس الأمناء يلتقي الكادر التدريسي ويحث على التعاون المشترك',
-                    desc: 'التأكيد على تقديم أفضل الوسائل التعليمية الإلكترونية والسبل الحديثة للطلاب.',
-                    date: '2026/08/27',
+                    title: '📢 تنبيه هام: جدول امتحانات نهاية السنة (الدور الثاني) 2025-2026',
+                    desc: 'أعزائنا الطلبة وأولياء الأمور الكرام، نرفق لكم جدول امتحانات الدور الثاني للصف السادس الابتدائي للعام الدراسي 2025-2026.',
+                    date: '2026/08/11',
                     image: 'icona99.png',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 },
                 {
-                    title: 'جدول امتحانات الدور الثاني واستلام الوثائق الرسمية للطلبة',
-                    desc: 'تبدأ الامتحانات الرسمية اعتباراً من منتصف هذا الشهر، يرجى الالتزام بالتعليمات.',
-                    date: '2026/08/26',
+                    title: '📢 تنبيه هام | استلام وثائق السادس الابتدائي 🎓',
+                    desc: 'تعلن إدارة المدرسة عن بدء تسليم الوثائق الرسمية للطلبة الناجحين في "الدور الأول" للتقديم على المدارس المتوسطة.\n\n🗓 أيام المراجعة: الأحد والثلاثاء (خلال الدوام الرسمي)\n⚠️ ملاحظة مهمة: يُرجى تسليم كافة الكتب المدرسية عند الحضور.',
+                    date: '2026/08/11',
+                    image: 'icona99.png',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                },
+                {
+                    title: 'مواعيد امتحانات الدور الثاني للابتدائية (الصفوف غير المنتهية) 2025-2026',
+                    desc: 'تنبيه هام للطلبة وأولياء الأمور:\nاستناداً لتعليمات وزارة التربية، تكون مواعيد امتحانات الدور الثاني للصفوف غير المنتهية للمرحلة الابتدائية (من الأول إلى الخامس الابتدائي) للعام الدراسي 2025 / 2026 كالتالي:\n\n🔹 تاريخ الانطلاق: الثلاثاء 15 / 9 / 2026\n🔹 تاريخ الانتهاء: الإثنين 21 / 9 / 2026\n\n⏱️ تنبيه: يرجى الالتزام بالحضور المبكر والتعليمات الامتحانية داخل المدرسة. تمنياتنا للتلاميذ جميعاً بالنجاح والتوفيق! 🌟',
+                    date: '2026/08/11',
                     image: 'icona99.png',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 }
@@ -393,11 +470,36 @@
             defaults.forEach(item => db.collection("posts").add(item));
         }
 
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (query === '') {
+                filteredPostsList = [...allPostsList];
+            } else {
+                filteredPostsList = allPostsList.filter(item => 
+                    (item.title && item.title.toLowerCase().includes(query)) ||
+                    (item.desc && item.desc.toLowerCase().includes(query)) ||
+                    (item.date && item.date.includes(query))
+                );
+            }
+            currentPage = 1;
+            renderUnifiedPosts();
+        }
+
         function renderUnifiedPosts() {
             const container = document.getElementById('unifiedNewsContainer');
             const isAdmin = checkIsAdmin();
 
-            container.innerHTML = postsList.map(item => `
+            if (filteredPostsList.length === 0) {
+                container.innerHTML = `<div style="color: #a0aec0; padding: 20px; grid-column: 1/-1; text-align: center;">لا توجد أخبار أو نتائج مطابقة حالياً.</div>`;
+                document.getElementById('paginationWrapper').style.display = 'none';
+                return;
+            }
+
+            const startIndex = (currentPage - 1) * postsPerPage;
+            const endIndex = startIndex + postsPerPage;
+            const paginatedItems = filteredPostsList.slice(startIndex, endIndex);
+
+            container.innerHTML = paginatedItems.map(item => `
                 <div class="media-card">
                     ${isAdmin ? `
                         <div class="admin-controls-overlay">
@@ -412,12 +514,35 @@
                         <h3 class="media-card-title">${item.title}</h3>
                         ${item.desc ? `<p class="media-card-desc">${item.desc}</p>` : ''}
                         <div class="media-card-footer">
-                            <span>${item.date || '2026/08/10'}</span>
+                            <span>${item.date || '2026/08/11'}</span>
                             <i class="fa-regular fa-clock"></i>
                         </div>
                     </div>
                 </div>
             `).join('');
+
+            updatePaginationControls();
+        }
+
+        function updatePaginationControls() {
+            const totalPages = Math.ceil(filteredPostsList.length / postsPerPage);
+            const wrapper = document.getElementById('paginationWrapper');
+
+            if (totalPages <= 1) {
+                wrapper.style.display = 'none';
+                return;
+            }
+
+            wrapper.style.display = 'flex';
+            document.getElementById('pageIndicator').textContent = `صفحة ${currentPage} من ${totalPages}`;
+            document.getElementById('prevPageBtn').disabled = (currentPage === 1);
+            document.getElementById('nextPageBtn').disabled = (currentPage === totalPages);
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            renderUnifiedPosts();
+            window.scrollTo({ top: document.querySelector('.news-section-wrapper').offsetTop - 20, behavior: 'smooth' });
         }
 
         async function savePostToFirebase() {
@@ -440,36 +565,34 @@
             if (imageFileInput.files && imageFileInput.files[0]) {
                 image = await convertFileToBase64(imageFileInput.files[0]);
             } else if (docId) {
-                const old = postsList.find(p => p.docId === docId);
+                const old = allPostsList.find(p => p.docId === docId);
                 if (old) image = old.image || '';
             }
-
-            const payload = {
-                title,
-                desc,
-                date,
-                image,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
 
             if (docId) {
                 await db.collection("posts").doc(docId).update({ title, desc, date, image });
             } else {
-                await db.collection("posts").add(payload);
+                await db.collection("posts").add({
+                    title,
+                    desc,
+                    date,
+                    image,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
             }
 
             resetForm('editDocId', 'postTitleInput', 'postDescInput', 'postDateInput', 'postImageFileInput');
-            alert("تم نشر التحديث لجميع مستخدمي المنصة بنجاح! 🚀");
+            alert("تم إدراج التحديث ونشره للجميع بنجاح! 🚀");
         }
 
         function deletePost(docId) {
-            if (confirm("هل انت محقق من حذف هذا المنشور نهائياً؟")) {
+            if (confirm("هل أنت متأكد من حذف هذا التبليغ/الخبر؟")) {
                 db.collection("posts").doc(docId).delete();
             }
         }
 
         function editPost(docId) {
-            const item = postsList.find(p => p.docId === docId);
+            const item = allPostsList.find(p => p.docId === docId);
             if (item) {
                 document.getElementById('editDocId').value = docId;
                 document.getElementById('postTitleInput').value = item.title;
@@ -525,11 +648,9 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // تشغيل الساعة فوراً قبل الانتظار
             updateClock();
             setInterval(updateClock, 1000);
 
-            // إظهار لوحة التحكم وشريط الاتصال للإدارة فقط
             if (checkIsAdmin()) {
                 document.getElementById('adminPanel').style.display = 'block';
                 document.getElementById('syncStatus').style.display = 'block';
